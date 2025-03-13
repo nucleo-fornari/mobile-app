@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
@@ -51,6 +52,7 @@ fun Greeting(modifier: Modifier = Modifier) {
             .fillMaxSize()
             .background(color = AzulPrincipal)
     ) {
+        Spacer(modifier = Modifier.weight(1f))
         Column(
             modifier = modifier
                 .padding(16.dp)
@@ -59,16 +61,17 @@ fun Greeting(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally
 
         ) {
+            Spacer(modifier = Modifier.weight(1f))
             Image(
                 painter = painterResource(R.drawable.logobranco),
                 contentDescription = "Logo Núcleo Fornari",
                 modifier = Modifier.size(300.dp),
 //                contentScale = ContentScale.Crop
             )
-            
+            Spacer(modifier = Modifier.weight(1f))
             Column(
-//                modifier = modifier
-//                    .align(),
+                modifier = modifier
+                    .padding(bottom = 32.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {

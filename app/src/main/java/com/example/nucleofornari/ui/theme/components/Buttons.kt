@@ -44,3 +44,19 @@ fun TextButton(text: String, color: Color) {
     }
 }
 
+@Composable
+fun BlueButton(text: String, color: Color) {
+    Button(
+        onClick = { },
+        modifier = Modifier.size(302.dp, 60.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = AzulPrincipal,
+            contentColor = Color.White
+        ),
+        shape = RoundedCornerShape(6.dp)
+    ) {
+        Text(
+            text = text
+        )
+    }
+}
