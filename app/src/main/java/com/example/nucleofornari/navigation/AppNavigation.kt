@@ -1,6 +1,8 @@
 package com.example.nucleofornari.navigation
 
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.ContentAlpha
@@ -10,7 +12,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -23,7 +29,8 @@ import com.example.nucleofornari.ui.theme.AzulPrincipal
 fun AppNavigation(){
     val navController = rememberNavController()
     Scaffold (
-        bottomBar = { BottomBar(navController = navController) }
+        bottomBar = {
+             BottomBar(navController = navController) }
     ){
         BottomNavGraph(navController = navController)
     }
@@ -39,7 +46,9 @@ fun BottomBar(navController: NavHostController){
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    BottomNavigation(backgroundColor = AzulPrincipal) {
+    BottomNavigation(
+        backgroundColor = AzulPrincipal
+            ) {
         screens.forEach { screen ->
             AddItem(screen = screen, currentDestination = currentDestination, navController = navController)
         }
@@ -57,7 +66,7 @@ fun RowScope.AddItem(
             Text(text = screen.title, color = Color.White)
         },
         icon = {
-            Icon(imageVector = screen.icon, contentDescription = "Navigation Icon")
+            Icon(imageVector = screen.icon, contentDescription = "Navigation Icon", tint = Color.White)
         },
         selected = currentDestination?.hierarchy?.any{
             it.route == screen.route
@@ -70,4 +79,10 @@ fun RowScope.AddItem(
             }
         }
     )
+}
+
+@Composable
+@Preview
+fun AppNavigationPreview(){
+    AppNavigation()
 }

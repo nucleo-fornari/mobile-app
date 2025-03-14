@@ -14,7 +14,7 @@ import com.example.nucleofornari.ui.theme.AzulPrincipal
 @Composable
 fun WhiteButton(text: String, handleCLick: () -> Unit) {
     Button(
-        onClick = { handleCLick },
+        onClick = { handleCLick() },
         modifier = Modifier.size(302.dp, 60.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.White,
