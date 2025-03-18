@@ -46,7 +46,7 @@ fun CardNucleo(cardTitle: String, cardIcon: @Composable () -> Unit) {
 }
 
 @Composable
-@Preview
+@Preview (showBackground = true)
 fun CardPreview() {
     CardNucleo("Aluno em crise ", { AppIcons.CheckCircle(Success) })
 }

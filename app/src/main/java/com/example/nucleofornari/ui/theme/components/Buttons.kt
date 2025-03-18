@@ -29,7 +29,7 @@ fun WhiteButton(text: String, handleCLick: () -> Unit) {
 }
 
 @Composable
-fun TextButton(text: String, color: Color) {
+fun NucleoTextButton(text: String, color: Color) {
     Button(
         onClick = {},
         colors = ButtonDefaults.buttonColors(

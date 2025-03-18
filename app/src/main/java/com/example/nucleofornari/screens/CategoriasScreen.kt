@@ -2,6 +2,8 @@ package com.example.nucleofornari.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -11,15 +13,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.nucleofornari.ui.theme.Success
-import com.example.nucleofornari.ui.theme.components.AppIcons
 import com.example.nucleofornari.ui.theme.components.BlueButton
-import com.example.nucleofornari.ui.theme.components.CardNucleo
+import com.example.nucleofornari.ui.theme.components.NucleoRadioButtonList
 
 @Composable
-fun ChamadoProfessorScreen() {
+fun CategoriasScreen() {
+    val categorias = listOf(
+        "Professora precisa sair da sala",
+        "Saúde da criança",
+        "Suporte da secretaria",
+        "Suporte de TI",
+        "Problema de infraestrutura",
+        "Outros"
+    )
     Scaffold(
-        topBar = { com.example.nucleofornari.ui.theme.components.Header("Meus chamados") }
+        topBar = { com.example.nucleofornari.ui.theme.components.Header("Categorias") }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -28,20 +36,20 @@ fun ChamadoProfessorScreen() {
             verticalArrangement = Arrangement.spacedBy(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CardNucleo("Junin cagou na sala") { AppIcons.CheckCircle(Success) }
-            CardNucleo("Junin cagou na sala") { AppIcons.CheckCircle(Success) }
-            CardNucleo("Junin cagou na sala") { AppIcons.CheckCircle(Success) }
 
+            NucleoRadioButtonList(categorias)
+            Spacer(modifier = Modifier.weight(1f))
+            Row(modifier = Modifier
+                .padding(bottom= 32.dp)){
+                BlueButton("Confirmar", Color.White)
+            }
 
-            BlueButton("Abrir chamado", Color.White)
         }
     }
 }
 
-@Preview (showBackground = true)
+@Preview
 @Composable
-fun ChamadoPreview() {
-    com.example.nucleofornari.ui.theme.NucleoFornariTheme{
-        ChamadoProfessorScreen()
-    }
+fun CategoriaScreenPreview() {
+    CategoriasScreen()
 }
