@@ -15,7 +15,7 @@ import com.example.nucleofornari.screens.RelatorioProfessorScreen
 fun BottomNavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = BottomBarScreen.Inicio.route){
         composable(route = BottomBarScreen.Inicio.route){
-            InicioProfessorScreen()
+            InicioProfessorScreen(navController)
         }
         composable(route = BottomBarScreen.Chamado.route){
             ChamadoProfessorScreen(navController)

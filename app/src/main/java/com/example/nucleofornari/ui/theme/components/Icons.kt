@@ -4,6 +4,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -38,6 +41,42 @@ object AppIcons {
 
         )
     }
+
+    @Composable
+    fun Home(color: Color) {
+        Icon(
+            Icons.Filled.Home,
+            contentDescription = "Início",
+            tint = color
+        )
+    }
+
+    @Composable
+    fun Menu(color: Color) {
+        Icon(
+            Icons.Filled.Menu,
+            contentDescription = "Menu",
+            tint = color
+        )
+    }
+
+//    @Composable
+//    fun Inbox(color: Color) {
+//        Icon(
+//            Icons.Filled.Inbox,
+//            contentDescription = "Caixa de entrada",
+//            tint = color
+//        )
+//    }
+//
+//    @Composable
+//    fun Description(color: Color) {
+//        Icon(
+//            Icons.Filled.Description,
+//            contentDescription = "Descrição",
+//            tint = color
+//        )
+//    }
 
 //    @Composable
 //    fun Pending(color: Color) {

@@ -40,7 +40,7 @@ fun CategoriasScreen(navController: NavController) {
         ) {
 
             NucleoRadioButtonList(categorias)
-            Spacer(modifier = Modifier.padding(40.dp))
+            Spacer(modifier = Modifier.padding(100.dp))
 
             Row(modifier = Modifier
                 .padding(bottom= 32.dp)){
