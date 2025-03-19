@@ -19,13 +19,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.nucleofornari.R
 import com.example.nucleofornari.ui.theme.AzulPrincipal
 import com.example.nucleofornari.ui.theme.PretoPrincipal
 import com.example.nucleofornari.ui.theme.components.NucleoTextButton
 
 @Composable
-fun ChamadoEnviadoScreen() {
+fun ChamadoEnviadoScreen(navController: NavController) {
 //    val interRegular = FontFamily(Font(R.font.inter_regular))
     Column(
         modifier = Modifier
@@ -49,7 +51,7 @@ fun ChamadoEnviadoScreen() {
 
         )
 
-        NucleoTextButton("Acompanhar resolução do chamado", AzulPrincipal)
+        NucleoTextButton("Acompanhar resolução do chamado", AzulPrincipal, onClick = {navController.navigate("chamado")})
 
     }
 
@@ -60,5 +62,5 @@ fun ChamadoEnviadoScreen() {
 @Preview
 @Composable
 fun ChamadoEnviadoScreenPreview() {
-    ChamadoEnviadoScreen()
+    ChamadoEnviadoScreen(navController = rememberNavController())
 }

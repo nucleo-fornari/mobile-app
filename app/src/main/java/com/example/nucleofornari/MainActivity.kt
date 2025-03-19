@@ -77,7 +77,7 @@ fun Greeting(modifier: Modifier = Modifier) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     WhiteButton("Entrar", handleCLick = ({ isLoggedIn = true}))
-                    NucleoTextButton("Ainda não tem uma conta?", Color.White)
+                    NucleoTextButton("Ainda não tem uma conta?", Color.White, onClick = {})
                 }
 
             }

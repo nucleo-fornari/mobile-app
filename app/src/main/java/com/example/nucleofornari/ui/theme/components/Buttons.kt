@@ -29,9 +29,9 @@ fun WhiteButton(text: String, handleCLick: () -> Unit) {
 }
 
 @Composable
-fun NucleoTextButton(text: String, color: Color) {
+fun NucleoTextButton(text: String, color: Color, onClick: () -> Unit) {
     Button(
-        onClick = {},
+        onClick = {onClick()},
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent
         ),
@@ -45,9 +45,9 @@ fun NucleoTextButton(text: String, color: Color) {
 }
 
 @Composable
-fun BlueButton(text: String, color: Color) {
+fun BlueButton(text: String, color: Color, onClick: () -> Unit) {
     Button(
-        onClick = { },
+        onClick = { onClick()},
         modifier = Modifier.size(302.dp, 60.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = AzulPrincipal,

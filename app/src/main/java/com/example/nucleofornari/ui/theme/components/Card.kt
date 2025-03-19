@@ -1,5 +1,6 @@
 package com.example.nucleofornari.ui.theme.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,13 +17,14 @@ import androidx.compose.ui.unit.dp
 import com.example.nucleofornari.ui.theme.Success
 
 @Composable
-fun CardNucleo(cardTitle: String, cardIcon: @Composable () -> Unit) {
+fun CardNucleo(cardTitle: String, cardIcon: @Composable () -> Unit, onclick: () -> Unit) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
         ),
         modifier = Modifier
             .size(width = 300.dp, height = 60.dp)
+            .clickable { onclick() }
 
     )
     {
@@ -48,5 +50,5 @@ fun CardNucleo(cardTitle: String, cardIcon: @Composable () -> Unit) {
 @Composable
 @Preview (showBackground = true)
 fun CardPreview() {
-    CardNucleo("Aluno em crise ", { AppIcons.CheckCircle(Success) })
+    CardNucleo("Aluno em crise ", { AppIcons.CheckCircle(Success) }, onclick = {})
 }

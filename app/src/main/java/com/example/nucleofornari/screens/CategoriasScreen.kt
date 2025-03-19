@@ -13,11 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.nucleofornari.ui.theme.components.BlueButton
 import com.example.nucleofornari.ui.theme.components.NucleoRadioButtonList
 
 @Composable
-fun CategoriasScreen() {
+fun CategoriasScreen(navController: NavController) {
     val categorias = listOf(
         "Professora precisa sair da sala",
         "Saúde da criança",
@@ -38,10 +40,11 @@ fun CategoriasScreen() {
         ) {
 
             NucleoRadioButtonList(categorias)
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.padding(40.dp))
+
             Row(modifier = Modifier
                 .padding(bottom= 32.dp)){
-                BlueButton("Confirmar", Color.White)
+                BlueButton("Confirmar", Color.White, onClick = {navController.navigate("chamado_enviado")})
             }
 
         }
@@ -51,5 +54,5 @@ fun CategoriasScreen() {
 @Preview
 @Composable
 fun CategoriaScreenPreview() {
-    CategoriasScreen()
+    CategoriasScreen(navController = rememberNavController())
 }

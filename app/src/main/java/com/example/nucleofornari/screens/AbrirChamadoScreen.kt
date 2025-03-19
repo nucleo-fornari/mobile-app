@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.nucleofornari.ui.theme.PretoPrincipal
 import com.example.nucleofornari.ui.theme.components.AppIcons
 import com.example.nucleofornari.ui.theme.components.BlueButton
@@ -22,7 +24,7 @@ import com.example.nucleofornari.ui.theme.components.NucleoLongTextField
 import com.example.nucleofornari.ui.theme.components.NucleoSwitch
 
 @Composable
-fun AbrirChamadoScreen() {
+fun AbrirChamadoScreen(navController: NavController) {
     Scaffold(
         topBar = { com.example.nucleofornari.ui.theme.components.Header("Abrir chamado") }
     ) { innerPadding ->
@@ -33,7 +35,7 @@ fun AbrirChamadoScreen() {
             verticalArrangement = Arrangement.spacedBy(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CardNucleo("Selecione a categoria", { AppIcons.ArrowForward(PretoPrincipal) })
+            CardNucleo("Selecione a categoria", { AppIcons.ArrowForward(PretoPrincipal) }, onclick = {navController.navigate("selecionar_categoria")})
             NucleoLongTextField("O que está acontecendo?")
 
             Row(
@@ -48,7 +50,7 @@ fun AbrirChamadoScreen() {
                 NucleoSwitch()
             }
 
-            BlueButton("Concluir", Color.White)
+            BlueButton("Concluir", Color.White, onClick = {navController.navigate("chamado")})
         }
     }
 }
@@ -57,5 +59,5 @@ fun AbrirChamadoScreen() {
 @Preview
 @Composable
 fun AbrirChamadoScreenPreview() {
-    AbrirChamadoScreen()
+    AbrirChamadoScreen(navController = rememberNavController())
 }

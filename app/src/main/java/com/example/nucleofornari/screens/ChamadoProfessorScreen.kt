@@ -11,13 +11,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.nucleofornari.ui.theme.Success
 import com.example.nucleofornari.ui.theme.components.AppIcons
 import com.example.nucleofornari.ui.theme.components.BlueButton
 import com.example.nucleofornari.ui.theme.components.CardNucleo
 
 @Composable
-fun ChamadoProfessorScreen() {
+fun ChamadoProfessorScreen( navController: NavController) {
     Scaffold(
         topBar = { com.example.nucleofornari.ui.theme.components.Header("Meus chamados") }
     ) { innerPadding ->
@@ -28,12 +30,12 @@ fun ChamadoProfessorScreen() {
             verticalArrangement = Arrangement.spacedBy(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CardNucleo("Junin cagou na sala") { AppIcons.CheckCircle(Success) }
-            CardNucleo("Junin cagou na sala") { AppIcons.CheckCircle(Success) }
-            CardNucleo("Junin cagou na sala") { AppIcons.CheckCircle(Success) }
+            CardNucleo("Junin cagou na sala",{AppIcons.CheckCircle(Success)}, onclick = {})
+            CardNucleo("Junin cagou na sala",{AppIcons.CheckCircle(Success)}, onclick = {})
+            CardNucleo("Junin cagou na sala",{AppIcons.CheckCircle(Success)}, onclick = {})
 
 
-            BlueButton("Abrir chamado", Color.White)
+            BlueButton("Abrir chamado", Color.White, onClick = {navController.navigate("abrir_chamado")})
         }
     }
 }
@@ -42,6 +44,6 @@ fun ChamadoProfessorScreen() {
 @Composable
 fun ChamadoPreview() {
     com.example.nucleofornari.ui.theme.NucleoFornariTheme{
-        ChamadoProfessorScreen()
+        ChamadoProfessorScreen(navController = rememberNavController() )
     }
 }
