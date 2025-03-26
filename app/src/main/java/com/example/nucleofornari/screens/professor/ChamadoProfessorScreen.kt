@@ -1,4 +1,4 @@
-package com.example.nucleofornari.screens
+package com.example.nucleofornari.screens.professor
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

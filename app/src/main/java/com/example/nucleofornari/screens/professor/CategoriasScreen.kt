@@ -1,4 +1,4 @@
-package com.example.nucleofornari.screens
+package com.example.nucleofornari.screens.professor
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -44,7 +44,7 @@ fun CategoriasScreen(navController: NavController) {
 
             Row(modifier = Modifier
                 .padding(bottom= 32.dp)){
-                BlueButton("Confirmar", Color.White, onClick = {navController.navigate("chamado_enviado")})
+                BlueButton("Confirmar", Color.White, onClick = {navController.navigate("abrir_chamado")})
             }
 
         }

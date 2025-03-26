@@ -1,4 +1,4 @@
-package com.example.nucleofornari.screens
+package com.example.nucleofornari.screens.professor
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -50,7 +50,7 @@ fun AbrirChamadoScreen(navController: NavController) {
                 NucleoSwitch()
             }
 
-            BlueButton("Concluir", Color.White, onClick = {navController.navigate("chamado")})
+            BlueButton("Concluir", Color.White, onClick = {navController.navigate("chamado_enviado")})
         }
     }
 }

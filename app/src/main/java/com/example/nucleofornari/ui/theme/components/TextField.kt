@@ -18,12 +18,12 @@ import com.example.nucleofornari.ui.theme.AzulPrincipal
 import com.example.nucleofornari.ui.theme.PretoPrincipal
 
 @Composable
-fun NucleoTextField() {
+fun NucleoTextField(labelText: String) {
     var text by remember { mutableStateOf("") }
     OutlinedTextField(
         value = text,
         onValueChange = { newText -> text = newText },
-        label = { Text("Digite algo") },
+        label = { Text(labelText) },
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = AzulPrincipal,
             focusedPlaceholderColor = AzulPrincipal,

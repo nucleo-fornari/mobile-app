@@ -1,4 +1,4 @@
-package com.example.nucleofornari.screens
+package com.example.nucleofornari.screens.professor
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

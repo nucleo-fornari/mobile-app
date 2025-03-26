@@ -60,3 +60,20 @@ fun BlueButton(text: String, color: Color, onClick: () -> Unit) {
         )
     }
 }
+
+@Composable
+fun GrayButton(text: String, onClick: () -> Unit) {
+    Button(
+        onClick = { onClick()},
+        modifier = Modifier.size(302.dp, 60.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.LightGray,
+            contentColor = Color.DarkGray
+        ),
+        shape = RoundedCornerShape(6.dp)
+    ) {
+        Text(
+            text = text
+        )
+    }
+}
