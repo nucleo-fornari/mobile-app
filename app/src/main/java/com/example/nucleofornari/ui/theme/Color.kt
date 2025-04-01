@@ -12,6 +12,7 @@ val Pink40 = Color(0xFF7D5260)
 
 
 val AzulPrincipal = Color(0xFF1976D2)
+val AzulClaro = Color(0xFFD2E3FC)
 val Success = Color(0xFFA5E096)
 val Error = Color(0xFFE09696)
 val Warning = Color(0xFFE0DA96)
