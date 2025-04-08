@@ -41,7 +41,7 @@ fun InicioProfessorScreen(navController: NavController) {
     var selectedTab by remember { mutableStateOf("Eventos") } // Controla a exibição
 
     Scaffold(
-        topBar = { Header("", bgcolor = Color.White, navIcon = Icons.Filled.Menu, iconColor = AzulPrincipal, onClick = {navController.navigate("")}) }
+        topBar = { Header("", bgcolor = Color.Transparent, navIcon = Icons.Filled.Menu, iconColor = AzulPrincipal, onClick = {}) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
