@@ -30,6 +30,7 @@ import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
 import com.example.nucleofornari.presentation.common.theme.NucleoFornariTheme
 import com.example.nucleofornari.presentation.common.component.AppIcons
 import com.example.nucleofornari.presentation.common.component.BlueButton
+import com.example.nucleofornari.presentation.common.component.Header
 import com.example.nucleofornari.presentation.common.component.NucleoTextField
 
 @Composable
@@ -37,13 +38,7 @@ fun EsqueceuSenhaScreen(navController: NavController){
 
 
     Scaffold(
-        topBar = {
-            Row(modifier = Modifier.padding(30.dp).clickable { navController.navigate("auth") }) {
-                AppIcons.ArrowBack(Color.DarkGray)
-                Spacer(modifier = Modifier.padding(5.dp))
-                Text(text = "Voltar", color = Color.DarkGray)
-            }
-        }
+        topBar = { Header("Voltar", bgcolor = Color.Transparent, textColor = Color.Black, iconColor = Color.Black, onClick = {navController.navigate("auth")}) }
     ) { innerPadding ->
         Column(
             modifier = Modifier

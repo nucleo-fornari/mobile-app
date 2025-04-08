@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,17 +34,14 @@ import com.example.nucleofornari.presentation.common.theme.Success
 import com.example.nucleofornari.presentation.common.component.AppIcons
 import com.example.nucleofornari.presentation.common.component.Calendar
 import com.example.nucleofornari.presentation.common.component.CardNucleo
+import com.example.nucleofornari.presentation.common.component.Header
 
 @Composable
 fun InicioProfessorScreen(navController: NavController) {
     var selectedTab by remember { mutableStateOf("Eventos") } // Controla a exibição
 
     Scaffold(
-        topBar = {
-            Row(modifier = Modifier.padding(30.dp)) {
-                AppIcons.Menu(AzulPrincipal)
-            }
-        }
+        topBar = { Header("", bgcolor = Color.White, navIcon = Icons.Filled.Menu, iconColor = AzulPrincipal, onClick = {navController.navigate("")}) }
     ) { innerPadding ->
         Column(
             modifier = Modifier

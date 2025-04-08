@@ -30,7 +30,7 @@ fun CategoriasScreen(navController: NavController) {
         "Outros"
     )
     Scaffold(
-        topBar = { Header("Categorias") }
+        topBar = { Header("Categorias", onClick = {navController.navigate("abrir_chamado")}) }
     ) { innerPadding ->
         Column(
             modifier = Modifier

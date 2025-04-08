@@ -23,11 +23,12 @@ import com.example.nucleofornari.presentation.common.component.BlueButton
 import com.example.nucleofornari.presentation.common.component.CardNucleo
 import com.example.nucleofornari.presentation.common.component.NucleoLongTextField
 import com.example.nucleofornari.presentation.common.component.NucleoSwitch
+import com.example.nucleofornari.presentation.navigation.BottomBarScreen
 
 @Composable
 fun AbrirChamadoScreen(navController: NavController) {
     Scaffold(
-        topBar = { Header("Abrir chamado") }
+        topBar = { Header("Abrir chamado", onClick = {navController.navigate(BottomBarScreen.Chamado.route)}) }
     ) { innerPadding ->
         Column(
             modifier = Modifier

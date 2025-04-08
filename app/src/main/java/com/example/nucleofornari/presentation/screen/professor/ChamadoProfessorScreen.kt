@@ -19,11 +19,12 @@ import com.example.nucleofornari.presentation.common.theme.Success
 import com.example.nucleofornari.presentation.common.component.AppIcons
 import com.example.nucleofornari.presentation.common.component.BlueButton
 import com.example.nucleofornari.presentation.common.component.CardNucleo
+import com.example.nucleofornari.presentation.navigation.BottomBarScreen
 
 @Composable
 fun ChamadoProfessorScreen( navController: NavController) {
     Scaffold(
-        topBar = { Header("Meus chamados") }
+        topBar = { Header("Meus chamados", onClick = {navController.navigate(BottomBarScreen.Inicio.route)}) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
