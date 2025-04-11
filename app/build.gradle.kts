@@ -67,6 +67,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("com.kizitonwose.calendar:compose:2.6.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation("io.coil-kt:coil-compose:2.7.0")
+    implementation("io.insert-koin:koin-androidx-compose:3.5.6")
+    implementation("io.insert-koin:koin-android:3.5.6")
+
 
 
 }
