@@ -13,7 +13,7 @@ class AplicacaoKoin : Application() {
             androidLogger()
             androidContext(this@AplicacaoKoin)
             // Módulos de injeção de dependência
-            modules(moduloGeral)
+            modules(moduloGeral, moduloApiReal)
         }
     }
 }

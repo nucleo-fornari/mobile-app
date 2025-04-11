@@ -1,10 +1,10 @@
 package com.example.nucleofornari.data.model
 
 data class SessaoUsuario(
-    val userId: Int?,
-    var nome:String = "",
-    val email: String?,
-    val funcao: String?,
-    val salaId: Int?,
-    var token:String = ""
+    var userId: Int?,
+    var nome:String?,
+    var email: String?,
+    var funcao: String?,
+    var salaId: Int?,
+    var token:String?
 )

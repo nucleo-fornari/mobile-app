@@ -14,6 +14,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,7 +39,7 @@ import com.example.nucleofornari.presentation.common.component.NucleoTextField
 
 @Composable
 fun EsqueceuSenhaScreen(navController: NavController){
-
+    var email by remember { mutableStateOf("") }
 
     Scaffold(
         topBar = { Header("Voltar", bgcolor = Color.Transparent, textColor = Color.Black, iconColor = Color.Black, onClick = {navController.navigate("auth")}) }
@@ -63,7 +67,11 @@ fun EsqueceuSenhaScreen(navController: NavController){
                     textAlign = TextAlign.Center,
                     modifier = Modifier.width(300.dp)
                 )
-                NucleoTextField("Email")
+                NucleoTextField(
+                    labelText = "Email",
+                    value = email,
+                    onValueChange = { email = it }
+                )
 
 
             }

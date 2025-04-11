@@ -2,6 +2,7 @@ package com.example.nucleofornari.presentation.screen.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.nucleofornari.data.model.SessaoUsuario
 import com.example.nucleofornari.data.model.usuario.UsuarioLoginDto
 import com.example.nucleofornari.data.model.usuario.UsuarioTokenDto
 import com.example.nucleofornari.data.remote.RetrofitClient
@@ -13,9 +14,7 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-class LoginViewModel : ViewModel() {
-
-    private val usuarioApi = RetrofitClient.instance.create(UsuarioApiService::class.java)
+open class LoginViewModel(private val usuarioApi: UsuarioApiService, private var sessaoUsuario: SessaoUsuario) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState<UsuarioTokenDto>>(UiState.Empty)
     val uiState: StateFlow<UiState<UsuarioTokenDto>> = _uiState
@@ -28,6 +27,14 @@ class LoginViewModel : ViewModel() {
 
             try {
                 val response = usuarioApi.login(loginDto)
+
+                sessaoUsuario.userId = response.userId
+                sessaoUsuario.nome = response.nome
+                sessaoUsuario.email = response.email
+                sessaoUsuario.funcao = response.funcao
+                sessaoUsuario.salaId = response.salaId
+                sessaoUsuario.token = response.token
+
                 _uiState.value = UiState.Success(response)
             } catch (e: IOException) {
                 _uiState.value = UiState.Error("Erro de conexão. Verifique sua internet.")

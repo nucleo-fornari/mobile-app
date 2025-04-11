@@ -10,7 +10,6 @@ adicionando o cabeçalho de autorização com o token
 em todas as requisições
  */
 class TokenInterceptor(val token: String): Interceptor {
-
     override fun intercept(chain: Interceptor.Chain): Response {
         Log.i("api", "token para header: $token")
 

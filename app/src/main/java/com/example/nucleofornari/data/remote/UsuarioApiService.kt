@@ -20,7 +20,7 @@ import retrofit2.http.*
 interface UsuarioApiService {
 
     @POST("usuarios/login")
-    fun login(@Body usuarioLoginDto: UsuarioLoginDto): UsuarioTokenDto
+    suspend fun login(@Body usuarioLoginDto: UsuarioLoginDto): UsuarioTokenDto
 
     @GET("usuarios/professores")
     fun getProfessoresSemSala(): List<UsuarioResponseDto>
