@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.nucleofornari.data.model.SessaoUsuario
 import com.example.nucleofornari.data.model.usuario.UsuarioLoginDto
 import com.example.nucleofornari.data.model.usuario.UsuarioTokenDto
-import com.example.nucleofornari.data.remote.RetrofitClient
 import com.example.nucleofornari.data.remote.UsuarioApiService
 import com.example.nucleofornari.util.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +13,11 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-open class LoginViewModel(private val usuarioApi: UsuarioApiService, private var sessaoUsuario: SessaoUsuario) : ViewModel() {
+open class LoginViewModel(
+    private val usuarioApi: UsuarioApiService,
+    private val sessaoUsuario: SessaoUsuario
+) : ViewModel() {
+
 
     private val _uiState = MutableStateFlow<UiState<UsuarioTokenDto>>(UiState.Empty)
     val uiState: StateFlow<UiState<UsuarioTokenDto>> = _uiState
@@ -28,12 +31,12 @@ open class LoginViewModel(private val usuarioApi: UsuarioApiService, private var
             try {
                 val response = usuarioApi.login(loginDto)
 
-                sessaoUsuario.userId = response.userId
-                sessaoUsuario.nome = response.nome
-                sessaoUsuario.email = response.email
-                sessaoUsuario.funcao = response.funcao
-                sessaoUsuario.salaId = response.salaId
-                sessaoUsuario.token = response.token
+                sessaoUsuario.userId = response.userId!!
+                sessaoUsuario.nome = response.nome!!
+                sessaoUsuario.email = response.email!!
+                sessaoUsuario.funcao = response.funcao!!
+                sessaoUsuario.salaId = response.salaId!!
+                sessaoUsuario.token = response.token!!
 
                 _uiState.value = UiState.Success(response)
             } catch (e: IOException) {

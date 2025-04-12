@@ -34,7 +34,6 @@ import com.example.nucleofornari.R
 import com.example.nucleofornari.data.model.SessaoUsuario
 import com.example.nucleofornari.data.model.usuario.UsuarioLoginDto
 import com.example.nucleofornari.data.model.usuario.UsuarioTokenDto
-import com.example.nucleofornari.data.remote.RetrofitClient
 import com.example.nucleofornari.data.remote.UsuarioApiService
 import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
 import com.example.nucleofornari.presentation.common.theme.NucleoFornariTheme
@@ -49,7 +48,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun LoginScreen(
     navController: NavController,
-    viewModel: LoginViewModel = koinViewModel()
+    viewModel: LoginViewModel
 ){
 
     val uiState by viewModel.uiState.collectAsState()
@@ -129,7 +128,6 @@ fun LoginScreen(
 //@Preview(showBackground = true)
 //@Composable
 //fun LoginScreenPreview() {
-//
 //    NucleoFornariTheme{
 //        LoginScreen(
 //            navController = rememberNavController(),

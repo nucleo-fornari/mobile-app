@@ -6,6 +6,8 @@ import com.example.nucleofornari.data.model.usuario.UsuarioCreateDto
 import com.example.nucleofornari.data.model.usuario.UsuarioLoginDto
 import com.example.nucleofornari.data.model.usuario.UsuarioResponseDto
 import com.example.nucleofornari.data.model.usuario.UsuarioTokenDto
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -15,6 +17,8 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 interface UsuarioApiService {
@@ -57,4 +61,27 @@ interface UsuarioApiService {
 
     @PUT("usuarios/redefinir-senha")
     fun redefinirSenha(@Query("token") token: String, @Query("email") email: String, @Query("senha") senha: String): Void
+}
+
+object UsuarioApi {
+
+    private val BASE_URL = "https://5f861cfdc8a16a0016e6aacd.mockapi.io/sptech-api/"
+
+    fun getApi(token: String): UsuarioApiService {
+
+        val logInterceptor = HttpLoggingInterceptor()
+        logInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS)
+
+        val clienteHttp = OkHttpClient.Builder()
+            .addInterceptor(logInterceptor)
+            .addInterceptor(TokenInterceptor(token)) // interceptor de token
+            .build()
+
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(clienteHttp) // interceptor de log, opcional
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(UsuarioApiService::class.java)
+    }
 }
