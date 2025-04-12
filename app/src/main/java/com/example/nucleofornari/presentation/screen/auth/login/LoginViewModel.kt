@@ -1,5 +1,6 @@
 package com.example.nucleofornari.presentation.screen.auth.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nucleofornari.data.model.SessaoUsuario

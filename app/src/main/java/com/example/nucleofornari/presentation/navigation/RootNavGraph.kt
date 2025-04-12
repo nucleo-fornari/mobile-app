@@ -12,6 +12,8 @@ import com.example.nucleofornari.presentation.screen.auth.login.LoginScreen
 import com.example.nucleofornari.presentation.screen.auth.RedefinirConfirmScreen
 import com.example.nucleofornari.presentation.screen.auth.RedefinirSenhaScreen
 import com.example.nucleofornari.presentation.screen.auth.SemContaScreen
+import com.example.nucleofornari.presentation.screen.auth.login.LoginViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun RootNavGraph(navController: NavHostController) {
@@ -19,7 +21,11 @@ fun RootNavGraph(navController: NavHostController) {
 
         navigation(startDestination = "inicio_login", route = "auth") {
             composable("inicio_login") { InicioLoginScreen(navController) }
-            composable("login") { LoginScreen(navController) }
+
+            composable("login") {
+                val loginViewModel: LoginViewModel = koinViewModel()
+                LoginScreen(navController, loginViewModel)
+            }
             composable("esqueceu_senha") { EsqueceuSenhaScreen(navController) }
             composable("codigo") { CodigoScreen(navController) }
             composable("redefinir_senha") { RedefinirSenhaScreen(navController) }

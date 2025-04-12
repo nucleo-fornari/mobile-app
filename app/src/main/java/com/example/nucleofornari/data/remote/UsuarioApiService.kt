@@ -65,7 +65,7 @@ interface UsuarioApiService {
 
 object UsuarioApi {
 
-    private val BASE_URL = "https://5f861cfdc8a16a0016e6aacd.mockapi.io/sptech-api/"
+    private val BASE_URL = "http://192.168.18.210:8080/"
 
     fun getApi(token: String): UsuarioApiService {
 
