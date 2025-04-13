@@ -14,17 +14,23 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.nucleofornari.presentation.common.theme.AppTypography
 import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
 import com.example.nucleofornari.presentation.common.theme.NucleoFornariTheme
 import com.example.nucleofornari.presentation.common.component.AppIcons
 import com.example.nucleofornari.presentation.common.component.CardNucleoLarge
+import com.example.nucleofornari.presentation.common.component.Header
 
 //@Serializable
 data class Publicacao(
@@ -63,13 +69,16 @@ fun listaDePublicacoes() {
 }
 
 @Composable
-fun PublicacoesScreen() {
+fun PublicacoesScreen(navController: NavHostController) {
 
-    Scaffold(
+    androidx.compose.material3.Scaffold(
         topBar = {
-            Row(modifier = Modifier.padding(30.dp)) {
-                AppIcons.Menu(AzulPrincipal)
-            }
+            Header(
+                "",
+                bgcolor = Color.Transparent,
+                navIcon = Icons.Filled.Menu,
+                iconColor = AzulPrincipal,
+                onClick = {})
         }
     ) { innerPadding ->
         Column(
@@ -100,6 +109,6 @@ fun PublicacoesScreen() {
 @Preview(showBackground = true)
 fun PublicacoesScreenPreview() {
     NucleoFornariTheme {
-        PublicacoesScreen()
+        PublicacoesScreen(navController = rememberNavController())
     }
 }

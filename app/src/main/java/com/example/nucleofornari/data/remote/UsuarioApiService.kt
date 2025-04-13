@@ -65,12 +65,12 @@ interface UsuarioApiService {
 
 object UsuarioApi {
 
-    private val BASE_URL = "http://192.168.18.210:8080/"
+    private val BASE_URL = "http://192.168.0.110:8080/"
 
     fun getApi(token: String): UsuarioApiService {
 
         val logInterceptor = HttpLoggingInterceptor()
-        logInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS)
+        logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
 
         val clienteHttp = OkHttpClient.Builder()
             .addInterceptor(logInterceptor)

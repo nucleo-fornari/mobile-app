@@ -112,9 +112,18 @@ fun LoginScreen(
                 }
 
                 is UiState.Success -> {
-                    LaunchedEffect(Unit) {
-                        navController.navigate("main") {
-                            popUpTo("login") { inclusive = true }
+                    val user = (uiState as UiState.Success<UsuarioTokenDto>).data
+
+                    LaunchedEffect(user.userId) {
+                        if (user.funcao == "PROFESSOR") {
+                            navController.navigate("main") {
+                                popUpTo("login") { inclusive = true }
+                            }
+                        }
+                        else if(user.funcao == "RESPONSAVEL"){
+                            navController.navigate("responsavel") {
+                                popUpTo("login") { inclusive = true }
+                            }
                         }
                     }
                 }

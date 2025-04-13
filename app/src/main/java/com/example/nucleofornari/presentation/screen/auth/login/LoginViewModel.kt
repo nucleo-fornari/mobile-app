@@ -36,10 +36,11 @@ open class LoginViewModel(
                 sessaoUsuario.nome = response.nome!!
                 sessaoUsuario.email = response.email!!
                 sessaoUsuario.funcao = response.funcao!!
-                sessaoUsuario.salaId = response.salaId!!
+                sessaoUsuario.salaId = response.salaId
                 sessaoUsuario.token = response.token!!
 
                 _uiState.value = UiState.Success(response)
+
             } catch (e: IOException) {
                 _uiState.value = UiState.Error("Erro de conexão. Verifique sua internet.")
             } catch (e: HttpException) {

@@ -36,5 +36,9 @@ fun RootNavGraph(navController: NavHostController) {
         composable("main") {
             AppNavigation(navController)
         }
+
+        composable("responsavel") {
+            AppNavigationResponsavel(navController)
+        }
     }
 }
