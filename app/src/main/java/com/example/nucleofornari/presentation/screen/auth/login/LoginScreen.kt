@@ -92,7 +92,7 @@ fun LoginScreen(
                 Text(text = "Esqueceu a senha?", color = AzulPrincipal, modifier = Modifier.clickable { navController.navigate("esqueceu_senha") })
             }
             Spacer(Modifier.height(100.dp))
-            BlueButton("Continuar SEM login", AzulPrincipal, onClick = {navController.navigate("main")})
+//            BlueButton("Continuar SEM login", AzulPrincipal, onClick = {navController.navigate("main")})
 
             BlueButton("Continuar", AzulPrincipal, onClick = {
                 viewModel.login(email, senha)

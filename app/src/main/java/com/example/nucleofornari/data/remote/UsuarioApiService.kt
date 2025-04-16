@@ -26,6 +26,9 @@ interface UsuarioApiService {
     @POST("usuarios/login")
     suspend fun login(@Body usuarioLoginDto: UsuarioLoginDto): UsuarioTokenDto
 
+    @GET("/tipos-chamado")
+    suspend fun findTiposChamado(): List<TipoChamadoDto>
+
     @GET("usuarios/professores")
     fun getProfessoresSemSala(): List<UsuarioResponseDto>
 
