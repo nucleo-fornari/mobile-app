@@ -10,6 +10,6 @@ data class AvaliacaoDto(
     val textoFisicoMotora: String,
     val ano: String,
     val textoCognitiva: String,
-    val dtCriacao: LocalDate
+    val dtCriacao: String
 )
 

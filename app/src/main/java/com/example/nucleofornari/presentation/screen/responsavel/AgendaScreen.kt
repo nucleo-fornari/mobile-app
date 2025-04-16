@@ -29,6 +29,7 @@ import com.example.nucleofornari.presentation.common.theme.NucleoFornariTheme
 import com.example.nucleofornari.presentation.common.component.AppIcons
 import com.example.nucleofornari.presentation.common.component.CardNucleoLarge
 import com.example.nucleofornari.presentation.common.component.Header
+import org.koin.androidx.compose.getViewModel
 
 //@Serializable
 data class Recado(
@@ -40,14 +41,8 @@ data class Recado(
 )
 
 @Composable
-fun listaDeRecados() {
-    val recados = listOf(
-        Recado(1, "Recado 1", "Descrição do recado 1", "Professor A", "01/01/2023"),
-        Recado(2, "Recado 2", "Descrição do recado 2", "Professor B", "02/01/2023"),
-        Recado(3, "Recado 3", "Descrição do recado 3", "Professor C", "03/01/2023"),
-        Recado(4, "Recado 4", "Descrição do recado 4", "Professor 4", "04/01/2023"),
-
-        )
+fun listaDeRecados(viewModel: AgendaViewModel = getViewModel()) {
+    val recados = viewModel.recados
 
     LazyColumn(modifier = Modifier.fillMaxHeight().padding(bottom = 24.dp),
             verticalArrangement = Arrangement.spacedBy(24.dp)) {
@@ -63,7 +58,7 @@ fun listaDeRecados() {
 }
 
 @Composable
-fun AgendaScreen(navController: NavHostController) {
+fun AgendaScreen(navController: NavHostController, viewModel: AgendaViewModel = getViewModel()) {
 
     androidx.compose.material3.Scaffold(
         topBar = {
@@ -84,7 +79,7 @@ fun AgendaScreen(navController: NavHostController) {
         ) {
             Row {
                 Text(
-                    text = "Agenda de Caique",
+                    text = "Agenda de ${viewModel.nomeAfiliado}",
                     style = AppTypography.headlineLarge,
                     fontWeight = FontWeight.Bold,
                     color = AzulPrincipal,
@@ -99,10 +94,10 @@ fun AgendaScreen(navController: NavHostController) {
     }
 }
 
-@Composable
-@Preview(showBackground = true)
-fun AgendaPreview() {
-    NucleoFornariTheme {
-        AgendaScreen(navController = rememberNavController())
-    }
-}
+//@Composable
+//@Preview(showBackground = true)
+//fun AgendaPreview() {
+//    NucleoFornariTheme {
+//        AgendaScreen(navController = rememberNavController())
+//    }
+//}

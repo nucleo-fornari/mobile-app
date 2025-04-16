@@ -10,7 +10,7 @@ data class UsuarioResponseDto(
     val cpf: String,
     val telefone: String,
     val email: String,
-    val dtNasc: LocalDate,
+    val dtNasc: String,
     val funcao: String,
     val afiliados: List<AlunoResponseDto> = emptyList(),
     val endereco: EnderecoDto

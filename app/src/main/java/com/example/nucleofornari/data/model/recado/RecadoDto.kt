@@ -9,6 +9,6 @@ data class RecadoDto(
     val conteudo: String,
     val responsavel: UsuarioResponseDto,
     val alunoNome: String,
-    val dtCriacao: LocalDateTime
+    val dtCriacao: String
 )
 

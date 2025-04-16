@@ -12,7 +12,7 @@ data class AlunoResponseDto(
     val nome: String,
     val laudado: Boolean,
     val laudoNome: String?,
-    val dtNasc: LocalDate,
+    val dtNasc: String,
     val filiacoes: List<FiliacaoDto>,
     val observacoes: String?,
     val restricoes: List<RestricaoDto>,
