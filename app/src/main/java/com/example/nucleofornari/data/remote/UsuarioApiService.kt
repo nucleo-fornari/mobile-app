@@ -1,5 +1,6 @@
 package com.example.nucleofornari.data.remote
 
+import com.example.nucleofornari.data.model.chamado.TipoChamadoDto
 import com.example.nucleofornari.data.model.usuario.AlunoAndSalaIdDto
 import com.example.nucleofornari.data.model.usuario.ProfessorResponseDto
 import com.example.nucleofornari.data.model.usuario.UsuarioCreateDto
