@@ -2,6 +2,7 @@ package com.example.nucleofornari.data.remote
 
 import com.example.nucleofornari.data.model.SessaoUsuario
 import com.example.nucleofornari.presentation.screen.auth.login.LoginViewModel
+import com.example.nucleofornari.presentation.screen.responsavel.AgendaViewModel
 import com.example.nucleofornari.presentation.screen.professor.CategoriasViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -24,6 +25,8 @@ val moduloApiReal = module {
             sessaoUsuario = get()
         )
     }
+
+    viewModel<AgendaViewModel> { AgendaViewModel(get(), get()) }
 
     viewModel<CategoriasViewModel> {
         CategoriasViewModel(

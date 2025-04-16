@@ -37,7 +37,7 @@ interface UsuarioApiService {
     fun getUsuarios(): List<UsuarioResponseDto>
 
     @GET("usuarios/{id}")
-    fun getUsuarioPorId(@Path("id") id: Int): UsuarioResponseDto
+    suspend fun getUsuarioPorId(@Path("id") id: Int): UsuarioResponseDto
     
     @POST("usuarios/funcionario")
     fun criarFuncionario(@Body usuarioCreateDto: UsuarioCreateDto): UsuarioResponseDto
