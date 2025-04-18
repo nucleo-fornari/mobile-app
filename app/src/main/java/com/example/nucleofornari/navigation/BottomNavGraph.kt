@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.nucleofornari.presentation.screen.auth.login.LoginScreen
 import com.example.nucleofornari.screens.ChamadoProfessorScreen
 import com.example.nucleofornari.screens.InicioProfessorScreen
 import com.example.nucleofornari.screens.RelatorioProfessorScreen
@@ -20,5 +21,6 @@ fun BottomNavGraph(navController: NavHostController) {
         composable(route = BottomBarScreen.Relatorio.route){
             RelatorioProfessorScreen()
         }
+        composable("login") { LoginScreen(navController) }
     }
 }
