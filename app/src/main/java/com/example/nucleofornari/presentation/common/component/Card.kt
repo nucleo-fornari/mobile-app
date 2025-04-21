@@ -1,5 +1,6 @@
 package com.example.nucleofornari.presentation.common.component
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -55,6 +57,41 @@ fun CardNucleo(cardTitle: String, cardIcon: @Composable () -> Unit, onclick: () 
 
         }
 
+    }
+}
+
+@Composable
+fun CardOutlinedNucleo(nomeDoAluno:String, dataRelatorio: String) {
+    OutlinedCard(
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        border = BorderStroke(1.dp, Color.LightGray),
+        modifier = Modifier
+            .size(width = 300.dp, height = 80.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column {
+                Text(
+                    text = nomeDoAluno,
+                    style = AppTypography.titleSmall,
+                )
+                Text(
+                    text = "Criado em: $dataRelatorio",
+                    style = AppTypography.bodySmall
+
+                )
+            }
+
+        AppIcons.Download(color = AzulPrincipal)
+
+        }
     }
 }
 
@@ -129,4 +166,5 @@ fun CardPreview() {
         "Segunda-feira, 3 de Novembro.",
         "Por Profª Ana,"
     )
+    CardOutlinedNucleo("Julia Damacena", "21/10/2023")
 }

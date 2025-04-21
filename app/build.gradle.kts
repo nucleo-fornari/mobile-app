@@ -58,6 +58,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.4.0-alpha10")
     implementation("androidx.compose.material:material:1.7.8")
     implementation(libs.androidx.ui.text.google.fonts)
+    implementation(libs.androidx.media3.exoplayer)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -67,6 +68,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("com.kizitonwose.calendar:compose:2.6.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation("androidx.compose.material:material-icons-extended")
 
 
 }

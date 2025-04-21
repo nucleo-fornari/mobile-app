@@ -1,6 +1,7 @@
 package com.example.nucleofornari.presentation.screen.professor
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -127,7 +128,7 @@ fun InicioProfessorScreen(navController: NavController) {
             "Cristina Martins"
         )
 
-        LazyColumn(modifier = Modifier.fillMaxHeight()) {
+        LazyColumn(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(4.dp),) {
             items(nomes) { nome ->
                 CardNucleo(nome, { AppIcons.CheckCircle(Success) }, onclick = {})
             }

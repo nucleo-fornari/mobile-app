@@ -43,7 +43,7 @@ fun AppNavigation(navController: NavHostController){
         NavHost(navController = navController, startDestination = BottomBarScreen.Inicio.route) {
             composable(route = BottomBarScreen.Inicio.route) { InicioProfessorScreen(navController) }
             composable(route = BottomBarScreen.Chamado.route) { ChamadoProfessorScreen(navController) }
-            composable(route = BottomBarScreen.Relatorio.route) { RelatorioProfessorScreen() }
+            composable(route = BottomBarScreen.Relatorio.route) { RelatorioProfessorScreen(navController) }
             composable("abrir_chamado") { AbrirChamadoScreen(navController) }
             composable("selecionar_categoria") { CategoriasScreen(navController) }
             composable("chamado_enviado") { ChamadoEnviadoScreen(navController) }
