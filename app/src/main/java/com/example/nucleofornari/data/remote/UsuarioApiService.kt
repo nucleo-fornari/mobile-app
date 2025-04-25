@@ -1,6 +1,8 @@
 package com.example.nucleofornari.data.remote
 
 import com.example.nucleofornari.data.model.chamado.TipoChamadoDto
+import com.example.nucleofornari.data.model.evento.EventoDto
+import com.example.nucleofornari.data.model.recado.RecadoDto
 import com.example.nucleofornari.data.model.usuario.AlunoAndSalaIdDto
 import com.example.nucleofornari.data.model.usuario.ProfessorResponseDto
 import com.example.nucleofornari.data.model.usuario.UsuarioCreateDto
@@ -29,6 +31,9 @@ interface UsuarioApiService {
 
     @GET("/tipos-chamado")
     suspend fun findTiposChamado(): List<TipoChamadoDto>
+
+    @GET("/eventos/sala/{id}")
+    suspend fun getEventosPorSala(@Path("id") id: Int): List<EventoDto>
 
     @GET("usuarios/professores")
     fun getProfessoresSemSala(): List<UsuarioResponseDto>
@@ -69,7 +74,7 @@ interface UsuarioApiService {
 
 object UsuarioApi {
 
-    private val BASE_URL = "http://192.168.0.110:8080/"
+    private val BASE_URL = "http://192.168.0.104:8080/"
 
     fun getApi(token: String): UsuarioApiService {
 

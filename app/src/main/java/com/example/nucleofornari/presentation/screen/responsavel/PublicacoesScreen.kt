@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.CircularProgressIndicator
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Scaffold
 //noinspection UsingMaterialAndMaterial3Libraries
@@ -25,60 +27,33 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.nucleofornari.data.model.evento.EventoDto
 import com.example.nucleofornari.presentation.common.theme.AppTypography
 import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
 import com.example.nucleofornari.presentation.common.theme.NucleoFornariTheme
 import com.example.nucleofornari.presentation.common.component.AppIcons
 import com.example.nucleofornari.presentation.common.component.CardNucleoLarge
 import com.example.nucleofornari.presentation.common.component.Header
+import com.example.nucleofornari.util.UiState
+import org.koin.androidx.compose.getViewModel
 
-//@Serializable
-data class Publicacao(
-    val id: Int,
-    val titulo: String,
-    val descricao: String,
-    val autor: String,
-    val data: String,
-)
 
 @Composable
-fun listaDePublicacoes() {
-    val publicacoes = listOf(
-        Publicacao(1, "Recado 1", "Descrição do recado 1", "Professor A", "01/01/2023"),
-        Publicacao(2, "Recado 2", "Descrição do recado 2", "Professor B", "02/01/2023"),
-        Publicacao(3, "Recado 3", "Descrição do recado 3", "Professor C", "03/01/2023"),
-        Publicacao(4, "Recado 4", "Descrição do recado 4", "Professor 4", "04/01/2023"),
+fun PublicacoesScreen(
+    navController: NavHostController,
+    viewModel: PublicacoesViewModel = getViewModel()
+) {
+    val state = viewModel.uiStateEventos
 
-        )
-
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxHeight()
-            .padding(bottom = 24.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
-    ) {
-        items(publicacoes) { publicacao ->
-            CardNucleoLarge(
-                publicacao.titulo,
-                publicacao.descricao,
-                publicacao.data,
-                publicacao.autor,
-            )
-        }
-    }
-}
-
-@Composable
-fun PublicacoesScreen(navController: NavHostController) {
-
-    androidx.compose.material3.Scaffold(
+    Scaffold(
         topBar = {
             Header(
                 "",
                 bgcolor = Color.Transparent,
                 navIcon = Icons.Filled.Menu,
                 iconColor = AzulPrincipal,
-                onClick = {})
+                onClick = {}
+            )
         }
     ) { innerPadding ->
         Column(
@@ -88,22 +63,54 @@ fun PublicacoesScreen(navController: NavHostController) {
             verticalArrangement = Arrangement.spacedBy(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row {
-                Text(
-                    text = "Publicações",
-                    style = AppTypography.headlineLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = AzulPrincipal,
-                    modifier = Modifier
-                        .padding(vertical = 20.dp)
-                )
+            Text(
+                text = "Publicações",
+                style = AppTypography.headlineLarge,
+                fontWeight = FontWeight.Bold,
+                color = AzulPrincipal,
+                modifier = Modifier.padding(vertical = 20.dp)
+            )
+
+            when (state) {
+                is UiState.Loading -> {
+                    CircularProgressIndicator()
+                }
+
+                is UiState.Error -> {
+                    Text(text = state.message, color = Color.Red)
+                }
+
+                is UiState.Success -> {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .padding(innerPadding)
+                            .padding(bottom = 24.dp),
+                        verticalArrangement = Arrangement.spacedBy(24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        items(state.data) { publicacao ->
+                            CardNucleoLarge(
+                                publicacao.titulo,
+                                publicacao.descricao,
+                                formatarData(publicacao.data),
+                                publicacao.responsavel.nome,
+                            )
+                        }
+                        item {
+                            androidx.compose.foundation.layout.Spacer(modifier = Modifier.height(32.dp))
+                        }
+                    }
+                }
+
+                is UiState.Empty -> {
+                    Text("Nenhuma publicação encontrada.")
+                }
             }
-            listaDeRecados()
-
         }
-
     }
 }
+
 
 @Composable
 @Preview(showBackground = true)
