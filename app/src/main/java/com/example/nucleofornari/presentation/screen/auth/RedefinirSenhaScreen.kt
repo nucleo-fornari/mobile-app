@@ -14,6 +14,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,6 +39,8 @@ import com.example.nucleofornari.presentation.common.component.NucleoTextField
 
 @Composable
 fun RedefinirSenhaScreen(navController: NavController){
+    var senha by remember { mutableStateOf("") }
+    var senha2 by remember { mutableStateOf("") }
 
 
     Scaffold(
@@ -63,9 +69,17 @@ fun RedefinirSenhaScreen(navController: NavController){
                     textAlign = TextAlign.Center,
                     modifier = Modifier.width(300.dp)
                 )
-                NucleoTextField("Digite a nova senha")
-                NucleoTextField("Confirme a nova senha")
 
+                NucleoTextField(
+                    labelText = "Digite a nova senha",
+                    value = senha,
+                    onValueChange = { senha = it }
+                )
+                NucleoTextField(
+                    labelText = "Confirme a nova senha",
+                    value = senha2,
+                    onValueChange = { senha2 = it }
+                )
 
             }
             Spacer(Modifier.height(100.dp))

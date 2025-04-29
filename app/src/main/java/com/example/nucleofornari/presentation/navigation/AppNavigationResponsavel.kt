@@ -30,37 +30,33 @@ import com.example.nucleofornari.presentation.screen.professor.ChamadoProfessorS
 import com.example.nucleofornari.presentation.screen.professor.InicioProfessorScreen
 import com.example.nucleofornari.presentation.screen.professor.RelatorioProfessorScreen
 import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
-import com.example.nucleofornari.presentation.screen.professor.CategoriasViewModel
-import org.koin.androidx.compose.koinViewModel
+import com.example.nucleofornari.presentation.screen.responsavel.AgendaScreen
+import com.example.nucleofornari.presentation.screen.responsavel.PublicacoesScreen
+import com.example.nucleofornari.presentation.screen.responsavel.ReunioesScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun AppNavigation(navController: NavHostController){
+fun AppNavigationResponsavel(navController: NavHostController){
     val navController = rememberNavController()
     Scaffold (
         modifier = Modifier.navigationBarsPadding(),
         bottomBar = {
-             BottomBar(navController = navController) }
+             BottomBarResponsavel(navController = navController) }
     ){
-        NavHost(navController = navController, startDestination = BottomBarScreen.Inicio.route) {
-            composable(route = BottomBarScreen.Inicio.route) { InicioProfessorScreen(navController) }
-            composable(route = BottomBarScreen.Chamado.route) { ChamadoProfessorScreen(navController) }
-            composable(route = BottomBarScreen.Relatorio.route) { RelatorioProfessorScreen(navController) }
-            composable("abrir_chamado") { AbrirChamadoScreen(navController) }
-            composable("selecionar_categoria") {
-                val categoriaViewModel: CategoriasViewModel = koinViewModel();
-                CategoriasScreen(navController, categoriaViewModel) }
-            composable("chamado_enviado") { ChamadoEnviadoScreen(navController) }
+        NavHost(navController = navController, startDestination = BottomBarScreen.Agenda.route) {
+            composable(route = BottomBarScreen.Agenda.route) { AgendaScreen(navController) }
+            composable(route = BottomBarScreen.Publicacao.route) { PublicacoesScreen(navController) }
+            composable(route = BottomBarScreen.Reuniao.route) { ReunioesScreen(navController) }
         }
     }
 }
 
 @Composable
-fun BottomBar(navController: NavHostController){
+fun BottomBarResponsavel(navController: NavHostController){
     val screens = listOf(
-        BottomBarScreen.Inicio,
-        BottomBarScreen.Chamado,
-        BottomBarScreen.Relatorio
+        BottomBarScreen.Agenda,
+        BottomBarScreen.Publicacao,
+        BottomBarScreen.Reuniao
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -75,33 +71,7 @@ fun BottomBar(navController: NavHostController){
 }
 
 @Composable
-fun RowScope.AddItem(
-    screen: BottomBarScreen,
-    currentDestination: NavDestination?,
-    navController: NavHostController
-){
-    BottomNavigationItem(
-        label = {
-            Text(text = screen.title, color = Color.White)
-        },
-        icon = {
-            Icon(imageVector = screen.icon, contentDescription = "Navigation Icon", tint = Color.White)
-        },
-        selected = currentDestination?.hierarchy?.any{
-            it.route == screen.route
-        } == true,
-        unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
-        onClick = {
-            navController.navigate(screen.route){
-                popUpTo(navController.graph.findStartDestination().id)
-                launchSingleTop = true
-            }
-        }
-    )
-}
-
-@Composable
 @Preview
-fun AppNavigationPreview(){
-    AppNavigation(navController = rememberNavController())
+fun AppNavigationResponsavelPreview(){
+    AppNavigationResponsavel(navController = rememberNavController())
 }

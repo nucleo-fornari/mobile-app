@@ -3,6 +3,8 @@ package com.example.nucleofornari.presentation.navigation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -25,5 +27,21 @@ sealed class BottomBarScreen(
         route = "relatorio",
         title = "Relatórios",
         icon = Icons.Default.Create
+    )
+
+    object Agenda: BottomBarScreen(
+        route = "agenda",
+        title = "Agenda",
+        icon = Icons.Default.DateRange
+    )
+    object Publicacao: BottomBarScreen(
+        route = "publicacoes",
+        title = "Publicações",
+        icon = Icons.Default.Create
+    )
+    object Reuniao: BottomBarScreen(
+        route = "reunioes",
+        title = "Reuniões",
+        icon = Icons.Default.Email
     )
 }

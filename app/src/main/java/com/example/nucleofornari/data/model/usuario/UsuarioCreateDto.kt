@@ -8,7 +8,7 @@ data class UsuarioCreateDto(
     val cpf: String,
     val telefone: String,
     val email: String,
-    val dtNasc: LocalDate,
+    val dtNasc: String,
     val funcao: String,
     val endereco: EnderecoDto
 )

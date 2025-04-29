@@ -1,11 +1,16 @@
 package com.example.nucleofornari.data.remote
 
+import com.example.nucleofornari.data.model.chamado.TipoChamadoDto
+import com.example.nucleofornari.data.model.evento.EventoDto
+import com.example.nucleofornari.data.model.recado.RecadoDto
 import com.example.nucleofornari.data.model.usuario.AlunoAndSalaIdDto
 import com.example.nucleofornari.data.model.usuario.ProfessorResponseDto
 import com.example.nucleofornari.data.model.usuario.UsuarioCreateDto
 import com.example.nucleofornari.data.model.usuario.UsuarioLoginDto
 import com.example.nucleofornari.data.model.usuario.UsuarioResponseDto
 import com.example.nucleofornari.data.model.usuario.UsuarioTokenDto
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -15,12 +20,20 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 interface UsuarioApiService {
 
     @POST("usuarios/login")
-    fun login(@Body usuarioLoginDto: UsuarioLoginDto): UsuarioTokenDto
+    suspend fun login(@Body usuarioLoginDto: UsuarioLoginDto): UsuarioTokenDto
+
+    @GET("/tipos-chamado")
+    suspend fun findTiposChamado(): List<TipoChamadoDto>
+
+    @GET("/eventos/sala/{id}")
+    suspend fun getEventosPorSala(@Path("id") id: Int): List<EventoDto>
 
     @GET("usuarios/professores")
     fun getProfessoresSemSala(): List<UsuarioResponseDto>
@@ -29,7 +42,7 @@ interface UsuarioApiService {
     fun getUsuarios(): List<UsuarioResponseDto>
 
     @GET("usuarios/{id}")
-    fun getUsuarioPorId(@Path("id") id: Int): UsuarioResponseDto
+    suspend fun getUsuarioPorId(@Path("id") id: Int): UsuarioResponseDto
     
     @POST("usuarios/funcionario")
     fun criarFuncionario(@Body usuarioCreateDto: UsuarioCreateDto): UsuarioResponseDto
@@ -57,4 +70,27 @@ interface UsuarioApiService {
 
     @PUT("usuarios/redefinir-senha")
     fun redefinirSenha(@Query("token") token: String, @Query("email") email: String, @Query("senha") senha: String): Void
+}
+
+object UsuarioApi {
+
+    private val BASE_URL = "http://192.168.0.104:8080/"
+
+    fun getApi(token: String): UsuarioApiService {
+
+        val logInterceptor = HttpLoggingInterceptor()
+        logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+
+        val clienteHttp = OkHttpClient.Builder()
+            .addInterceptor(logInterceptor)
+            .addInterceptor(TokenInterceptor(token)) // interceptor de token
+            .build()
+
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(clienteHttp) // interceptor de log, opcional
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(UsuarioApiService::class.java)
+    }
 }
