@@ -31,6 +31,7 @@ import com.example.nucleofornari.presentation.screen.professor.InicioProfessorSc
 import com.example.nucleofornari.presentation.screen.professor.RelatorioProfessorScreen
 import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
 import com.example.nucleofornari.presentation.screen.professor.CategoriasViewModel
+import com.example.nucleofornari.presentation.screen.professor.ChamadosViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -40,15 +41,19 @@ fun AppNavigation(navController: NavHostController){
     Scaffold (
         modifier = Modifier.navigationBarsPadding(),
         bottomBar = {
-             BottomBar(navController = navController) }
+            BottomBar(navController = navController) }
     ){
         NavHost(navController = navController, startDestination = BottomBarScreen.Inicio.route) {
             composable(route = BottomBarScreen.Inicio.route) { InicioProfessorScreen(navController) }
-            composable(route = BottomBarScreen.Chamado.route) { ChamadoProfessorScreen(navController) }
+            composable(route = BottomBarScreen.Chamado.route) {
+                val chamadosViewModel: ChamadosViewModel = koinViewModel();
+                ChamadoProfessorScreen(navController, chamadosViewModel) }
             composable(route = BottomBarScreen.Relatorio.route) { RelatorioProfessorScreen(navController) }
-            composable("abrir_chamado") { AbrirChamadoScreen(navController) }
+            composable("abrir_chamado") {
+                val chamadosViewModel: ChamadosViewModel = koinViewModel()
+                AbrirChamadoScreen(navController, chamadosViewModel) }
             composable("selecionar_categoria") {
-                val categoriaViewModel: CategoriasViewModel = koinViewModel();
+                val categoriaViewModel: CategoriasViewModel = koinViewModel()
                 CategoriasScreen(navController, categoriaViewModel) }
             composable("chamado_enviado") { ChamadoEnviadoScreen(navController) }
         }
@@ -67,7 +72,7 @@ fun BottomBar(navController: NavHostController){
 
     BottomNavigation(
         backgroundColor = AzulPrincipal
-            ) {
+    ) {
         screens.forEach { screen ->
             AddItem(screen = screen, currentDestination = currentDestination, navController = navController)
         }

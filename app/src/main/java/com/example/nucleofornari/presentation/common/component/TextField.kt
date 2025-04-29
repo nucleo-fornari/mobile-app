@@ -33,11 +33,14 @@ fun NucleoTextField(labelText: String, value: String, onValueChange: (String) ->
 }
 
 @Composable
-fun NucleoLongTextField(labelText: String) {
-    var text by remember { mutableStateOf("") }
+fun NucleoLongTextField(
+    labelText: String,
+    value: String,
+    valueChangeHandler: (String) -> Unit
+) {
     OutlinedTextField(
-        value = text,
-        onValueChange = { newText -> text = newText },
+        value = value,
+        onValueChange = { newText -> valueChangeHandler(newText) },
         label = { Text(labelText) },
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = AzulPrincipal,
@@ -51,8 +54,8 @@ fun NucleoLongTextField(labelText: String) {
     )
 }
 
-@Preview(showBackground = true)
-@Composable
-fun NucleoTextFieldPreview() {
-    NucleoLongTextField("Pedrinho")
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun NucleoTextFieldPreview() {
+//    NucleoLongTextField("Pedrinho")
+//}

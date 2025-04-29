@@ -3,13 +3,11 @@ package com.example.nucleofornari.presentation.screen.professor
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nucleofornari.data.model.chamado.TipoChamadoDto
-import com.example.nucleofornari.data.model.usuario.UsuarioTokenDto
 import com.example.nucleofornari.data.remote.UsuarioApiService
 import com.example.nucleofornari.util.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import java.io.IOException
 
 open class CategoriasViewModel (
@@ -25,7 +23,6 @@ open class CategoriasViewModel (
 
             try {
                 val response = api.findTiposChamado()
-
                 _uiState.value = UiState.Success(response)
 
             } catch (e: IOException) {

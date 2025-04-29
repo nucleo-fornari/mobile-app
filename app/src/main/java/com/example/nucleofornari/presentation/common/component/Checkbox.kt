@@ -29,8 +29,8 @@ fun NucleoCheckbox(checkboxText: String) {
 
 }
 
-@Preview (showBackground = true)
-@Composable
-fun NucleoCheckboxPreview() {
-    NucleoCheckbox("Problema infraestrutura")
-}
+//@Preview (showBackground = true)
+//@Composable
+//fun NucleoCheckboxPreview() {
+//    NucleoCheckbox("Problema infraestrutura")
+//}

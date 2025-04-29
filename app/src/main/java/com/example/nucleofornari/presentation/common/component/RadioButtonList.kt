@@ -21,28 +21,31 @@ import androidx.compose.ui.unit.dp
 import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
 
 @Composable
-fun NucleoRadioButtonList(radioOptions: List<String>, modifier: Modifier = Modifier) {
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[0]) }
-    // Note that Modifier.selectableGroup() is essential to ensure correct accessibility behavior
+fun NucleoRadioButtonList(
+    radioOptions: List<String>,
+    selectedOptionIndex: Int,
+    onOptionSelected: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(modifier.selectableGroup()) {
-        radioOptions.forEach { text ->
+        radioOptions.forEachIndexed { index, text ->
             Row(
                 Modifier
                     .height(56.dp)
                     .selectable(
-                        selected = (text == selectedOption),
-                        onClick = { onOptionSelected(text) },
+                        selected = (index == selectedOptionIndex),
+                        onClick = { onOptionSelected(index) },
                         role = Role.RadioButton
                     )
                     .padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 RadioButton(
-                    selected = (text == selectedOption),
+                    selected = (index == selectedOptionIndex),
                     colors = RadioButtonDefaults.colors(
                         selectedColor = AzulPrincipal
                     ),
-                    onClick = null // null recommended for accessibility with screen readers
+                    onClick = null
                 )
                 Text(
                     text = text,
@@ -55,10 +58,10 @@ fun NucleoRadioButtonList(radioOptions: List<String>, modifier: Modifier = Modif
 }
 
 
-@Preview(showBackground = true)
-@Composable
-
-fun NucleoRadioButtonListPreview() {
-    val radioOptions = listOf("Calls", "Missed", "Friendeee")
-    NucleoRadioButtonList(radioOptions)
-}
+//@Preview(showBackground = true)
+//@Composable
+//
+//fun NucleoRadioButtonListPreview() {
+//    val radioOptions = listOf("Calls", "Missed", "Friendeee")
+//    NucleoRadioButtonList(radioOptions)
+//}

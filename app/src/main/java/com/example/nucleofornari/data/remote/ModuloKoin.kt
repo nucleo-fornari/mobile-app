@@ -4,6 +4,7 @@ import com.example.nucleofornari.data.model.SessaoUsuario
 import com.example.nucleofornari.presentation.screen.auth.login.LoginViewModel
 import com.example.nucleofornari.presentation.screen.responsavel.AgendaViewModel
 import com.example.nucleofornari.presentation.screen.professor.CategoriasViewModel
+import com.example.nucleofornari.presentation.screen.professor.ChamadosViewModel
 import com.example.nucleofornari.presentation.screen.responsavel.PublicacoesViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -33,6 +34,13 @@ val moduloApiReal = module {
     viewModel<CategoriasViewModel> {
         CategoriasViewModel(
             api = get()
+        )
+    }
+
+    viewModel<ChamadosViewModel> {
+        ChamadosViewModel(
+            api = get(),
+            sessaoUsuario = get()
         )
     }
 }

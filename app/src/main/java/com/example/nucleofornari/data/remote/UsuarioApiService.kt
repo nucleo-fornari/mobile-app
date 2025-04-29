@@ -1,5 +1,6 @@
 package com.example.nucleofornari.data.remote
 
+import com.example.nucleofornari.data.model.chamado.ChamadoDto
 import com.example.nucleofornari.data.model.chamado.TipoChamadoDto
 import com.example.nucleofornari.data.model.evento.EventoDto
 import com.example.nucleofornari.data.model.recado.RecadoDto
@@ -29,8 +30,14 @@ interface UsuarioApiService {
     @POST("usuarios/login")
     suspend fun login(@Body usuarioLoginDto: UsuarioLoginDto): UsuarioTokenDto
 
+    @POST("chamados")
+    suspend fun createChamado(@Body chamadoDto: ChamadoDto, @Query("idUsuario") id: Int): ChamadoDto
+
     @GET("/tipos-chamado")
     suspend fun findTiposChamado(): List<TipoChamadoDto>
+
+    @GET("/chamados")
+    suspend fun listChamados(@Query("idUser") id: Int): List<ChamadoDto>
 
     @GET("/eventos/sala/{id}")
     suspend fun getEventosPorSala(@Path("id") id: Int): List<EventoDto>
@@ -43,7 +50,7 @@ interface UsuarioApiService {
 
     @GET("usuarios/{id}")
     suspend fun getUsuarioPorId(@Path("id") id: Int): UsuarioResponseDto
-    
+
     @POST("usuarios/funcionario")
     fun criarFuncionario(@Body usuarioCreateDto: UsuarioCreateDto): UsuarioResponseDto
 

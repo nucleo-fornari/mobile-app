@@ -12,14 +12,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
 
 @Composable
-fun NucleoSwitch() {
-    var checked by remember { mutableStateOf(true) }
-
+fun NucleoSwitch(
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
     Switch(
         checked = checked,
-        onCheckedChange = {
-            checked = it
-        },
+        onCheckedChange = onCheckedChange,
         colors = SwitchDefaults.colors(
             checkedThumbColor = Color.White,
             checkedTrackColor = AzulPrincipal
@@ -27,8 +26,8 @@ fun NucleoSwitch() {
     )
 }
 
-@Preview (showBackground = true)
-@Composable
-fun NucleoSwitchPreview() {
-    NucleoSwitch()
-}
+//@Preview (showBackground = true)
+//@Composable
+//fun NucleoSwitchPreview() {
+//    NucleoSwitch()
+//}
