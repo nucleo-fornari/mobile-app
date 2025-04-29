@@ -81,7 +81,7 @@ interface UsuarioApiService {
 
 object UsuarioApi {
 
-    private val BASE_URL = "http://192.168.0.104:8080/"
+    private val BASE_URL = "http://192.168.200.227:8080/"
 
     fun getApi(token: String): UsuarioApiService {
 

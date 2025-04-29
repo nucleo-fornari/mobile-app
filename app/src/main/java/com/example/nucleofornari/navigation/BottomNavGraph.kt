@@ -5,9 +5,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.nucleofornari.presentation.screen.auth.login.LoginScreen
-import com.example.nucleofornari.screens.ChamadoProfessorScreen
+import com.example.nucleofornari.presentation.screen.auth.login.LoginViewModel
+import com.example.nucleofornari.presentation.screen.professor.ChamadoProfessorScreen
+import com.example.nucleofornari.presentation.screen.professor.ChamadosViewModel
 import com.example.nucleofornari.screens.InicioProfessorScreen
 import com.example.nucleofornari.screens.RelatorioProfessorScreen
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BottomNavGraph(navController: NavHostController) {
@@ -16,11 +19,15 @@ fun BottomNavGraph(navController: NavHostController) {
             InicioProfessorScreen()
         }
         composable(route = BottomBarScreen.Chamado.route){
-            ChamadoProfessorScreen()
+            val chamadosViewModel: ChamadosViewModel = koinViewModel()
+            ChamadoProfessorScreen(navController, chamadosViewModel)
         }
         composable(route = BottomBarScreen.Relatorio.route){
             RelatorioProfessorScreen()
         }
-        composable("login") { LoginScreen(navController) }
+        composable("login") {
+            val loginViewModel: LoginViewModel = koinViewModel()
+            LoginScreen(navController, loginViewModel)
+        }
     }
 }

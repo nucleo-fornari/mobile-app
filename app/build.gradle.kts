@@ -60,6 +60,7 @@ dependencies {
     implementation("androidx.compose.material:material:1.7.8")
     implementation(libs.androidx.ui.text.google.fonts)
     implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.runtime.livedata)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
