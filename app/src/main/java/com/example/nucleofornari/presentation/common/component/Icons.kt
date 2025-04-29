@@ -3,13 +3,21 @@ package com.example.nucleofornari.presentation.common.component
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+
 import androidx.compose.material.icons.filled.ArrowDropDown
+
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.media3.exoplayer.offline.Download
 
 object AppIcons {
 
@@ -56,6 +64,22 @@ object AppIcons {
         Icon(
             Icons.Filled.Menu,
             contentDescription = "Menu",
+            tint = color
+        )
+    }
+    @Composable
+    fun Exit(color: Color) {
+        Icon(
+            Icons.AutoMirrored.Filled.ExitToApp,
+            contentDescription = "Sair",
+            tint = color
+        )
+    }
+    @Composable
+    fun Download(color: Color) {
+        Icon(
+            imageVector = Icons.Outlined.FileDownload,
+            contentDescription = "Download",
             tint = color
         )
     }

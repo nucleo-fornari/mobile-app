@@ -1,8 +1,9 @@
-package com.example.nucleofornari.presentation.navigation
+package com.example.nucleofornari.navigation
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.ContentAlpha
@@ -12,46 +13,28 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.nucleofornari.presentation.screen.professor.AbrirChamadoScreen
-import com.example.nucleofornari.presentation.screen.professor.CategoriasScreen
-import com.example.nucleofornari.presentation.screen.professor.ChamadoEnviadoScreen
-import com.example.nucleofornari.presentation.screen.professor.ChamadoProfessorScreen
-import com.example.nucleofornari.presentation.screen.professor.InicioProfessorScreen
-import com.example.nucleofornari.presentation.screen.professor.RelatorioProfessorScreen
-import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
-import com.example.nucleofornari.presentation.screen.professor.CategoriasViewModel
-import org.koin.androidx.compose.koinViewModel
+import com.example.nucleofornari.ui.theme.AzulPrincipal
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun AppNavigation(navController: NavHostController){
+fun AppNavigation(){
     val navController = rememberNavController()
     Scaffold (
-        modifier = Modifier.navigationBarsPadding(),
         bottomBar = {
              BottomBar(navController = navController) }
     ){
-        NavHost(navController = navController, startDestination = BottomBarScreen.Inicio.route) {
-            composable(route = BottomBarScreen.Inicio.route) { InicioProfessorScreen(navController) }
-            composable(route = BottomBarScreen.Chamado.route) { ChamadoProfessorScreen(navController) }
-            composable(route = BottomBarScreen.Relatorio.route) { RelatorioProfessorScreen(navController) }
-            composable("abrir_chamado") { AbrirChamadoScreen(navController) }
-            composable("selecionar_categoria") {
-                val categoriaViewModel: CategoriasViewModel = koinViewModel();
-                CategoriasScreen(navController, categoriaViewModel) }
-            composable("chamado_enviado") { ChamadoEnviadoScreen(navController) }
-        }
+        BottomNavGraph(navController = navController)
     }
 }
 
@@ -103,5 +86,5 @@ fun RowScope.AddItem(
 @Composable
 @Preview
 fun AppNavigationPreview(){
-    AppNavigation(navController = rememberNavController())
+    AppNavigation()
 }
