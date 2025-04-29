@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,10 +39,14 @@ import com.example.nucleofornari.presentation.common.component.BlueButton
 import com.example.nucleofornari.presentation.common.component.GrayButton
 import com.example.nucleofornari.presentation.common.component.Header
 import com.example.nucleofornari.presentation.common.component.NucleoTextField
+import com.example.nucleofornari.presentation.screen.auth.login.RecuperacaoSenhaViewModel
+import com.example.nucleofornari.util.UiState
 
 @Composable
-fun CodigoScreen(navController: NavController){
+fun CodigoScreen(navController: NavController, email: String?, viewModel: RecuperacaoSenhaViewModel){
     var codigo by remember { mutableStateOf("") }
+    val uiState by viewModel.enviarCodigoUiState.collectAsState()
+    val uiStateReenvio by viewModel.solicitarRedefinicaoUiState.collectAsState()
 
     Scaffold(
         topBar = { Header("Voltar", bgcolor = Color.Transparent, textColor = Color.Black, iconColor = Color.Black, onClick = {navController.navigate("auth")}) }
@@ -68,6 +74,43 @@ fun CodigoScreen(navController: NavController){
                     textAlign = TextAlign.Center,
                     modifier = Modifier.width(300.dp)
                 )
+
+                when(uiStateReenvio) {
+                    is UiState.Error -> Text(
+                        text = (uiState as UiState.Error).message,
+                        color = Color.Red,
+                        modifier = Modifier.padding(top = 16.dp)
+                    )
+                    is UiState.Loading -> {
+                        CircularProgressIndicator()
+                    }
+                    is UiState.Success<*> -> {
+                        Text(
+                            text = "Reenviado com sucesso",
+                            color = Color.Green,
+                            modifier = Modifier.padding(top = 16.dp)
+                        )
+                    }
+                    else -> {}
+                }
+
+                when(uiState) {
+                    is UiState.Error -> Text(
+                        text = (uiState as UiState.Error).message,
+                        color = Color.Red,
+                        modifier = Modifier.padding(top = 16.dp)
+                    )
+                    is UiState.Loading -> {
+                        CircularProgressIndicator()
+                    }
+                    is UiState.Success<*> -> {
+                        navController.currentBackStackEntry?.savedStateHandle?.set("email", email)
+                        navController.currentBackStackEntry?.savedStateHandle?.set("codigo", codigo)
+                        navController.navigate("redefinir_senha")
+                        viewModel.resetEnviarCodigoUiState()
+                    }
+                    else -> {}
+                }
                 NucleoTextField(
                     labelText = "Código",
                     value = codigo,
@@ -77,18 +120,19 @@ fun CodigoScreen(navController: NavController){
             }
             Spacer(Modifier.height(100.dp))
 
-            GrayButton("Reenviar",onClick = {})
+            GrayButton("Reenviar", onClick = {viewModel.solicitarRedefinicao(email.toString())})
             Spacer(Modifier.height(20.dp))
-            BlueButton("Confirmar", AzulPrincipal, onClick = {navController.navigate("redefinir_senha")})
-
+            BlueButton("Confirmar", AzulPrincipal, onClick = {
+                viewModel.enviarToken(codigo)
+            })
         }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun CodigoScreenPreview() {
-    NucleoFornariTheme{
-        CodigoScreen(navController = rememberNavController())
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun CodigoScreenPreview() {
+//    NucleoFornariTheme{
+//        CodigoScreen(navController = rememberNavController())
+//    }
+//}

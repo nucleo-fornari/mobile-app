@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,11 +38,15 @@ import com.example.nucleofornari.presentation.common.component.AppIcons
 import com.example.nucleofornari.presentation.common.component.BlueButton
 import com.example.nucleofornari.presentation.common.component.Header
 import com.example.nucleofornari.presentation.common.component.NucleoTextField
+import com.example.nucleofornari.presentation.screen.auth.login.RecuperacaoSenhaViewModel
+import com.example.nucleofornari.util.UiState
 
 @Composable
-fun RedefinirSenhaScreen(navController: NavController){
+fun RedefinirSenhaScreen(navController: NavController, email: String?, codigo: String?,
+                         viewModel: RecuperacaoSenhaViewModel) {
     var senha by remember { mutableStateOf("") }
     var senha2 by remember { mutableStateOf("") }
+    val uiState by viewModel.redefinirSenhaUiStare.collectAsState()
 
 
     Scaffold(
@@ -62,6 +68,24 @@ fun RedefinirSenhaScreen(navController: NavController){
                 verticalArrangement = Arrangement.spacedBy(16.dp), horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(text = "Redefinir a senha", color = AzulPrincipal, fontWeight = FontWeight.Bold, fontSize = 30.sp)
+
+                when(uiState) {
+                    is UiState.Error -> Text(
+                        text = (uiState as UiState.Error).message,
+                        color = Color.Red,
+                        modifier = Modifier.padding(top = 16.dp)
+                    )
+                    is UiState.Loading -> {
+                        CircularProgressIndicator()
+                    }
+                    is UiState.Success<*> -> {
+                        navController.navigate("redefinir_confirm")
+                        viewModel.reserRedefinirSenhaUiState()
+                    }
+
+                    else -> {}
+                }
+
                 Text(
                     text = "Crie uma nova senha.",
                     color = AzulPrincipal,
@@ -83,16 +107,17 @@ fun RedefinirSenhaScreen(navController: NavController){
 
             }
             Spacer(Modifier.height(100.dp))
-            BlueButton("Redefinir", AzulPrincipal, onClick = {navController.navigate("redefinir_confirm")})
-
+            BlueButton("Redefinir", AzulPrincipal, onClick = {
+                viewModel.redefinirSenha(codigo.toString(), senha, senha2, email.toString())
+            })
         }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun RedefinirSenhaScreenPreview() {
-    NucleoFornariTheme{
-        RedefinirSenhaScreen(navController = rememberNavController())
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun RedefinirSenhaScreenPreview() {
+//    NucleoFornariTheme{
+//        RedefinirSenhaScreen(navController = rememberNavController())
+//    }
+//}

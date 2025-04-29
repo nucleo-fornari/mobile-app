@@ -11,9 +11,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,10 +39,13 @@ import com.example.nucleofornari.presentation.common.component.AppIcons
 import com.example.nucleofornari.presentation.common.component.BlueButton
 import com.example.nucleofornari.presentation.common.component.Header
 import com.example.nucleofornari.presentation.common.component.NucleoTextField
+import com.example.nucleofornari.presentation.screen.auth.login.RecuperacaoSenhaViewModel
+import com.example.nucleofornari.util.UiState
 
 @Composable
-fun EsqueceuSenhaScreen(navController: NavController){
+fun EsqueceuSenhaScreen(navController: NavController, viewModel: RecuperacaoSenhaViewModel){
     var email by remember { mutableStateOf("") }
+    val uiState by viewModel.solicitarRedefinicaoUiState.collectAsState()
 
     Scaffold(
         topBar = { Header("Voltar", bgcolor = Color.Transparent, textColor = Color.Black, iconColor = Color.Black, onClick = {navController.navigate("auth")}) }
@@ -56,6 +62,22 @@ fun EsqueceuSenhaScreen(navController: NavController){
                 modifier = Modifier.size(250.dp),
             )
 
+            when(uiState) {
+                is UiState.Error -> Text(
+                    text = (uiState as UiState.Error).message,
+                    color = Color.Red,
+                    modifier = Modifier.padding(top = 16.dp)
+                )
+                is UiState.Loading -> {
+                    CircularProgressIndicator()
+                }
+                is UiState.Success<*> -> {
+                    navController.currentBackStackEntry?.savedStateHandle?.set("email", email)
+                    navController.navigate("codigo")
+                    viewModel.resetSolicitarSenhaUiState()
+                }
+                else -> {}
+            }
             Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp), horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -76,16 +98,19 @@ fun EsqueceuSenhaScreen(navController: NavController){
 
             }
             Spacer(Modifier.height(100.dp))
-            BlueButton("Continuar", AzulPrincipal, onClick = {navController.navigate("codigo")})
+            BlueButton("Continuar", AzulPrincipal, onClick = {
+//                navController.navigate("codigo")
+                viewModel.solicitarRedefinicao(email)
+            })
 
         }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun EsqueceuSenhaScreenPreview() {
-    NucleoFornariTheme{
-        EsqueceuSenhaScreen(navController = rememberNavController())
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun EsqueceuSenhaScreenPreview() {
+//    NucleoFornariTheme{
+//        EsqueceuSenhaScreen(navController = rememberNavController())
+//    }
+//}

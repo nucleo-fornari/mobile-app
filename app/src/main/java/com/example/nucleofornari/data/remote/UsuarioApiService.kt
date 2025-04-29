@@ -3,7 +3,6 @@ package com.example.nucleofornari.data.remote
 import com.example.nucleofornari.data.model.chamado.ChamadoDto
 import com.example.nucleofornari.data.model.chamado.TipoChamadoDto
 import com.example.nucleofornari.data.model.evento.EventoDto
-import com.example.nucleofornari.data.model.recado.RecadoDto
 import com.example.nucleofornari.data.model.usuario.AlunoAndSalaIdDto
 import com.example.nucleofornari.data.model.usuario.ProfessorResponseDto
 import com.example.nucleofornari.data.model.usuario.UsuarioCreateDto
@@ -58,7 +57,7 @@ interface UsuarioApiService {
     fun atualizarUsuario(@Path("id") id: Int, @Body usuarioCreateDto: UsuarioCreateDto): UsuarioResponseDto
 
     @DELETE("usuarios/{id}")
-    fun deletarUsuario(@Path("id") id: Int): Call<Void>
+    fun deletarUsuario(@Path("id") id: Int): Call<Unit>
 
     @PATCH("usuarios/professor/{id}/sala/{salaId}")
     fun associarProfessorSala(@Path("id") id: Int, @Path("salaId") salaId: Int): ProfessorResponseDto
@@ -70,13 +69,13 @@ interface UsuarioApiService {
     fun getAlunoESala(@Path("id") id: Int): List<AlunoAndSalaIdDto>
 
     @PATCH("usuarios/esqueci-senha")
-    fun esqueciSenha(@Query("email") email: String): Void
+    suspend fun esqueciSenha(@Query("email") email: String)
 
     @PATCH("usuarios/token-redefinicao-senha")
-    fun tokenRedefinicaoSenha(@Query("token") token: String): Void
+    suspend fun tokenRedefinicaoSenha(@Query("token") token: String)
 
     @PUT("usuarios/redefinir-senha")
-    fun redefinirSenha(@Query("token") token: String, @Query("email") email: String, @Query("senha") senha: String): Void
+    suspend fun redefinirSenha(@Query("token") token: String, @Query("email") email: String, @Query("senha") senha: String)
 }
 
 object UsuarioApi {
