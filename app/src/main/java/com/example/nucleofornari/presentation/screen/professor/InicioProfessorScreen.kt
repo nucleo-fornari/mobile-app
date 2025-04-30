@@ -6,11 +6,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
@@ -31,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.nucleofornari.data.model.aluno.AlunoResponseDto
 import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
 import com.example.nucleofornari.presentation.common.theme.NucleoFornariTheme
 import com.example.nucleofornari.presentation.common.theme.Success
@@ -39,13 +42,17 @@ import com.example.nucleofornari.presentation.common.component.Calendar
 import com.example.nucleofornari.presentation.common.component.CardNucleo
 import com.example.nucleofornari.presentation.common.component.Header
 import com.example.nucleofornari.presentation.common.component.MenuLateral
+import com.example.nucleofornari.util.UiState
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun InicioProfessorScreen(navController: NavController) {
+fun InicioProfessorScreen(navController: NavController, viewModel: InicioProfessorViewModel = getViewModel()) {
     var selectedTab by remember { mutableStateOf("Eventos") } // Controla a exibição
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+
+    val state = viewModel.uiStateAlunos
 
     MenuLateral(drawerState = drawerState,
         navController = navController, content = {
@@ -84,7 +91,7 @@ fun InicioProfessorScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(40.dp))
 
                 if (selectedTab == "Alunos") {
-                    ListaDeAlunos()
+                    ListaDeAlunos(state)
                 } else {
                     Calendar()
                 }
@@ -93,47 +100,29 @@ fun InicioProfessorScreen(navController: NavController) {
     })
 }
 
-    @Composable
-    fun ListaDeAlunos() {
-        val nomes = listOf(
-            "Gustavo Henrique",
-            "Ana Beatriz",
-            "Carlos Eduardo",
-            "Maria Clara",
-            "José Silva",
-            "Luiza Souza",
-            "Fernando Lima",
-            "Paula Costa",
-            "Ricardo Martins",
-            "Lúcia Rocha",
-            "Carlos Alberto",
-            "Vanessa Pereira",
-            "Rafael Almeida",
-            "Mariana Gomes",
-            "Juliana Oliveira",
-            "Leonardo Santos",
-            "Camila Freitas",
-            "Felipe Ferreira",
-            "Juliano Rocha",
-            "Aline Santos",
-            "Roberta Lima",
-            "Vitor Costa",
-            "Lucas Souza",
-            "Beatriz Alves",
-            "João Pedro",
-            "Tânia Lima",
-            "Eduardo Pereira",
-            "Patrícia Gonçalves",
-            "Marcelo Silva",
-            "Cristina Martins"
-        )
-
-        LazyColumn(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(4.dp),) {
-            items(nomes) { nome ->
-                CardNucleo(nome, { AppIcons.CheckCircle(Success) }, onclick = {})
+@Composable
+fun ListaDeAlunos(state: UiState<List<AlunoResponseDto>>) {
+    when (state) {
+        is UiState.Success -> {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                items(state.data) { aluno ->
+                    CardNucleo(aluno.nome, { AppIcons.CheckCircle(Success) }, onclick = {})
+                }
             }
         }
+        is UiState.Error -> {
+            Text(text = state.message, color = Color.Red)
+        }
+        UiState.Loading -> {
+            CircularProgressIndicator()
+        }
+        else -> {}
     }
+}
 
 
 @Preview(showBackground = true)
