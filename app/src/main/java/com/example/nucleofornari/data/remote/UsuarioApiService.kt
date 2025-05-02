@@ -33,13 +33,13 @@ interface UsuarioApiService {
     @POST("chamados")
     suspend fun createChamado(@Body chamadoDto: ChamadoDto, @Query("idUsuario") id: Int): ChamadoDto
 
-    @GET("/tipos-chamado")
+    @GET("tipos-chamado")
     suspend fun findTiposChamado(): List<TipoChamadoDto>
 
-    @GET("/chamados")
+    @GET("chamados")
     suspend fun listChamados(@Query("idUser") id: Int): List<ChamadoDto>
 
-    @GET("/eventos/sala/{id}")
+    @GET("eventos/sala/{id}")
     suspend fun getEventosPorSala(@Path("id") id: Int): List<EventoDto>
 
     @GET("salas/{id}")
@@ -84,7 +84,7 @@ interface UsuarioApiService {
 
 object UsuarioApi {
 
-    private val BASE_URL = "http://192.168.0.9:8080/"
+    private val BASE_URL = "http://192.168.0.9:8080/api/"
 
     fun getApi(token: String): UsuarioApiService {
 
