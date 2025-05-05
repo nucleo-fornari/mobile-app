@@ -21,9 +21,6 @@ import androidx.navigation.NavController
 import com.example.nucleofornari.presentation.common.component.CardOutlinedNucleo
 import com.example.nucleofornari.presentation.common.component.Header
 import com.example.nucleofornari.presentation.navigation.BottomBarScreen
-import com.example.nucleofornari.ui.theme.PretoPrincipal
-import com.example.nucleofornari.ui.theme.components.AppIcons
-import com.example.nucleofornari.ui.theme.components.CardNucleo
 import okhttp3.internal.http2.Header
 
 @Composable

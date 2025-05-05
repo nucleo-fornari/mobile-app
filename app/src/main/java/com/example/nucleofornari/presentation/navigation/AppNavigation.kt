@@ -23,6 +23,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.nucleofornari.presentation.common.component.calendar.CalendarViewModel
 import com.example.nucleofornari.presentation.screen.professor.AbrirChamadoScreen
 import com.example.nucleofornari.presentation.screen.professor.CategoriasScreen
 import com.example.nucleofornari.presentation.screen.professor.ChamadoEnviadoScreen
@@ -32,6 +33,7 @@ import com.example.nucleofornari.presentation.screen.professor.RelatorioProfesso
 import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
 import com.example.nucleofornari.presentation.screen.professor.CategoriasViewModel
 import com.example.nucleofornari.presentation.screen.professor.ChamadosViewModel
+import com.example.nucleofornari.presentation.screen.professor.InicioProfessorViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -44,17 +46,28 @@ fun AppNavigation(navController: NavHostController){
             BottomBar(navController = navController) }
     ){
         NavHost(navController = navController, startDestination = BottomBarScreen.Inicio.route) {
-            composable(route = BottomBarScreen.Inicio.route) { InicioProfessorScreen(navController) }
+
+            composable(route = BottomBarScreen.Inicio.route) {
+                val calendarViewModel: CalendarViewModel = koinViewModel();
+                val inicioViewModel: InicioProfessorViewModel = koinViewModel();
+                InicioProfessorScreen(navController, inicioViewModel, calendarViewModel)
+            }
+
             composable(route = BottomBarScreen.Chamado.route) {
                 val chamadosViewModel: ChamadosViewModel = koinViewModel();
-                ChamadoProfessorScreen(navController, chamadosViewModel) }
+                ChamadoProfessorScreen(navController, chamadosViewModel)
+            }
+
             composable(route = BottomBarScreen.Relatorio.route) { RelatorioProfessorScreen(navController) }
+
             composable("abrir_chamado") {
                 val chamadosViewModel: ChamadosViewModel = koinViewModel()
                 AbrirChamadoScreen(navController, chamadosViewModel) }
+
             composable("selecionar_categoria") {
                 val categoriaViewModel: CategoriasViewModel = koinViewModel()
                 CategoriasScreen(navController, categoriaViewModel) }
+
             composable("chamado_enviado") { ChamadoEnviadoScreen(navController) }
         }
     }

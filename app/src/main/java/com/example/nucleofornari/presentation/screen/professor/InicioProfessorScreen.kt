@@ -38,16 +38,17 @@ import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
 import com.example.nucleofornari.presentation.common.theme.NucleoFornariTheme
 import com.example.nucleofornari.presentation.common.theme.Success
 import com.example.nucleofornari.presentation.common.component.AppIcons
-import com.example.nucleofornari.presentation.common.component.Calendar
+import com.example.nucleofornari.presentation.common.component.calendar.Calendar
 import com.example.nucleofornari.presentation.common.component.CardNucleo
 import com.example.nucleofornari.presentation.common.component.Header
 import com.example.nucleofornari.presentation.common.component.MenuLateral
+import com.example.nucleofornari.presentation.common.component.calendar.CalendarViewModel
 import com.example.nucleofornari.util.UiState
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun InicioProfessorScreen(navController: NavController, viewModel: InicioProfessorViewModel = getViewModel()) {
+fun InicioProfessorScreen(navController: NavController, viewModel: InicioProfessorViewModel = getViewModel(), calendarViewModel: CalendarViewModel = getViewModel()) {
     var selectedTab by remember { mutableStateOf("Eventos") } // Controla a exibição
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -93,7 +94,7 @@ fun InicioProfessorScreen(navController: NavController, viewModel: InicioProfess
                 if (selectedTab == "Alunos") {
                     ListaDeAlunos(state)
                 } else {
-                    Calendar()
+                    Calendar(viewModel = calendarViewModel)
                 }
             }
         }

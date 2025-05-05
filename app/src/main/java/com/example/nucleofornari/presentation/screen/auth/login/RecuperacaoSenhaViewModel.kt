@@ -2,7 +2,7 @@ package com.example.nucleofornari.presentation.screen.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nucleofornari.data.remote.UsuarioApiService
+import com.example.nucleofornari.data.remote.service.UsuarioApiService
 import com.example.nucleofornari.util.ErrorUtils
 import com.example.nucleofornari.util.UiState
 import kotlinx.coroutines.flow.MutableStateFlow

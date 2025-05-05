@@ -1,12 +1,11 @@
 package com.example.nucleofornari.presentation.screen.auth.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nucleofornari.data.model.SessaoUsuario
 import com.example.nucleofornari.data.model.usuario.UsuarioLoginDto
 import com.example.nucleofornari.data.model.usuario.UsuarioTokenDto
-import com.example.nucleofornari.data.remote.UsuarioApiService
+import com.example.nucleofornari.data.remote.service.UsuarioApiService
 import com.example.nucleofornari.util.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

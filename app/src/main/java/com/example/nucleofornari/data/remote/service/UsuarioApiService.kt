@@ -1,4 +1,4 @@
-package com.example.nucleofornari.data.remote
+package com.example.nucleofornari.data.remote.service
 
 import com.example.nucleofornari.data.model.chamado.ChamadoDto
 import com.example.nucleofornari.data.model.chamado.TipoChamadoDto
@@ -10,6 +10,7 @@ import com.example.nucleofornari.data.model.usuario.UsuarioCreateDto
 import com.example.nucleofornari.data.model.usuario.UsuarioLoginDto
 import com.example.nucleofornari.data.model.usuario.UsuarioResponseDto
 import com.example.nucleofornari.data.model.usuario.UsuarioTokenDto
+import com.example.nucleofornari.data.remote.TokenInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.http.Body
@@ -84,7 +85,7 @@ interface UsuarioApiService {
 
 object UsuarioApi {
 
-    private val BASE_URL = "http://192.168.0.9:8080/api/"
+    private val BASE_URL = "http://192.168.18.210:8080/api/"
 
     fun getApi(token: String): UsuarioApiService {
 

@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.nucleofornari.R
 import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
-import com.example.nucleofornari.ui.theme.Error
-import com.example.nucleofornari.ui.theme.PretoPrincipal
+import com.example.nucleofornari.presentation.common.theme.Error
+import com.example.nucleofornari.presentation.common.theme.PretoPrincipal
 
 @Composable
 fun MenuLateral(

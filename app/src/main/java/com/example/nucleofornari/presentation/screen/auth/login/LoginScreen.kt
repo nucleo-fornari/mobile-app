@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -25,25 +24,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.nucleofornari.R
-import com.example.nucleofornari.data.model.SessaoUsuario
-import com.example.nucleofornari.data.model.usuario.UsuarioLoginDto
 import com.example.nucleofornari.data.model.usuario.UsuarioTokenDto
-import com.example.nucleofornari.data.remote.UsuarioApiService
 import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
-import com.example.nucleofornari.presentation.common.theme.NucleoFornariTheme
-import com.example.nucleofornari.presentation.common.component.AppIcons
 import com.example.nucleofornari.presentation.common.component.BlueButton
 import com.example.nucleofornari.presentation.common.component.Header
 import com.example.nucleofornari.presentation.common.component.NucleoTextField
-import com.example.nucleofornari.presentation.navigation.BottomBarScreen
 import com.example.nucleofornari.util.UiState
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreen(
