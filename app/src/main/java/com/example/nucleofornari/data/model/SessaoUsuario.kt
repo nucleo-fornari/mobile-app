@@ -5,6 +5,7 @@ data class SessaoUsuario(
     var nome: String = "",
     var email: String = "",
     var funcao: String = "",
+    var telefone: String = "",
     var salaId: Int? = null,
     var token: String = ""
 )

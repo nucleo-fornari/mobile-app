@@ -35,6 +35,7 @@ open class LoginViewModel(
                 sessaoUsuario.nome = response.nome!!
                 sessaoUsuario.email = response.email!!
                 sessaoUsuario.funcao = response.funcao!!
+                sessaoUsuario.telefone = response.telefone!!
                 sessaoUsuario.salaId = response.salaId
                 sessaoUsuario.token = response.token!!
 

@@ -31,7 +31,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import org.koin.androidx.compose.get
 import com.example.nucleofornari.R
+import com.example.nucleofornari.data.model.SessaoUsuario
 import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
 import com.example.nucleofornari.presentation.common.theme.Error
 import com.example.nucleofornari.presentation.common.theme.PretoPrincipal
@@ -43,6 +45,7 @@ fun MenuLateral(
     navController: NavController
 ) {
     var showDialog by remember { mutableStateOf(false) }
+    val sessaoUsuario: SessaoUsuario = get()
 
     ModalNavigationDrawer(
         modifier = Modifier.background(color = AzulPrincipal),
@@ -72,13 +75,13 @@ fun MenuLateral(
 
                     ) {
                         Text(
-                            text = "Nome do Usuário",
+                            text = sessaoUsuario.nome.ifBlank { "Nome do Usuário" },
                             color = Color.White,
                             style = Typography().titleLarge,
                             modifier = Modifier.padding(top = 8.dp)
                         )
                         Text(
-                            text = "Responsável",
+                            text = sessaoUsuario.funcao.ifBlank { "Função não definida" },
                             color = Color.White,
                             style = Typography().bodyMedium,
                             modifier = Modifier.padding(top = 8.dp)
@@ -93,13 +96,13 @@ fun MenuLateral(
                     ){
 
                         Text(
-                            text = "Email:",
+                            text = "Email: ${sessaoUsuario.email.ifBlank { "-" }}",
                             color = Color.White,
                             style = Typography().titleMedium,
                             modifier = Modifier.padding(top = 8.dp)
                         )
                         Text(
-                            text = "Telefone:",
+                            text = "Telefone: ${sessaoUsuario.telefone.ifBlank { "-" }}",
                             color = Color.White,
                             style = Typography().titleMedium,
                             modifier = Modifier.padding(top = 8.dp)

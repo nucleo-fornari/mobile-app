@@ -5,6 +5,7 @@ data class UsuarioTokenDto(
     val nome: String?,
     val email: String?,
     val funcao: String?,
+    val telefone: String?,
     val salaId: Int?,
     val token: String?
 )
