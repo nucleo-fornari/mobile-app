@@ -21,6 +21,6 @@ fun BottomNavGraph(navController: NavHostController) {
         composable(route = BottomBarScreen.Relatorio.route){
             RelatorioProfessorScreen()
         }
-        composable("login") { LoginScreen(navController) }
+//        composable("login") { LoginScreen(navController) }
     }
 }
