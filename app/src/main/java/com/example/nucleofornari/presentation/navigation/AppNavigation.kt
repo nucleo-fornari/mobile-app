@@ -31,6 +31,7 @@ import com.example.nucleofornari.presentation.screen.professor.InicioProfessorSc
 import com.example.nucleofornari.presentation.screen.professor.RelatorioProfessorScreen
 import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
 import com.example.nucleofornari.presentation.screen.professor.CategoriasViewModel
+import com.example.nucleofornari.presentation.screen.responsavel.MotivosScreen
 import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -50,6 +51,9 @@ fun AppNavigation(navController: NavHostController){
             composable("selecionar_categoria") {
                 val categoriaViewModel: CategoriasViewModel = koinViewModel();
                 CategoriasScreen(navController, categoriaViewModel) }
+            composable("selecionar_motivo") {
+
+                MotivosScreen() }
             composable("chamado_enviado") { ChamadoEnviadoScreen(navController) }
         }
     }
