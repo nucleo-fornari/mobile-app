@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -61,7 +62,7 @@ fun CardNucleo(cardTitle: String, cardIcon: @Composable () -> Unit, onclick: () 
 }
 
 @Composable
-fun CardOutlinedNucleo(nomeDoAluno:String, dataRelatorio: String) {
+fun CardOutlinedNucleo(nomeDoAluno:String, dataRelatorio: String, onclick: () -> Unit) {
     OutlinedCard(
         colors = CardDefaults.cardColors(
             containerColor = Color.White
@@ -88,8 +89,10 @@ fun CardOutlinedNucleo(nomeDoAluno:String, dataRelatorio: String) {
 
                 )
             }
+        IconButton(onClick = { onclick() }) {
+            AppIcons.Download(color = AzulPrincipal)
+        }
 
-        AppIcons.Download(color = AzulPrincipal)
 
         }
     }
@@ -166,5 +169,5 @@ fun CardPreview() {
         "Segunda-feira, 3 de Novembro.",
         "Por Profª Ana,"
     )
-    CardOutlinedNucleo("Julia Damacena", "21/10/2023")
+    CardOutlinedNucleo("Julia Damacena", "21/10/2023", onclick = {})
 }

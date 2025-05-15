@@ -12,6 +12,7 @@ import com.example.nucleofornari.data.model.usuario.UsuarioResponseDto
 import com.example.nucleofornari.data.model.usuario.UsuarioTokenDto
 import com.example.nucleofornari.data.remote.TokenInterceptor
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -22,6 +23,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
@@ -39,6 +41,9 @@ interface UsuarioApiService {
 
     @GET("chamados")
     suspend fun listChamados(@Query("idUser") id: Int): List<ChamadoDto>
+
+    @GET("/avaliacoes/pdf/{id}")
+    suspend fun getAvaliacaoPdf(@Path("id") id: Int): Response<ResponseBody>
 
     @GET("eventos/sala/{id}")
     suspend fun getEventosPorSala(@Path("id") id: Int): List<EventoDto>

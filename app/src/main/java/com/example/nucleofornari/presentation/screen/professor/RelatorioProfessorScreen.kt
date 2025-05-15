@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,14 +18,21 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.nucleofornari.data.model.aluno.AlunoResponseDto
 import com.example.nucleofornari.presentation.common.component.CardOutlinedNucleo
 import com.example.nucleofornari.presentation.common.component.Header
 import com.example.nucleofornari.presentation.navigation.BottomBarScreen
+import com.example.nucleofornari.util.UiState
 import okhttp3.internal.http2.Header
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun RelatorioProfessorScreen(navController: NavController){
+fun RelatorioProfessorScreen(navController: NavController, viewModel: RelatorioProfessorViewModel = getViewModel()){
+
+    val state = viewModel.uiStateAlunosComRelatorio
+
     Scaffold(
         topBar = { Header("Meus relatórios", onClick = {navController.navigate(BottomBarScreen.Inicio.route)}) }
     ) { innerPadding ->
@@ -35,46 +43,39 @@ fun RelatorioProfessorScreen(navController: NavController){
             verticalArrangement = Arrangement.spacedBy(36.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            ListaDeAlunosComData()
+            ListaDeAlunosComData(state, viewModel)
         }
     }
 }
 
 
 @Composable
-fun ListaDeAlunosComData() {
-    val alunos = listOf(
-        "Julia Damacena" to "21/10/2023",
-        "Carlos Silva" to "15/10/2023",
-        "Ana Pereira" to "10/10/2023",
-        "Marcos Souza" to "05/10/2023",
-        "Beatriz Lima" to "01/10/2023",
-        "Julia Damacena" to "21/10/2023",
-        "Carlos Silva" to "15/10/2023",
-        "Ana Pereira" to "10/10/2023",
-        "Marcos Souza" to "05/10/2023",
-        "Beatriz Lima" to "01/10/2023",
-        "Julia Damacena" to "21/10/2023",
-        "Carlos Silva" to "15/10/2023",
-        "Ana Pereira" to "10/10/2023",
-        "Marcos Souza" to "05/10/2023",
-        "Beatriz Lima" to "01/10/2023",
-        "Julia Damacena" to "21/10/2023",
-        "Carlos Silva" to "15/10/2023",
-        "Ana Pereira" to "10/10/2023",
-        "Marcos Souza" to "05/10/2023",
-        "Beatriz Lima" to "01/10/2023",
-        "Julia Damacena" to "21/10/2023",
-        "Carlos Silva" to "15/10/2023",
-        "Ana Pereira" to "10/10/2023",
-        "Marcos Souza" to "05/10/2023",
-        "Beatriz Lima" to "01/10/2023"
+fun ListaDeAlunosComData(state: UiState<List<AlunoResponseDto>>, viewModel: RelatorioProfessorViewModel) {
+    when (state) {
+        is UiState.Loading -> {
+            CircularProgressIndicator()
+        }
+        is UiState.Success -> {
+            val alunosComData = state.data.flatMap { aluno ->
+                aluno.avaliacoes.map { avaliacao ->
+                    aluno.nome to avaliacao
+                }
+            }
 
-    )
-
-    LazyColumn(modifier = Modifier.fillMaxHeight(),verticalArrangement = Arrangement.spacedBy(4.dp),) {
-        items(alunos) { (nome, data) ->
-            CardOutlinedNucleo(nome, data)
+            LazyColumn(
+                modifier = Modifier.fillMaxHeight(),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                items(alunosComData) { (nome, avaliacao) ->
+                    CardOutlinedNucleo(nome, avaliacao.dtCriacao, onclick = { viewModel.downloadAvaliacaoPdf(avaliacao.id) })
+                }
+            }
+        }
+        is UiState.Empty -> {
+            Text(text = "Nenhum aluno encontrado com avaliações.")
+        }
+        is UiState.Error -> {
+            Text(text = state.message ?: "Erro desconhecido")
         }
     }
 }
