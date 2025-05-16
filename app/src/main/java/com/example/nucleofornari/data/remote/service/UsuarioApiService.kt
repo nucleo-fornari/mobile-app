@@ -42,7 +42,7 @@ interface UsuarioApiService {
     @GET("chamados")
     suspend fun listChamados(@Query("idUser") id: Int): List<ChamadoDto>
 
-    @GET("/avaliacoes/pdf/{id}")
+    @GET("avaliacao/pdf/{id}")
     suspend fun getAvaliacaoPdf(@Path("id") id: Int): Response<ResponseBody>
 
     @GET("eventos/sala/{id}")
@@ -90,7 +90,7 @@ interface UsuarioApiService {
 
 object UsuarioApi {
 
-    private val BASE_URL = "http://192.168.18.210:8080/api/"
+    private val BASE_URL = "http://10.18.32.247:8080/api/"
 
     fun getApi(token: String): UsuarioApiService {
 

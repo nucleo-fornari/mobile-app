@@ -51,7 +51,7 @@ interface EventoApiService {
 
 object EventoApi {
 
-    private val BASE_URL = "http://192.168.18.210:8080/api/"
+    private val BASE_URL = "http://10.18.32.247:8080/api/"
 
     fun getApi(token: String): EventoApiService {
 

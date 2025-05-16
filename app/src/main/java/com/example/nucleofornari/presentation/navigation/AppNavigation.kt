@@ -34,6 +34,7 @@ import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
 import com.example.nucleofornari.presentation.screen.professor.CategoriasViewModel
 import com.example.nucleofornari.presentation.screen.professor.ChamadosViewModel
 import com.example.nucleofornari.presentation.screen.professor.InicioProfessorViewModel
+import com.example.nucleofornari.presentation.screen.professor.RelatorioProfessorViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -47,7 +48,7 @@ fun AppNavigation(navController: NavHostController){
     ){
         NavHost(navController = navController, startDestination = BottomBarScreen.Inicio.route) {
 
-            composable(route = BottomBarScreen.Inicio.route) {
+            composable( route = BottomBarScreen.Inicio.route) {
                 val calendarViewModel: CalendarViewModel = koinViewModel();
                 val inicioViewModel: InicioProfessorViewModel = koinViewModel();
                 InicioProfessorScreen(navController, inicioViewModel, calendarViewModel)
@@ -58,7 +59,10 @@ fun AppNavigation(navController: NavHostController){
                 ChamadoProfessorScreen(navController, chamadosViewModel)
             }
 
-            composable(route = BottomBarScreen.Relatorio.route) { RelatorioProfessorScreen(navController) }
+            composable(route = BottomBarScreen.Relatorio.route) {
+                val relatorioViewModel: RelatorioProfessorViewModel = koinViewModel()
+                RelatorioProfessorScreen(navController, relatorioViewModel)
+            }
 
             composable("abrir_chamado") {
                 val chamadosViewModel: ChamadosViewModel = koinViewModel()
