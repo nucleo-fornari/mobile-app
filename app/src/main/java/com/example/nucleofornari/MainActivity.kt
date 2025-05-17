@@ -23,6 +23,8 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// to merge
+
 @Composable
 fun App() {
     val navController = rememberNavController()
