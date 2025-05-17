@@ -45,13 +45,12 @@ interface EventoApiService {
     @PUT("eventos/{id}")
     suspend fun atualizarEvento(
         @Path("id") id: Int,
-        @Body eventoAtualizado: EventoCriacaoReqDto
     ): EventoRespostaDto
 }
 
 object EventoApi {
 
-    private val BASE_URL = "http://10.18.32.247:8080/api/"
+    private val BASE_URL = "http://192.168.200.228:8080/api/"
 
     fun getApi(token: String): EventoApiService {
 

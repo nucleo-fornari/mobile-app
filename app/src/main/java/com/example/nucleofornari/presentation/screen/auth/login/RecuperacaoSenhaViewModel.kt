@@ -36,9 +36,9 @@ class RecuperacaoSenhaViewModel (
                     ?: "Erro desconhecido"
                 _solicitarRedefinicaoUiState.value = UiState.Error(errorMessage)
             } catch (e: IOException) {
-                _solicitarRedefinicaoUiState.value = UiState.Error("Erro de conexão")
+                _solicitarRedefinicaoUiState.value = UiState.Error("Erro de conexão:" + e.message)
             } catch (e: Exception) {
-                _solicitarRedefinicaoUiState.value = UiState.Error("Erro inesperado")
+                _solicitarRedefinicaoUiState.value = UiState.Error("Erro inesperado:" + e.message)
             }
         }
     }
@@ -54,9 +54,9 @@ class RecuperacaoSenhaViewModel (
                     ?: "Erro desconhecido"
                 _enviarTokenUiState.value = UiState.Error(errorMessage)
             } catch (e: IOException) {
-                _enviarTokenUiState.value = UiState.Error("Erro de conexão")
+                _enviarTokenUiState.value = UiState.Error("Erro de conexão:" + e.message)
             } catch (e: Exception) {
-                _enviarTokenUiState.value = UiState.Error("Erro inesperado")
+                _enviarTokenUiState.value = UiState.Error("Erro inesperado:" + e.message)
             }
         }
     }
@@ -78,9 +78,9 @@ class RecuperacaoSenhaViewModel (
                     ?: "Erro desconhecido"
                 _redefinirSenhaUiState.value = UiState.Error(errorMessage)
             } catch (e: IOException) {
-                _redefinirSenhaUiState.value = UiState.Error("Erro de conexão")
+                _redefinirSenhaUiState.value = UiState.Error("Erro de conexão:" + e.message)
             } catch (e: Exception) {
-                _redefinirSenhaUiState.value = UiState.Error("Erro inesperado")
+                _redefinirSenhaUiState.value = UiState.Error("Erro inesperado:" + e.message)
             }
         }
     }
