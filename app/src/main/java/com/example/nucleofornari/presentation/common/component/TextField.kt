@@ -43,7 +43,7 @@ fun NucleoLongTextField(
             focusedTextColor = PretoPrincipal
         ),
         modifier = Modifier
-            .height(300.dp)
+            .height(250.dp)
             .width(300.dp)
     )
 }

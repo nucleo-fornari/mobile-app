@@ -1,5 +1,6 @@
 package com.example.nucleofornari.presentation.common.component
 
+import android.app.DatePickerDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -21,6 +22,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,10 +32,12 @@ import androidx.compose.ui.unit.dp
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.Calendar
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.window.Popup
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -92,12 +96,15 @@ fun DatePickerNucleo() {
 }
 
 @Composable
-fun DatePickerFieldToModalNucleo(modifier: Modifier = Modifier) {
-    var selectedDate by remember { mutableStateOf<Long?>(null) }
+fun DatePickerFieldToModalNucleo(
+    selectedDateMillis: Long?,
+    onDateSelected: (Long) -> Unit,
+    modifier: Modifier = Modifier
+) {
     var showModal by remember { mutableStateOf(false) }
 
     OutlinedTextField(
-        value = selectedDate?.let { convertMillisToDate(it) } ?: "",
+        value = selectedDateMillis?.let { convertMillisToDate(it) } ?: "",
         onValueChange = { },
         label = { Text("Data") },
         placeholder = { Text("DD/MM/AAAA") },
@@ -106,11 +113,8 @@ fun DatePickerFieldToModalNucleo(modifier: Modifier = Modifier) {
         },
         modifier = modifier
             .fillMaxWidth()
-            .pointerInput(selectedDate) {
+            .pointerInput(Unit) {
                 awaitEachGesture {
-                    // Modifier.clickable doesn't work for text fields, so we use Modifier.pointerInput
-                    // in the Initial pass to observe events before the text field consumes them
-                    // in the Main pass.
                     awaitFirstDown(pass = PointerEventPass.Initial)
                     val upEvent = waitForUpOrCancellation(pass = PointerEventPass.Initial)
                     if (upEvent != null) {
@@ -120,15 +124,55 @@ fun DatePickerFieldToModalNucleo(modifier: Modifier = Modifier) {
             }
     )
 
-//    if (showModal) {
-//        DatePickerModal(
-//            onDateSelected = { selectedDate = it },
-//            onDismiss = { showModal = false }
-//        )
-//    }
+    if (showModal) {
+        DatePickerModal(
+            onDateSelected = {
+                onDateSelected(it)
+                showModal = false
+            },
+            onDismiss = { showModal = false }
+        )
+    }
 }
 
+@Composable
+fun DatePickerModal(
+    onDateSelected: (Long) -> Unit,
+    onDismiss: () -> Unit
+) {
+    val context = LocalContext.current
+
+    val calendar = Calendar.getInstance()
+
+    // Estado para controlar o dialog
+    val datePickerDialog = remember {
+        DatePickerDialog(
+            context,
+            { _, year, month, dayOfMonth ->
+                val cal = Calendar.getInstance()
+                cal.set(year, month, dayOfMonth, 0, 0, 0)
+                cal.set(Calendar.MILLISECOND, 0)
+                onDateSelected(cal.timeInMillis)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH), // sem +1
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+    }
+
+
+    // Mostrar o dialog
+    DisposableEffect(Unit) {
+        datePickerDialog.show()
+        onDispose {
+            datePickerDialog.dismiss()
+            onDismiss()
+        }
+    }
+}
+
+
 fun convertMillisToDate(millis: Long): String {
-    val formatter = SimpleDateFormat("dd/mm/yyyy", Locale.getDefault())
+    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     return formatter.format(Date(millis))
 }
