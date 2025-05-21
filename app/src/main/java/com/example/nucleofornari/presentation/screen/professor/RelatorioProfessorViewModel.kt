@@ -1,10 +1,16 @@
 package com.example.nucleofornari.presentation.screen.professor
 
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Environment
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nucleofornari.data.model.SessaoUsuario
@@ -52,7 +58,7 @@ class RelatorioProfessorViewModel (
         }
     }
 
-    fun downloadAvaliacaoPdf(avaliacaoId: Int) {
+    fun downloadAvaliacaoPdf(avaliacaoId: Int, context: Context) {
         val outputDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -60,7 +66,7 @@ class RelatorioProfessorViewModel (
                 val response = api.getAvaliacaoPdf(avaliacaoId)
                 if (response.isSuccessful) {
                     response.body()?.let { responseBody ->
-                        savePdfToFile(responseBody, outputDir, "avaliacao_$avaliacaoId.pdf")
+                        savePdfToFile(responseBody, outputDir, "avaliacao_$avaliacaoId.pdf", context)
                     }
                 } else {
                     Log.e("Download", "Erro na resposta: ${response.code()} - ${response.message()}")
@@ -71,7 +77,12 @@ class RelatorioProfessorViewModel (
         }
     }
 
-    private fun savePdfToFile(body: ResponseBody, outputDir: File, fileName: String) {
+    private fun savePdfToFile(
+        body: ResponseBody,
+        outputDir: File,
+        fileName: String,
+        context: Context
+    ) {
         try {
             val file = File(outputDir, fileName)
             val inputStream: InputStream = body.byteStream()
@@ -80,11 +91,36 @@ class RelatorioProfessorViewModel (
             inputStream.use { input ->
                 outputStream.use { output ->
                     input.copyTo(output)
+                    openFileWithIntent(context, file)
                 }
             }
         } catch (e: Exception) {
             Log.e("Download", "Erro ao salvar PDF: ${e.message}")
         }
     }
+
+    fun openFileWithIntent(context: Context, file: File) {
+        try {
+            val uri: Uri = FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.provider", // ex: com.example.app.provider
+                file
+            )
+
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, "application/pdf")
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+
+            context.startActivity(intent)
+
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(context, "Nenhum app para abrir esse tipo de arquivo.", Toast.LENGTH_LONG).show()
+        } catch (e: Exception) {
+            Toast.makeText(context, "Erro ao abrir arquivo: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+    }
+
 
 }

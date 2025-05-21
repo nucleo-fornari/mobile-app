@@ -1,7 +1,6 @@
 package com.example.nucleofornari.presentation.screen.professor
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,18 +13,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.nucleofornari.data.model.aluno.AlunoResponseDto
 import com.example.nucleofornari.presentation.common.component.CardOutlinedNucleo
 import com.example.nucleofornari.presentation.common.component.Header
 import com.example.nucleofornari.presentation.navigation.BottomBarScreen
 import com.example.nucleofornari.util.UiState
-import okhttp3.internal.http2.Header
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -51,6 +46,7 @@ fun RelatorioProfessorScreen(navController: NavController, viewModel: RelatorioP
 
 @Composable
 fun ListaDeAlunosComData(state: UiState<List<AlunoResponseDto>>, viewModel: RelatorioProfessorViewModel) {
+    val context = LocalContext.current
     when (state) {
         is UiState.Loading -> {
             CircularProgressIndicator()
@@ -67,7 +63,7 @@ fun ListaDeAlunosComData(state: UiState<List<AlunoResponseDto>>, viewModel: Rela
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 items(alunosComData) { (nome, avaliacao) ->
-                    CardOutlinedNucleo(nome, avaliacao.dtCriacao, onclick = { viewModel.downloadAvaliacaoPdf(avaliacao.id) })
+                    CardOutlinedNucleo(nome, avaliacao.dtCriacao, onclick = { viewModel.downloadAvaliacaoPdf(avaliacao.id, context) })
                 }
             }
         }
