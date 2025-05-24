@@ -22,6 +22,8 @@ import com.example.nucleofornari.presentation.common.component.Header
 import com.example.nucleofornari.presentation.navigation.BottomBarScreen
 import com.example.nucleofornari.util.UiState
 import org.koin.androidx.compose.getViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun RelatorioProfessorScreen(navController: NavController, viewModel: RelatorioProfessorViewModel = getViewModel()){
@@ -46,6 +48,8 @@ fun RelatorioProfessorScreen(navController: NavController, viewModel: RelatorioP
 
 @Composable
 fun ListaDeAlunosComData(state: UiState<List<AlunoResponseDto>>, viewModel: RelatorioProfessorViewModel) {
+    val formatterEntrada = DateTimeFormatter.ISO_LOCAL_DATE
+    val formatterSaida = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     val context = LocalContext.current
     when (state) {
         is UiState.Loading -> {
@@ -63,7 +67,12 @@ fun ListaDeAlunosComData(state: UiState<List<AlunoResponseDto>>, viewModel: Rela
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 items(alunosComData) { (nome, avaliacao) ->
-                    CardOutlinedNucleo(nome, avaliacao.dtCriacao, onclick = { viewModel.downloadAvaliacaoPdf(avaliacao.id, context) })
+                    val dataFormatada = try {
+                        LocalDate.parse(avaliacao.dtCriacao, formatterEntrada).format(formatterSaida)
+                    } catch (e: Exception) {
+                        avaliacao.dtCriacao
+                    }
+                    CardOutlinedNucleo(nome, dataFormatada, onclick = { viewModel.downloadAvaliacaoPdf(avaliacao.id, context) })
                 }
             }
         }

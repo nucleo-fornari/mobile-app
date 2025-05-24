@@ -108,7 +108,7 @@ fun AgendaScreen(navController: NavHostController, viewModel: AgendaViewModel = 
                             ) {
                                 Text(
                                     text = "Agenda de ",
-                                    style = AppTypography.headlineLarge,
+                                    style = AppTypography.headlineMedium,
                                     fontWeight = FontWeight.Bold,
                                     color = AzulPrincipal
                                 )
@@ -120,7 +120,7 @@ fun AgendaScreen(navController: NavHostController, viewModel: AgendaViewModel = 
                                     ) {
                                         Text(
                                             text = alunoSelecionado?.nome ?: "Selecione um aluno",
-                                            style = AppTypography.headlineLarge,
+                                            style = AppTypography.headlineMedium,
                                             fontWeight = FontWeight.Bold,
                                             color = AzulPrincipal
                                         )

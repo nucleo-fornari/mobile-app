@@ -75,7 +75,7 @@ fun PublicacoesScreen(
                 ) {
                     Text(
                         text = "Publicações",
-                        style = AppTypography.headlineLarge,
+                        style = AppTypography.headlineMedium,
                         fontWeight = FontWeight.Bold,
                         color = AzulPrincipal,
                         modifier = Modifier.padding(vertical = 20.dp)
