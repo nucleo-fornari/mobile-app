@@ -1,14 +1,9 @@
-package com.example.nucleofornari.presentation.screen.professor
+package com.example.nucleofornari.presentation.screen.responsavel
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,63 +15,42 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.nucleofornari.data.model.chamado.ChamadoDto
 import com.example.nucleofornari.presentation.common.component.Header
 import com.example.nucleofornari.presentation.common.theme.Success
 import com.example.nucleofornari.presentation.common.component.AppIcons
 import com.example.nucleofornari.presentation.common.component.BlueButton
 import com.example.nucleofornari.presentation.common.component.CardNucleo
-import com.example.nucleofornari.presentation.common.theme.NucleoFornariTheme
 import com.example.nucleofornari.presentation.common.theme.Warning
 import com.example.nucleofornari.presentation.navigation.BottomBarScreen
 import com.example.nucleofornari.util.UiState
 
 @Composable
-fun ChamadoProfessorScreen(
+fun ReunioesSolicitasScreen(
     navController: NavController,
-    viewModel: ChamadosViewModel
+    viewModel: ReunioesViewModel
 ) {
 
-    val uiState by viewModel.listChamadosByIdUiState.collectAsState()
     var chamados by remember { mutableStateOf(emptyList<ChamadoDto>()) }
 
     LaunchedEffect(Unit) {
-        viewModel.listChamadosById()
-    }
 
-    when (uiState) {
-        is UiState.Success<*> -> chamados = (uiState as UiState.Success<List<ChamadoDto>>).data
-        else -> {}
     }
 
     Scaffold(
-        topBar = { Header("Meus chamados", onClick = {navController.navigate(BottomBarScreen.Inicio.route)}) }
-    ,
-    bottomBar = {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            BlueButton("Abrir chamado", Color.White, onClick = {navController.navigate("abrir_chamado")})
-        }
-    }
-    )
-    { innerPadding ->
-        LazyColumn(
+        topBar = { Header("Minhas solicitações", onClick = {navController.navigate(BottomBarScreen.Inicio.route)}) }
+    ) { innerPadding ->
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(vertical = 24.dp)
-        )
-        {
-            items(chamados.reversed()) { x ->
+                .padding(innerPadding),
+            verticalArrangement = Arrangement.spacedBy(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            chamados.reversed().forEach { x ->
                 CardNucleo(
                     x.descricao,
                     {
@@ -90,6 +64,8 @@ fun ChamadoProfessorScreen(
                 )
             }
 
+
+            BlueButton("Solicitar reunião", Color.White, onClick = {navController.navigate("")})
         }
     }
 }
