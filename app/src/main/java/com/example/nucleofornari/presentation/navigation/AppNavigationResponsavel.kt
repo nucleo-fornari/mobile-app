@@ -33,6 +33,7 @@ import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
 import com.example.nucleofornari.presentation.screen.responsavel.AgendaScreen
 import com.example.nucleofornari.presentation.screen.responsavel.PublicacoesScreen
 import com.example.nucleofornari.presentation.screen.responsavel.ReunioesScreen
+import com.example.nucleofornari.presentation.screen.responsavel.ReunioesSolicitasScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -46,7 +47,8 @@ fun AppNavigationResponsavel(navController: NavHostController){
         NavHost(navController = navController, startDestination = BottomBarScreen.Agenda.route) {
             composable(route = BottomBarScreen.Agenda.route) { AgendaScreen(navController) }
             composable(route = BottomBarScreen.Publicacao.route) { PublicacoesScreen(navController) }
-            composable(route = BottomBarScreen.Reuniao.route) { ReunioesScreen(navController) }
+            composable(route = BottomBarScreen.Reuniao.route) { ReunioesSolicitasScreen(navController) }
+            composable(route = "solicitar_reuniao") { ReunioesScreen(navController) }
         }
     }
 }

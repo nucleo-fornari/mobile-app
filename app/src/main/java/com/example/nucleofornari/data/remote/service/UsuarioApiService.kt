@@ -52,11 +52,11 @@ interface UsuarioApiService {
     @GET("salas/{id}")
     suspend fun getSalaPorId(@Path("id") id: Int): SalaDto
 
-    @GET("agendamento/{id}")
-    suspend fun getAgendamentos(@Path("id") id: Int): List<AgendamentoDto>
-
     @POST("agendamento/proposta")
     suspend fun createAgendamento(@Body agendamentoDto: AgendamentoDto): AgendamentoDto
+
+    @GET("agendamento")
+    suspend fun getAgendamentosPorUsuario(@Query("usuarioId") usuarioId: Int): List<AgendamentoDto>
 
     @GET("usuarios/professores")
     fun getProfessoresSemSala(): List<UsuarioResponseDto>
