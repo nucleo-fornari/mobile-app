@@ -14,6 +14,7 @@ import com.example.nucleofornari.presentation.screen.professor.ChamadosViewModel
 import com.example.nucleofornari.presentation.screen.professor.InicioProfessorViewModel
 import com.example.nucleofornari.presentation.screen.professor.RelatorioProfessorViewModel
 import com.example.nucleofornari.presentation.screen.responsavel.PublicacoesViewModel
+import com.example.nucleofornari.presentation.screen.responsavel.ReunioesSolicitadasViewModel
 import com.example.nucleofornari.presentation.screen.responsavel.ReunioesViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -43,4 +44,5 @@ val moduloApiReal = module {
     viewModel<InicioProfessorViewModel>{ InicioProfessorViewModel(get(), get())}
     viewModel<RelatorioProfessorViewModel> { RelatorioProfessorViewModel(get(), get())}
     viewModel<ReunioesViewModel> { ReunioesViewModel(get(), get())}
+    viewModel<ReunioesSolicitadasViewModel> { ReunioesSolicitadasViewModel(get(), get())}
 }

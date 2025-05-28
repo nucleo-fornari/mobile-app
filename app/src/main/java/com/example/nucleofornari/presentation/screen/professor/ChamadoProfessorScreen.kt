@@ -81,6 +81,9 @@ fun ChamadoProfessorScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
+                .padding(bottom = 54.dp),
+            contentAlignment = Alignment.BottomCenter
+
         ) {
             BlueButton("Abrir chamado", Color.White, onClick = {navController.navigate("abrir_chamado")})
         }
@@ -93,6 +96,7 @@ fun ChamadoProfessorScreen(
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
             contentPadding = PaddingValues(vertical = 24.dp)
         )
         {
