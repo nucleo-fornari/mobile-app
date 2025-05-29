@@ -33,6 +33,7 @@ import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
 import com.example.nucleofornari.presentation.common.component.BlueButton
 import com.example.nucleofornari.presentation.common.component.Header
 import com.example.nucleofornari.presentation.common.component.NucleoTextField
+import com.example.nucleofornari.presentation.common.component.PasswordInputField
 import com.example.nucleofornari.util.UiState
 
 @Composable
@@ -73,10 +74,9 @@ fun LoginScreen(
                     onValueChange = { email = it }
                 )
 
-                NucleoTextField(
-                    labelText = "Senha",
-                    value = senha,
-                    onValueChange = { senha = it }
+                PasswordInputField(
+                    password = senha,
+                    onPasswordChange = { senha = it }
                 )
 
                 Text(text = "Esqueceu a senha?", color = AzulPrincipal, modifier = Modifier.clickable { navController.navigate("esqueceu_senha") })
