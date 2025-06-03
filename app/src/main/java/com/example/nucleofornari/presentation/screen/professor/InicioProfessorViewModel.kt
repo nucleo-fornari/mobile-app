@@ -8,8 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.nucleofornari.data.model.SessaoUsuario
 import com.example.nucleofornari.data.model.aluno.AlunoResponseDto
 import com.example.nucleofornari.data.remote.service.UsuarioApiService
+import com.example.nucleofornari.util.ErrorUtils
 import com.example.nucleofornari.util.UiState
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 
 class InicioProfessorViewModel (
     private val sessaoUsuario: SessaoUsuario,
@@ -36,8 +39,21 @@ class InicioProfessorViewModel (
                         uiStateAlunos = UiState.Error("ID da sala não encontrado para o professor logado.")
                     }
                 }
+            } catch (e: IOException) {
+                uiStateAlunos = UiState.Error("Erro de conexão. Verifique sua internet.")
             } catch (e: Exception) {
-                uiStateAlunos = UiState.Error("Erro ao carregar alunos da sala: ${e.message}")
+                val errorMessage = when (e) {
+                    is HttpException -> {
+                        val errorBody = e.response()?.errorBody()
+                        if (errorBody != null)
+                            ErrorUtils.parseErrorMessage(errorBody)
+                        else
+                            "Erro desconhecido do servidor"
+                    }
+                    else -> "Erro inesperado: ${e.message}"
+                }
+
+                uiStateAlunos = UiState.Error(errorMessage)
             }
 
         }

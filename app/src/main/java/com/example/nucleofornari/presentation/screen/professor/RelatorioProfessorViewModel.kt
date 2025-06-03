@@ -16,12 +16,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.nucleofornari.data.model.SessaoUsuario
 import com.example.nucleofornari.data.model.aluno.AlunoResponseDto
 import com.example.nucleofornari.data.remote.service.UsuarioApiService
+import com.example.nucleofornari.util.ErrorUtils
 import com.example.nucleofornari.util.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
+import retrofit2.HttpException
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 
@@ -51,8 +54,21 @@ class RelatorioProfessorViewModel (
                         uiStateAlunosComRelatorio = UiState.Error("ID da sala não encontrado para o professor logado.")
                     }
                 }
+            }catch (e: IOException) {
+                uiStateAlunosComRelatorio = UiState.Error("Erro de conexão. Verifique sua internet.")
             } catch (e: Exception) {
-                uiStateAlunosComRelatorio = UiState.Error("Erro ao carregar alunos da sala: ${e.message}")
+                val errorMessage = when (e) {
+                    is HttpException -> {
+                        val errorBody = e.response()?.errorBody()
+                        if (errorBody != null)
+                            ErrorUtils.parseErrorMessage(errorBody)
+                        else
+                            "Erro desconhecido do servidor"
+                    }
+                    else -> "Erro inesperado: ${e.message}"
+                }
+
+                uiStateAlunosComRelatorio = UiState.Error(errorMessage)
             }
 
         }
@@ -71,8 +87,21 @@ class RelatorioProfessorViewModel (
                 } else {
                     Log.e("Download", "Erro na resposta: ${response.code()} - ${response.message()}")
                 }
+            } catch (e: IOException) {
+                Toast.makeText(context, "Erro de conexão. Verifique sua internet.", Toast.LENGTH_LONG).show()
             } catch (e: Exception) {
-                Log.e("Download", "Erro ao baixar PDF: ${e.message}")
+                val errorMessage = when (e) {
+                    is HttpException -> {
+                        val errorBody = e.response()?.errorBody()
+                        if (errorBody != null)
+                            ErrorUtils.parseErrorMessage(errorBody)
+                        else
+                            "Erro desconhecido do servidor"
+                    }
+                    else -> "Erro inesperado: ${e.message}"
+                }
+
+                Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
             }
         }
     }

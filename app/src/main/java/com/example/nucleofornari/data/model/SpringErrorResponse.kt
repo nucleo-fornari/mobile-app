@@ -4,6 +4,6 @@ data class SpringErrorResponse(
     val timestamp: String?,
     val status: Int?,
     val error: String?,
-    val message: String?,
+    val text: String?,
     val path: String?
 )

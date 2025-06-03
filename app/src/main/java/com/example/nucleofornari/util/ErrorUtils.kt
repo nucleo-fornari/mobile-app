@@ -10,7 +10,7 @@ object ErrorUtils {
         return try {
             val gson = Gson()
             val errorResponse = gson.fromJson(errorBody.charStream(), SpringErrorResponse::class.java)
-            errorResponse.message ?: "Erro desconhecido"
+            errorResponse.text ?: "Erro desconhecido"
         } catch (ex: Exception) {
             "Erro desconhecido"
         }

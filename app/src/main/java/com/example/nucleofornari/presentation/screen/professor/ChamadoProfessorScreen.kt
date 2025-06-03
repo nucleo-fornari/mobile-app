@@ -50,29 +50,6 @@ fun ChamadoProfessorScreen(
         viewModel.listChamadosById()
     }
 
-    when (uiState) {
-        is UiState.Success<*> -> chamados = (uiState as UiState.Success<List<ChamadoDto>>).data
-
-        is UiState.Loading -> {
-            CircularProgressIndicator()
-        }
-
-        is UiState.Error -> {
-            Text(
-                text = (uiState as UiState.Error).message,
-                color = Color.Red,
-                modifier = Modifier.padding(16.dp)
-            )
-        }
-
-        is UiState.Empty -> {
-            Text(
-                text = "Nenhum chamado solicitado.",
-                modifier = Modifier.padding(16.dp)
-            )
-        }
-    }
-
     Scaffold(
         topBar = { Header("Meus chamados", onClick = {navController.navigate(BottomBarScreen.Inicio.route)}) }
     ,
@@ -90,30 +67,63 @@ fun ChamadoProfessorScreen(
     }
     )
     { innerPadding ->
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = PaddingValues(vertical = 24.dp)
-        )
-        {
-            items(chamados.reversed()) { x ->
-                CardNucleo(
-                    x.descricao,
-                    {
-                        if (x.finalizado == true) {
-                            AppIcons.CheckCircle(Success)
-                        } else {
-                            AppIcons.CheckCircle(Warning)
-                        }
-                    },
-                    onclick = {}
-                )
+                .padding(innerPadding),
+            verticalArrangement = Arrangement.spacedBy(36.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            when (uiState) {
+                is UiState.Success<*> -> chamados = (uiState as UiState.Success<List<ChamadoDto>>).data
+
+                is UiState.Loading -> {
+                    CircularProgressIndicator()
+                }
+
+                is UiState.Error -> {
+                    Text(
+                        text = (uiState as UiState.Error).message,
+                        color = Color.Red,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+
+                is UiState.Empty -> {
+                    Text(
+                        text = "Nenhum chamado solicitado.",
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
             }
 
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                contentPadding = PaddingValues(vertical = 24.dp)
+            )
+            {
+                items(chamados.reversed()) { x ->
+                    CardNucleo(
+                        x.descricao,
+                        {
+                            if (x.finalizado == true) {
+                                AppIcons.CheckCircle(Success)
+                            } else {
+                                AppIcons.CheckCircle(Warning)
+                            }
+                        },
+                        onclick = {}
+                    )
+                }
+
+            }
         }
+
+
     }
 }
