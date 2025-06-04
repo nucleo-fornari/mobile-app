@@ -9,8 +9,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.nucleofornari.data.model.SessaoUsuario
 import com.example.nucleofornari.data.model.aluno.AlunoResponseDto
 import com.example.nucleofornari.data.remote.service.UsuarioApiService
+import com.example.nucleofornari.util.ErrorUtils
 import com.example.nucleofornari.util.UiState
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -61,11 +64,23 @@ class AgendaViewModel(
                 }
 
                 _uiStateAfiliados.value = UiState.Success(afiliadosMapeados)
+            } catch (e: IOException) {
+                _uiStateAfiliados.value = UiState.Error("Erro de conexão. Verifique sua internet.")
             } catch (e: Exception) {
-                _uiStateAfiliados.value = UiState.Error("Erro ao buscar afiliado: ${e.message}")
+                val errorMessage = when (e) {
+                    is HttpException -> {
+                        val errorBody = e.response()?.errorBody()
+                        if (errorBody != null)
+                            ErrorUtils.parseErrorMessage(errorBody)
+                        else
+                            "Erro desconhecido do servidor"
+                    }
+                    else -> "Erro inesperado: ${e.message}"
+                }
+
+                _uiStateAfiliados.value = UiState.Error(errorMessage)
             }
         }
-
     }
 
     private fun formatarData(dataIso: String): String {

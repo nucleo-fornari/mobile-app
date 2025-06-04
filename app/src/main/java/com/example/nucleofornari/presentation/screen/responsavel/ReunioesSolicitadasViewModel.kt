@@ -7,15 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nucleofornari.data.model.SessaoUsuario
 import com.example.nucleofornari.data.model.agendamento.AgendamentoDto
-import com.example.nucleofornari.data.model.chamado.ChamadoDto
-import com.example.nucleofornari.data.model.evento.EventoDto
 import com.example.nucleofornari.data.remote.service.UsuarioApiService
+import com.example.nucleofornari.util.ErrorUtils
 import com.example.nucleofornari.util.UiState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 
-class ReunioesSolicitadasViewModel (
+class ReunioesSolicitadasViewModel(
     private val sessaoUsuario: SessaoUsuario,
     private val api: UsuarioApiService
 ) : ViewModel() {
@@ -29,15 +28,24 @@ class ReunioesSolicitadasViewModel (
 
     private fun getReunioes() {
         viewModelScope.launch {
+            uiStateReunioes = UiState.Loading
             try {
                 val reunioes = api.getAgendamentosPorUsuario(sessaoUsuario.userId)
-
                 uiStateReunioes = UiState.Success(reunioes)
 
+            } catch (e: IOException) {
+                uiStateReunioes = UiState.Error("Erro de conexão. Verifique sua internet.")
+            } catch (e: HttpException) {
+                val errorBody = e.response()?.errorBody()
+                val errorMessage = if (errorBody != null) {
+                    ErrorUtils.parseErrorMessage(errorBody)
+                } else {
+                    "Erro desconhecido do servidor"
+                }
+                uiStateReunioes = UiState.Error(errorMessage)
             } catch (e: Exception) {
-                uiStateReunioes = UiState.Error("Erro ao carregar reuniões solicitadas: ${e.message}")
+                uiStateReunioes = UiState.Error("Erro inesperado: ${e.message}")
             }
         }
     }
-
 }

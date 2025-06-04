@@ -10,9 +10,12 @@ import com.example.nucleofornari.data.model.SessaoUsuario
 import com.example.nucleofornari.data.model.agendamento.AgendamentoDto
 import com.example.nucleofornari.data.model.aluno.AlunoResponseDto
 import com.example.nucleofornari.data.remote.service.UsuarioApiService
+import com.example.nucleofornari.util.ErrorUtils
 import com.example.nucleofornari.util.UiState
 import com.example.nucleofornari.util.convertMillisToIso
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 
 class ReunioesViewModel(
     private val sessaoUsuario: SessaoUsuario,
@@ -41,7 +44,6 @@ class ReunioesViewModel(
     fun atualizarDescricao(novaDescricao: String) {
         descricao = novaDescricao
     }
-
 
     fun selecionarCategoria(categoria: String) {
         categoriaSelecionada = categoria
@@ -78,13 +80,21 @@ class ReunioesViewModel(
                 }
 
                 _uiStateAfiliados.value = UiState.Success(afiliadosMapeados)
+            } catch (e: IOException) {
+                _uiStateAfiliados.value = UiState.Error("Erro de conexão. Verifique sua internet.")
+            } catch (e: HttpException) {
+                val errorBody = e.response()?.errorBody()
+                val errorMessage = if (errorBody != null) {
+                    ErrorUtils.parseErrorMessage(errorBody)
+                } else {
+                    "Erro desconhecido do servidor"
+                }
+                _uiStateAfiliados.value = UiState.Error(errorMessage)
             } catch (e: Exception) {
-                _uiStateAfiliados.value = UiState.Error("Erro ao buscar afiliado: ${e.message}")
+                _uiStateAfiliados.value = UiState.Error("Erro inesperado: ${e.message}")
             }
         }
-
     }
-
     fun criarAgendamento(
         salaId: Int,
         motivo: String,
@@ -107,11 +117,19 @@ class ReunioesViewModel(
             try {
                 api.createAgendamento(agendamento)
                 onSuccess()
+            } catch (e: IOException) {
+                onError(IOException("Erro de conexão. Verifique sua internet."))
+            } catch (e: HttpException) {
+                val errorBody = e.response()?.errorBody()
+                val errorMessage = if (errorBody != null) {
+                    ErrorUtils.parseErrorMessage(errorBody)
+                } else {
+                    "Erro desconhecido do servidor"
+                }
+                onError(Exception("Erro ao criar agendamento: $errorMessage"))
             } catch (e: Exception) {
-                onError(e)
+                onError(Exception("Erro inesperado: ${e.message}"))
             }
         }
     }
-
-
 }
