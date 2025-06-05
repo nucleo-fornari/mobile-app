@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.CircularProgressIndicator
+import com.example.nucleofornari.ui.theme.components.NucleoLoading
 import androidx.compose.material.Text
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -59,10 +59,15 @@ fun ReunioesSolicitasScreen(
             }
         }
     ) { innerPadding ->
-
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
             when (state){
                 is UiState.Loading -> {
-                    CircularProgressIndicator()
+                    NucleoLoading()
                 }
 
                 is UiState.Error -> {
@@ -71,13 +76,9 @@ fun ReunioesSolicitasScreen(
 
                 is UiState.Success -> {
                     LazyColumn(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding)
-                            .padding(horizontal = 16.dp),
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        contentPadding = PaddingValues(vertical = 24.dp)
+                        contentPadding = PaddingValues(bottom = 16.dp)
                     ){
                         items(state.data.reversed()) { x ->
                             CardNucleo(
@@ -102,5 +103,8 @@ fun ReunioesSolicitasScreen(
 
 
             }
+        }
+
+
     }
 }

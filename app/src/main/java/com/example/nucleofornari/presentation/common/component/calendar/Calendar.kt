@@ -20,7 +20,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
+import com.example.nucleofornari.ui.theme.components.NucleoLoading
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -250,8 +250,8 @@ fun Calendar(viewModel: CalendarViewModel) {
 
         selectedDate?.let { date ->
             when (eventosState) {
-                is UiState.Loading -> CircularProgressIndicator()
-                is UiState.Error -> Text("Erro ao carregar eventos: ${(eventosState as UiState.Error).message}")
+                is UiState.Loading -> NucleoLoading()
+                is UiState.Error -> Text((eventosState as UiState.Error).message)
                 is UiState.Success -> {
                     val eventosDoDia = (eventosState as? UiState.Success)?.data?.get(date).orEmpty()
                     if (eventosDoDia.isNotEmpty()) {

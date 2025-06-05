@@ -20,6 +20,7 @@ import com.example.nucleofornari.util.ErrorUtils
 import com.example.nucleofornari.util.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import retrofit2.HttpException
 import java.io.File
@@ -88,7 +89,10 @@ class RelatorioProfessorViewModel (
                     Log.e("Download", "Erro na resposta: ${response.code()} - ${response.message()}")
                 }
             } catch (e: IOException) {
-                Toast.makeText(context, "Erro de conexão. Verifique sua internet.", Toast.LENGTH_LONG).show()
+                Log.d("TAG", "entrei no catch")
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Erro de conexão. Verifique sua internet.", Toast.LENGTH_LONG).show()
+                }
             } catch (e: Exception) {
                 val errorMessage = when (e) {
                     is HttpException -> {
@@ -100,13 +104,15 @@ class RelatorioProfessorViewModel (
                     }
                     else -> "Erro inesperado: ${e.message}"
                 }
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+                }
 
-                Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
             }
         }
     }
 
-    private fun savePdfToFile(
+    private suspend fun savePdfToFile(
         body: ResponseBody,
         outputDir: File,
         fileName: String,
@@ -128,7 +134,7 @@ class RelatorioProfessorViewModel (
         }
     }
 
-    fun openFileWithIntent(context: Context, file: File) {
+    suspend fun openFileWithIntent(context: Context, file: File) {
         try {
             val uri: Uri = FileProvider.getUriForFile(
                 context,
@@ -145,9 +151,15 @@ class RelatorioProfessorViewModel (
             context.startActivity(intent)
 
         } catch (e: ActivityNotFoundException) {
-            Toast.makeText(context, "Nenhum app para abrir esse tipo de arquivo.", Toast.LENGTH_LONG).show()
+            withContext(Dispatchers.Main) {
+                Toast.makeText(context, "Nenhum app para abrir esse tipo de arquivo.", Toast.LENGTH_LONG).show()
+            }
+
         } catch (e: Exception) {
-            Toast.makeText(context, "Erro ao abrir arquivo: ${e.message}", Toast.LENGTH_LONG).show()
+            withContext(Dispatchers.Main) {
+                Toast.makeText(context, "Erro ao abrir arquivo: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+
         }
     }
 

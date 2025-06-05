@@ -7,10 +7,13 @@ import com.example.nucleofornari.data.model.SessaoUsuario
 import com.example.nucleofornari.data.model.evento.EventoCriacaoReqDto
 import com.example.nucleofornari.data.model.evento.EventoRespostaDto
 import com.example.nucleofornari.data.remote.service.EventoApiService
+import com.example.nucleofornari.util.ErrorUtils
 import com.example.nucleofornari.util.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -66,8 +69,20 @@ class CalendarViewModel(
                 }.groupBy { it.second }.mapValues { entry -> entry.value.map { it.first } }
 
                 _listEventosState.value = UiState.Success(agrupados)
-            } catch (e: Exception) {
-                _listEventosState.value = UiState.Error("Erro ao carregar eventos: ${e.message}")
+            } catch (e: IOException) {
+                _listEventosState.value = UiState.Error("Erro de conexão. Verifique sua internet.")
+            }catch (e: Exception) {
+                val errorMessage = when (e) {
+                    is HttpException -> {
+                        val errorBody = e.response()?.errorBody()
+                        if (errorBody != null)
+                            ErrorUtils.parseErrorMessage(errorBody)
+                        else
+                            "Erro desconhecido do servidor"
+                    }
+                    else -> "Erro inesperado: ${e.message}"
+                }
+                _listEventosState.value = UiState.Error(errorMessage)
             }
         }
     }

@@ -97,7 +97,7 @@ interface UsuarioApiService {
 
 object UsuarioApi {
 
-    private val BASE_URL = "http://192.168.0.109:8080/api/"
+    private val BASE_URL = "http://nucleofornari.serveminecraft.net/api/"
 
     fun getApi(token: String): UsuarioApiService {
 

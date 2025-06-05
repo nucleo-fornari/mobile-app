@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.CircularProgressIndicator
+import com.example.nucleofornari.ui.theme.components.NucleoLoading
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -86,7 +86,7 @@ fun ReunioesScreen(navController: NavController, viewModel: ReunioesViewModel = 
                 ) {
                     when (val state = uiStateAfiliados) {
                         is UiState.Loading -> {
-                            CircularProgressIndicator()
+                            NucleoLoading()
                         }
 
                         is UiState.Error -> {

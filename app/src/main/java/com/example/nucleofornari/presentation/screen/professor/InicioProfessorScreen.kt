@@ -3,6 +3,7 @@ package com.example.nucleofornari.presentation.screen.professor
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -12,7 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.CircularProgressIndicator
+import com.example.nucleofornari.ui.theme.components.NucleoLoading
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
@@ -69,7 +70,7 @@ fun InicioProfessorScreen(navController: NavController, viewModel: InicioProfess
         ) { innerPadding ->
             Column(
                 modifier = Modifier
-                    .fillMaxHeight()
+                    .fillMaxSize()
                     .padding(innerPadding),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -106,9 +107,9 @@ fun ListaDeAlunos(state: UiState<List<AlunoResponseDto>>) {
     when (state) {
         is UiState.Success -> {
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                contentPadding = PaddingValues(bottom = 16.dp)
             ) {
                 items(state.data) { aluno ->
                     CardNucleo(aluno.nome, { AppIcons.CheckCircle(Success) }, onclick = {})
@@ -119,7 +120,7 @@ fun ListaDeAlunos(state: UiState<List<AlunoResponseDto>>) {
             Text(text = state.message, color = Color.Red)
         }
         UiState.Loading -> {
-            CircularProgressIndicator()
+            NucleoLoading()
         }
         else -> {}
     }

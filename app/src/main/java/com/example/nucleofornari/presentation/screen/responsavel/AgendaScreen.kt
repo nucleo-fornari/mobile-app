@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.CircularProgressIndicator
+import com.example.nucleofornari.ui.theme.components.NucleoLoading
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuBox
@@ -90,7 +90,7 @@ fun AgendaScreen(navController: NavHostController, viewModel: AgendaViewModel = 
                 ) {
                     when (val state = uiStateAfiliados) {
                         is UiState.Loading -> {
-                            CircularProgressIndicator()
+                            NucleoLoading()
                         }
 
                         is UiState.Error -> {

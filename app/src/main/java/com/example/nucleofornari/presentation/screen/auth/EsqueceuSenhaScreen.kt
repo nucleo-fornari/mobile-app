@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.CircularProgressIndicator
+import com.example.nucleofornari.ui.theme.components.NucleoLoading
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -69,7 +69,7 @@ fun EsqueceuSenhaScreen(navController: NavController, viewModel: RecuperacaoSenh
                     modifier = Modifier.padding(top = 16.dp)
                 )
                 is UiState.Loading -> {
-                    CircularProgressIndicator()
+                    NucleoLoading()
                 }
                 is UiState.Success<*> -> {
                     navController.currentBackStackEntry?.savedStateHandle?.set("email", email)

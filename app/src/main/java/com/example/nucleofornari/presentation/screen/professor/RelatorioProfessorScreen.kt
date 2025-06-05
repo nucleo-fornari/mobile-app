@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
+import com.example.nucleofornari.ui.theme.components.NucleoLoading
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -53,7 +53,7 @@ fun ListaDeAlunosComData(state: UiState<List<AlunoResponseDto>>, viewModel: Rela
     val context = LocalContext.current
     when (state) {
         is UiState.Loading -> {
-            CircularProgressIndicator()
+            NucleoLoading()
         }
         is UiState.Success -> {
             val alunosComData = state.data.flatMap { aluno ->

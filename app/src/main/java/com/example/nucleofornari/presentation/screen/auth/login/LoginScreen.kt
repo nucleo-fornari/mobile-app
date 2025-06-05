@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CircularProgressIndicator
+import com.example.nucleofornari.ui.theme.components.NucleoLoading
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -81,16 +81,18 @@ fun LoginScreen(
 
                 Text(text = "Esqueceu a senha?", color = AzulPrincipal, modifier = Modifier.clickable { navController.navigate("esqueceu_senha") })
             }
-            Spacer(Modifier.height(100.dp))
-//            BlueButton("Continuar SEM login", AzulPrincipal, onClick = {navController.navigate("main")})
+            Spacer(Modifier.height(54.dp))
 
             BlueButton("Continuar", AzulPrincipal, onClick = {
                 viewModel.login(email, senha)
             })
 
+            Spacer(Modifier.height(16.dp))
+
+
             when (uiState) {
                 is UiState.Loading -> {
-                    CircularProgressIndicator()
+                    NucleoLoading()
                 }
 
                 is UiState.Error -> {

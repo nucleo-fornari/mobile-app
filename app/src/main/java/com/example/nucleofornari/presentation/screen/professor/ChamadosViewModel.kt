@@ -1,8 +1,12 @@
 package com.example.nucleofornari.presentation.screen.professor
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nucleofornari.data.model.SessaoUsuario
+import com.example.nucleofornari.data.model.agendamento.AgendamentoDto
 import com.example.nucleofornari.data.model.chamado.ChamadoDto
 import com.example.nucleofornari.data.remote.service.UsuarioApiService
 import com.example.nucleofornari.util.ErrorUtils
@@ -19,11 +23,16 @@ class ChamadosViewModel (
     private val api: UsuarioApiService
 ) : ViewModel() {
 
+    var uiStateChamados by mutableStateOf<UiState<List<ChamadoDto>>>(UiState.Loading)
+        private set
+
     private val _createChamadoState = MutableStateFlow<UiState<ChamadoDto?>>(UiState.Empty)
     val createChamadoUiState: StateFlow<UiState<ChamadoDto?>> = _createChamadoState
 
-    private val _listChamadosByIdUiState = MutableStateFlow<UiState<List<ChamadoDto>>>(UiState.Empty)
-    val listChamadosByIdUiState: StateFlow<UiState<List<ChamadoDto>>> = _listChamadosByIdUiState
+
+    init {
+        listChamadosById()
+    }
 
     fun createChamado(chamado: ChamadoDto) {
         viewModelScope.launch {
@@ -55,11 +64,12 @@ class ChamadosViewModel (
 
     fun listChamadosById() {
         viewModelScope.launch {
-            _listChamadosByIdUiState.value = UiState.Loading
             try {
-                _listChamadosByIdUiState.value = UiState.Success(api.listChamados(sessaoUsuario.userId))
+                val chamados = api.listChamados(sessaoUsuario.userId)
+
+                uiStateChamados = UiState.Success(chamados)
             } catch (e: IOException) {
-                _listChamadosByIdUiState.value = UiState.Error("Erro de conexão. Verifique sua internet.")
+                uiStateChamados = UiState.Error("Erro de conexão. Verifique sua internet.")
             } catch (e: Exception) {
                 val errorMessage = when (e) {
                     is HttpException -> {
@@ -72,7 +82,7 @@ class ChamadosViewModel (
                     else -> "Erro inesperado: ${e.message}"
                 }
 
-                _listChamadosByIdUiState.value = UiState.Error(errorMessage)
+                uiStateChamados = UiState.Error(errorMessage)
             }
         }
     }

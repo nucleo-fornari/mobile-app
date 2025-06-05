@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
+import com.example.nucleofornari.ui.theme.components.NucleoLoading
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,19 +36,15 @@ import com.example.nucleofornari.presentation.common.theme.NucleoFornariTheme
 import com.example.nucleofornari.presentation.common.theme.Warning
 import com.example.nucleofornari.presentation.navigation.BottomBarScreen
 import com.example.nucleofornari.util.UiState
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun ChamadoProfessorScreen(
     navController: NavController,
-    viewModel: ChamadosViewModel
+    viewModel: ChamadosViewModel = getViewModel()
 ) {
 
-    val uiState by viewModel.listChamadosByIdUiState.collectAsState()
-    var chamados by remember { mutableStateOf(emptyList<ChamadoDto>()) }
-
-    LaunchedEffect(Unit) {
-        viewModel.listChamadosById()
-    }
+    val uiState = viewModel.uiStateChamados
 
     Scaffold(
         topBar = { Header("Meus chamados", onClick = {navController.navigate(BottomBarScreen.Inicio.route)}) }
@@ -71,22 +67,41 @@ fun ChamadoProfessorScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            verticalArrangement = Arrangement.spacedBy(36.dp),
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        ) {
             when (uiState) {
-                is UiState.Success<*> -> chamados = (uiState as UiState.Success<List<ChamadoDto>>).data
-
                 is UiState.Loading -> {
-                    CircularProgressIndicator()
+                    NucleoLoading()
                 }
 
                 is UiState.Error -> {
                     Text(
-                        text = (uiState as UiState.Error).message,
+                        text = uiState.message,
                         color = Color.Red,
                         modifier = Modifier.padding(16.dp)
                     )
+                }
+                is UiState.Success -> {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        contentPadding = PaddingValues(bottom = 16.dp)
+                    ){
+                        items(uiState.data.reversed()) { x ->
+                            CardNucleo(
+                                x.descricao,
+                                {
+                                    if (x.finalizado == true) {
+                                        AppIcons.CheckCircle(Success)
+                                    } else {
+                                        AppIcons.CheckCircle(Warning)
+                                    }
+                                },
+                                onclick = {}
+                            )
+                        }
+                    }
+
                 }
 
                 is UiState.Empty -> {
@@ -96,34 +111,10 @@ fun ChamadoProfessorScreen(
                     )
                 }
             }
+        }
 
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                contentPadding = PaddingValues(vertical = 24.dp)
-            )
-            {
-                items(chamados.reversed()) { x ->
-                    CardNucleo(
-                        x.descricao,
-                        {
-                            if (x.finalizado == true) {
-                                AppIcons.CheckCircle(Success)
-                            } else {
-                                AppIcons.CheckCircle(Warning)
-                            }
-                        },
-                        onclick = {}
-                    )
-                }
 
-            }
         }
 
 
     }
-}
