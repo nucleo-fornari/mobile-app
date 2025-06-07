@@ -36,14 +36,14 @@ val moduloApiReal = module {
     }
 
     viewModel<LoginViewModel> { LoginViewModel(get(),get()) }
-    viewModel<AgendaViewModel> { AgendaViewModel(get(), get()) }
-    viewModel<PublicacoesViewModel> { PublicacoesViewModel(get(), get()) }
+    viewModel<AgendaViewModel> { AgendaViewModel(get(), get(), androidContext()) }
+    viewModel<PublicacoesViewModel> { PublicacoesViewModel(get(), get(), androidContext()) }
     viewModel<CategoriasViewModel> { CategoriasViewModel(get(), androidContext()) }
     viewModel<ChamadosViewModel> { ChamadosViewModel(get(), get(), androidContext()) }
     viewModel<RecuperacaoSenhaViewModel>{ RecuperacaoSenhaViewModel(get()) }
     viewModel<CalendarViewModel>{ CalendarViewModel(get(), get())}
     viewModel<InicioProfessorViewModel>{ InicioProfessorViewModel(get(), get(), androidContext())}
     viewModel<RelatorioProfessorViewModel> { RelatorioProfessorViewModel(get(), get(), androidContext())}
-    viewModel<ReunioesViewModel> { ReunioesViewModel(get(), get())}
-    viewModel<ReunioesSolicitadasViewModel> { ReunioesSolicitadasViewModel(get(), get())}
+    viewModel<ReunioesViewModel> { ReunioesViewModel(get(), get(), androidContext())}
+    viewModel<ReunioesSolicitadasViewModel> { ReunioesSolicitadasViewModel(get(), get(), androidContext())}
 }
