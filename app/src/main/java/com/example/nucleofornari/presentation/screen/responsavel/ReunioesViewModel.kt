@@ -1,5 +1,6 @@
 package com.example.nucleofornari.presentation.screen.responsavel
 
+import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,6 +11,8 @@ import com.example.nucleofornari.data.model.SessaoUsuario
 import com.example.nucleofornari.data.model.agendamento.AgendamentoDto
 import com.example.nucleofornari.data.model.aluno.AlunoResponseDto
 import com.example.nucleofornari.data.remote.service.UsuarioApiService
+import com.example.nucleofornari.presentation.screen.responsavel.AgendaViewModel.Companion
+import com.example.nucleofornari.util.CacheUtils
 import com.example.nucleofornari.util.ErrorUtils
 import com.example.nucleofornari.util.UiState
 import com.example.nucleofornari.util.convertMillisToIso
@@ -19,11 +22,17 @@ import java.io.IOException
 
 class ReunioesViewModel(
     private val sessaoUsuario: SessaoUsuario,
-    private val api: UsuarioApiService
+    private val api: UsuarioApiService,
+    private val appContext: Context
 ) : ViewModel() {
 
     private val _uiStateAfiliados = mutableStateOf<UiState<List<AlunoResponseDto>>>(UiState.Loading)
     val uiStateAfiliados: State<UiState<List<AlunoResponseDto>>> = _uiStateAfiliados
+
+    companion object {
+        private const val CACHE_KEY = "afiliados_cache"
+        private const val CACHE_VALIDITY = 60 * 60 * 1000L
+    }
 
     var alunoSelecionado by mutableStateOf<AlunoResponseDto?>(null)
         private set
@@ -60,6 +69,14 @@ class ReunioesViewModel(
     private fun getAfiliados() {
         viewModelScope.launch {
             _uiStateAfiliados.value = UiState.Loading
+
+            val cached: List<AlunoResponseDto>? = CacheUtils.ler(appContext, CACHE_KEY, CACHE_VALIDITY)
+
+            if (cached != null) {
+                _uiStateAfiliados.value = UiState.Success(cached)
+                return@launch
+            }
+
             try {
                 val response = api.getUsuarioPorId(sessaoUsuario.userId)
                 val afiliadosMapeados = response.afiliados.map {
@@ -80,6 +97,7 @@ class ReunioesViewModel(
                 }
 
                 _uiStateAfiliados.value = UiState.Success(afiliadosMapeados)
+                CacheUtils.salvar(appContext, CACHE_KEY, afiliadosMapeados)
             } catch (e: IOException) {
                 _uiStateAfiliados.value = UiState.Error("Erro de conexão. Verifique sua internet.")
             } catch (e: HttpException) {
@@ -95,6 +113,7 @@ class ReunioesViewModel(
             }
         }
     }
+
     fun criarAgendamento(
         salaId: Int,
         motivo: String,

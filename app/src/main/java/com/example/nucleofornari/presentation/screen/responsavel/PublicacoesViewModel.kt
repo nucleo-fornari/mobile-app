@@ -1,22 +1,28 @@
 package com.example.nucleofornari.presentation.screen.responsavel
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nucleofornari.data.model.SessaoUsuario
+import com.example.nucleofornari.data.model.aluno.AlunoResponseDto
 import com.example.nucleofornari.data.model.evento.EventoDto
 import com.example.nucleofornari.data.remote.service.UsuarioApiService
+import com.example.nucleofornari.presentation.screen.responsavel.AgendaViewModel.Companion
+import com.example.nucleofornari.util.CacheUtils
 import com.example.nucleofornari.util.ErrorUtils
 import com.example.nucleofornari.util.UiState
+import com.example.nucleofornari.util.UiState.Success
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
 class PublicacoesViewModel(
     private val sessaoUsuario: SessaoUsuario,
-    private val api: UsuarioApiService
+    private val api: UsuarioApiService,
+    private val appContext: Context
 ) : ViewModel() {
 
     var uiStateEventos by mutableStateOf<UiState<List<EventoDto>>>(UiState.Loading)
@@ -26,9 +32,22 @@ class PublicacoesViewModel(
         getPublicacoes()
     }
 
+    companion object {
+        private const val CACHE_KEY = "eventos_cache"
+        private const val CACHE_VALIDITY = 5 * 60 * 1000L
+    }
+
     private fun getPublicacoes() {
         viewModelScope.launch {
             uiStateEventos = UiState.Loading
+
+            val cached: List<EventoDto>? = CacheUtils.ler(appContext, CACHE_KEY, CACHE_VALIDITY)
+
+            if (cached != null) {
+                uiStateEventos = Success(cached)
+                return@launch
+            }
+
             try {
                 val usuario = api.getUsuarioPorId(sessaoUsuario.userId)
                 val salasUnicas = usuario.afiliados.mapNotNull { it.sala?.id }.distinct()
@@ -39,11 +58,10 @@ class PublicacoesViewModel(
                     eventos.addAll(eventosDaSala)
                 }
 
-                // Remover duplicatas pelo ID (ou algum outro campo único)
                 val eventosUnicos = eventos.distinctBy { it.id }
 
-                uiStateEventos = UiState.Success(eventosUnicos)
-
+                uiStateEventos = Success(eventosUnicos)
+                CacheUtils.salvar(appContext, CACHE_KEY, eventosUnicos)
             } catch (e: IOException) {
                 uiStateEventos = UiState.Error("Erro de conexão. Verifique sua internet.")
             } catch (e: HttpException) {

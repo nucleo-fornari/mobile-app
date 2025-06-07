@@ -1,5 +1,6 @@
 package com.example.nucleofornari.presentation.screen.professor
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,6 +10,7 @@ import com.example.nucleofornari.data.model.SessaoUsuario
 import com.example.nucleofornari.data.model.agendamento.AgendamentoDto
 import com.example.nucleofornari.data.model.chamado.ChamadoDto
 import com.example.nucleofornari.data.remote.service.UsuarioApiService
+import com.example.nucleofornari.util.CacheUtils
 import com.example.nucleofornari.util.ErrorUtils
 import com.example.nucleofornari.util.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +22,8 @@ import java.io.IOException
 
 class ChamadosViewModel (
     private val sessaoUsuario: SessaoUsuario,
-    private val api: UsuarioApiService
+    private val api: UsuarioApiService,
+    private val appContext: Context
 ) : ViewModel() {
 
     var uiStateChamados by mutableStateOf<UiState<List<ChamadoDto>>>(UiState.Loading)
@@ -29,6 +32,10 @@ class ChamadosViewModel (
     private val _createChamadoState = MutableStateFlow<UiState<ChamadoDto?>>(UiState.Empty)
     val createChamadoUiState: StateFlow<UiState<ChamadoDto?>> = _createChamadoState
 
+    companion object {
+        private const val CACHE_KEY = "chamados_cache"
+        private const val CACHE_VALIDITY = 5 * 60 * 1000L
+    }
 
     init {
         listChamadosById()
@@ -37,6 +44,7 @@ class ChamadosViewModel (
     fun createChamado(chamado: ChamadoDto) {
         viewModelScope.launch {
             _createChamadoState.value = UiState.Loading
+
             try {
                 api.createChamado(chamado, sessaoUsuario.userId)
                 _createChamadoState.value = UiState.Success(null)
@@ -64,10 +72,18 @@ class ChamadosViewModel (
 
     fun listChamadosById() {
         viewModelScope.launch {
+
+            val cached: List<ChamadoDto>? = CacheUtils.ler(appContext, CACHE_KEY, CACHE_VALIDITY)
+            if (cached != null) {
+                uiStateChamados = UiState.Success(cached)
+                return@launch
+            }
+
             try {
                 val chamados = api.listChamados(sessaoUsuario.userId)
-
                 uiStateChamados = UiState.Success(chamados)
+
+                CacheUtils.salvar(appContext, CACHE_KEY, chamados)
             } catch (e: IOException) {
                 uiStateChamados = UiState.Error("Erro de conexão. Verifique sua internet.")
             } catch (e: Exception) {

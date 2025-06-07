@@ -16,6 +16,7 @@ import com.example.nucleofornari.presentation.screen.professor.RelatorioProfesso
 import com.example.nucleofornari.presentation.screen.responsavel.PublicacoesViewModel
 import com.example.nucleofornari.presentation.screen.responsavel.ReunioesSolicitadasViewModel
 import com.example.nucleofornari.presentation.screen.responsavel.ReunioesViewModel
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -37,12 +38,12 @@ val moduloApiReal = module {
     viewModel<LoginViewModel> { LoginViewModel(get(),get()) }
     viewModel<AgendaViewModel> { AgendaViewModel(get(), get()) }
     viewModel<PublicacoesViewModel> { PublicacoesViewModel(get(), get()) }
-    viewModel<CategoriasViewModel> { CategoriasViewModel(get()) }
-    viewModel<ChamadosViewModel> { ChamadosViewModel(get(), get()) }
+    viewModel<CategoriasViewModel> { CategoriasViewModel(get(), androidContext()) }
+    viewModel<ChamadosViewModel> { ChamadosViewModel(get(), get(), androidContext()) }
     viewModel<RecuperacaoSenhaViewModel>{ RecuperacaoSenhaViewModel(get()) }
     viewModel<CalendarViewModel>{ CalendarViewModel(get(), get())}
-    viewModel<InicioProfessorViewModel>{ InicioProfessorViewModel(get(), get())}
-    viewModel<RelatorioProfessorViewModel> { RelatorioProfessorViewModel(get(), get())}
+    viewModel<InicioProfessorViewModel>{ InicioProfessorViewModel(get(), get(), androidContext())}
+    viewModel<RelatorioProfessorViewModel> { RelatorioProfessorViewModel(get(), get(), androidContext())}
     viewModel<ReunioesViewModel> { ReunioesViewModel(get(), get())}
     viewModel<ReunioesSolicitadasViewModel> { ReunioesSolicitadasViewModel(get(), get())}
 }

@@ -47,7 +47,6 @@ import org.koin.androidx.compose.getViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AgendaScreen(navController: NavHostController, viewModel: AgendaViewModel = getViewModel()) {
     val uiStateAfiliados by viewModel.uiStateAfiliados

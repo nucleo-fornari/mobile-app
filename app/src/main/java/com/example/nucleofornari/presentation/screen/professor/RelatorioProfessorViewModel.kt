@@ -16,6 +16,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.nucleofornari.data.model.SessaoUsuario
 import com.example.nucleofornari.data.model.aluno.AlunoResponseDto
 import com.example.nucleofornari.data.remote.service.UsuarioApiService
+import com.example.nucleofornari.presentation.screen.professor.InicioProfessorViewModel.Companion
+import com.example.nucleofornari.util.CacheUtils
 import com.example.nucleofornari.util.ErrorUtils
 import com.example.nucleofornari.util.UiState
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +33,8 @@ import java.io.OutputStream
 
 class RelatorioProfessorViewModel (
     private val sessaoUsuario: SessaoUsuario,
-    private val api: UsuarioApiService
+    private val api: UsuarioApiService,
+    private val appContext: Context
 ) : ViewModel() {
 
     var uiStateAlunosComRelatorio by mutableStateOf<UiState<List<AlunoResponseDto>>>(UiState.Loading)
@@ -41,8 +44,21 @@ class RelatorioProfessorViewModel (
         getAlunosComRelatorio()
     }
 
+    companion object {
+        private const val CACHE_KEY = "relatorios_cache"
+        private const val CACHE_VALIDITY = 5 * 60 * 1000L
+    }
+
     private fun getAlunosComRelatorio() {
         viewModelScope.launch {
+
+            val cached: List<AlunoResponseDto>? = CacheUtils.ler(appContext, CACHE_KEY, CACHE_VALIDITY)
+
+            if (cached != null) {
+                uiStateAlunosComRelatorio = UiState.Success(cached)
+                return@launch
+            }
+
             try {
                 val salaId = sessaoUsuario.salaId
                 when {
@@ -50,6 +66,7 @@ class RelatorioProfessorViewModel (
                         val sala = api.getSalaPorId(salaId)
                         val alunosComAvaliacoes = sala.alunos.filter { it.avaliacoes.isNotEmpty() }
                         uiStateAlunosComRelatorio = UiState.Success(alunosComAvaliacoes)
+                        CacheUtils.salvar(appContext, CACHE_KEY, alunosComAvaliacoes)
                     }
                     else -> {
                         uiStateAlunosComRelatorio = UiState.Error("ID da sala não encontrado para o professor logado.")

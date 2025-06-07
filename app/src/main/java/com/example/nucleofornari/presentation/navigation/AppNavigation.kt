@@ -72,6 +72,7 @@ fun AppNavigation(navController: NavHostController){
             composable("selecionar_categoria") {
                 val categoriaViewModel: CategoriasViewModel = koinViewModel()
                 CategoriasScreen(navController, categoriaViewModel) }
+
             composable("selecionar_motivo") {
 
                 MotivosScreen() }
