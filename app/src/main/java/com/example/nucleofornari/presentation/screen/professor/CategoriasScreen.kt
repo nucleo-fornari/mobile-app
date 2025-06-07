@@ -26,7 +26,7 @@ import com.example.nucleofornari.data.model.chamado.TipoChamadoDto
 import com.example.nucleofornari.presentation.common.component.Header
 import com.example.nucleofornari.presentation.common.component.BlueButton
 import com.example.nucleofornari.presentation.common.component.NucleoRadioButtonList
-import com.example.nucleofornari.ui.theme.components.NucleoLoading
+import com.example.nucleofornari.presentation.common.component.NucleoLoading
 import com.example.nucleofornari.util.UiState
 
 @Composable

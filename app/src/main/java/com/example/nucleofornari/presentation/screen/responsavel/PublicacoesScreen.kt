@@ -4,14 +4,13 @@ package com.example.nucleofornari.presentation.screen.responsavel
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import com.example.nucleofornari.ui.theme.components.NucleoLoading
+import com.example.nucleofornari.presentation.common.component.NucleoLoading
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Scaffold
 //noinspection UsingMaterialAndMaterial3Libraries
@@ -30,11 +29,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.nucleofornari.data.model.evento.EventoDto
 import com.example.nucleofornari.presentation.common.theme.AppTypography
 import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
 import com.example.nucleofornari.presentation.common.theme.NucleoFornariTheme
-import com.example.nucleofornari.presentation.common.component.AppIcons
 import com.example.nucleofornari.presentation.common.component.CardNucleoLarge
 import com.example.nucleofornari.presentation.common.component.Header
 import com.example.nucleofornari.presentation.common.component.MenuLateral
