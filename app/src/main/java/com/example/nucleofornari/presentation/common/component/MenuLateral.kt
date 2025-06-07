@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import org.koin.androidx.compose.get
 import com.example.nucleofornari.R
-import com.example.nucleofornari.data.model.SessaoUsuario
+import com.example.nucleofornari.domain.model.SessaoUsuario
 import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
 import com.example.nucleofornari.presentation.common.theme.Error
 import com.example.nucleofornari.presentation.common.theme.PretoPrincipal
@@ -45,7 +45,7 @@ fun MenuLateral(
     navController: NavController
 ) {
     var showDialog by remember { mutableStateOf(false) }
-    val sessaoUsuario: SessaoUsuario = get()
+    val sessaoUsuario: com.example.nucleofornari.domain.model.SessaoUsuario = get()
 
     ModalNavigationDrawer(
         modifier = Modifier.background(color = AzulPrincipal),

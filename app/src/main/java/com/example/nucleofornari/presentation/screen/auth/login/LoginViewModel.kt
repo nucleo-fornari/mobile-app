@@ -2,10 +2,8 @@ package com.example.nucleofornari.presentation.screen.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nucleofornari.data.model.SessaoUsuario
-import com.example.nucleofornari.data.model.usuario.UsuarioLoginDto
-import com.example.nucleofornari.data.model.usuario.UsuarioTokenDto
-import com.example.nucleofornari.data.remote.service.UsuarioApiService
+import com.example.nucleofornari.data.remote.UsuarioApiService
+import com.example.nucleofornari.domain.model.SessaoUsuario
 import com.example.nucleofornari.util.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,11 +17,11 @@ open class LoginViewModel(
 ) : ViewModel() {
 
 
-    private val _uiState = MutableStateFlow<UiState<UsuarioTokenDto>>(UiState.Empty)
-    val uiState: StateFlow<UiState<UsuarioTokenDto>> = _uiState
+    private val _uiState = MutableStateFlow<UiState<com.example.nucleofornari.domain.model.usuario.UsuarioTokenDto>>(UiState.Empty)
+    val uiState: StateFlow<UiState<com.example.nucleofornari.domain.model.usuario.UsuarioTokenDto>> = _uiState
 
     fun login(email: String, senha: String) {
-        val loginDto = UsuarioLoginDto(email, senha)
+        val loginDto = com.example.nucleofornari.domain.model.usuario.UsuarioLoginDto(email, senha)
 
         viewModelScope.launch {
             _uiState.value = UiState.Loading

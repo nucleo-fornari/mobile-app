@@ -1,0 +1,108 @@
+package com.example.nucleofornari.data.remote
+
+import com.example.nucleofornari.data.network.TokenInterceptor
+import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
+import retrofit2.http.Query
+
+import retrofit2.Call
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.*
+
+interface UsuarioApiService {
+
+    @POST("usuarios/login")
+    suspend fun login(@Body usuarioLoginDto: com.example.nucleofornari.domain.model.usuario.UsuarioLoginDto): com.example.nucleofornari.domain.model.usuario.UsuarioTokenDto
+
+    @POST("chamados")
+    suspend fun createChamado(@Body chamadoDto: com.example.nucleofornari.domain.model.chamado.ChamadoDto, @Query("idUsuario") id: Int): com.example.nucleofornari.domain.model.chamado.ChamadoDto
+
+    @GET("tipos-chamado")
+    suspend fun findTiposChamado(): List<com.example.nucleofornari.domain.model.chamado.TipoChamadoDto>
+
+    @GET("chamados")
+    suspend fun listChamados(@Query("idUser") id: Int): List<com.example.nucleofornari.domain.model.chamado.ChamadoDto>
+
+    @GET("avaliacao/pdf/{id}")
+    suspend fun getAvaliacaoPdf(@Path("id") id: Int): Response<ResponseBody>
+
+    @GET("eventos/sala/{id}")
+    suspend fun getEventosPorSala(@Path("id") id: Int): List<com.example.nucleofornari.domain.model.evento.EventoDto>
+
+    @GET("salas/{id}")
+    suspend fun getSalaPorId(@Path("id") id: Int): com.example.nucleofornari.domain.model.sala.SalaDto
+
+    @POST("agendamento/proposta")
+    suspend fun createAgendamento(@Body agendamentoDto: com.example.nucleofornari.domain.model.agendamento.AgendamentoDto): com.example.nucleofornari.domain.model.agendamento.AgendamentoDto
+
+    @GET("agendamento")
+    suspend fun getAgendamentosPorUsuario(@Query("usuarioId") usuarioId: Int): List<com.example.nucleofornari.domain.model.agendamento.AgendamentoDto>
+
+    @GET("usuarios/professores")
+    fun getProfessoresSemSala(): List<com.example.nucleofornari.domain.model.usuario.UsuarioResponseDto>
+
+    @GET("usuarios")
+    fun getUsuarios(): List<com.example.nucleofornari.domain.model.usuario.UsuarioResponseDto>
+
+    @GET("usuarios/{id}")
+    suspend fun getUsuarioPorId(@Path("id") id: Int): com.example.nucleofornari.domain.model.usuario.UsuarioResponseDto
+
+    @POST("usuarios/funcionario")
+    fun criarFuncionario(@Body usuarioCreateDto: com.example.nucleofornari.domain.model.usuario.UsuarioCreateDto): com.example.nucleofornari.domain.model.usuario.UsuarioResponseDto
+
+    @PUT("usuarios/{id}")
+    fun atualizarUsuario(@Path("id") id: Int, @Body usuarioCreateDto: com.example.nucleofornari.domain.model.usuario.UsuarioCreateDto): com.example.nucleofornari.domain.model.usuario.UsuarioResponseDto
+
+    @DELETE("usuarios/{id}")
+    fun deletarUsuario(@Path("id") id: Int): Call<Unit>
+
+    @PATCH("usuarios/professor/{id}/sala/{salaId}")
+    fun associarProfessorSala(@Path("id") id: Int, @Path("salaId") salaId: Int): com.example.nucleofornari.domain.model.usuario.ProfessorResponseDto
+
+    @PATCH("usuarios/professor/{id}/sala/remover")
+    fun removerProfessorDaSala(@Path("id") id: Int): com.example.nucleofornari.domain.model.usuario.ProfessorResponseDto
+
+    @GET("usuarios/aluno-e-sala/{id}")
+    fun getAlunoESala(@Path("id") id: Int): List<com.example.nucleofornari.domain.model.usuario.AlunoAndSalaIdDto>
+
+    @PATCH("usuarios/esqueci-senha")
+    suspend fun esqueciSenha(@Query("email") email: String)
+
+    @PATCH("usuarios/token-redefinicao-senha")
+    suspend fun tokenRedefinicaoSenha(@Query("token") token: String)
+
+    @PUT("usuarios/redefinir-senha")
+    suspend fun redefinirSenha(@Query("token") token: String, @Query("email") email: String, @Query("senha") senha: String)
+}
+
+object UsuarioApi {
+
+    private val BASE_URL = "http://nucleofornari.serveminecraft.net/api/"
+
+    fun getApi(token: String): UsuarioApiService {
+
+        val logInterceptor = HttpLoggingInterceptor()
+        logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+
+        val clienteHttp = OkHttpClient.Builder()
+            .addInterceptor(logInterceptor)
+            .addInterceptor(TokenInterceptor(token)) // interceptor de token
+            .build()
+
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(clienteHttp) // interceptor de log, opcional
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(UsuarioApiService::class.java)
+    }
+}

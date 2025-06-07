@@ -1,39 +1,23 @@
 package com.example.nucleofornari.presentation.navigation
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.nucleofornari.presentation.screen.professor.AbrirChamadoScreen
-import com.example.nucleofornari.presentation.screen.professor.CategoriasScreen
-import com.example.nucleofornari.presentation.screen.professor.ChamadoEnviadoScreen
-import com.example.nucleofornari.presentation.screen.professor.ChamadoProfessorScreen
-import com.example.nucleofornari.presentation.screen.professor.InicioProfessorScreen
-import com.example.nucleofornari.presentation.screen.professor.RelatorioProfessorScreen
 import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
-import com.example.nucleofornari.presentation.screen.responsavel.AgendaScreen
-import com.example.nucleofornari.presentation.screen.responsavel.PublicacoesScreen
-import com.example.nucleofornari.presentation.screen.responsavel.ReunioesScreen
-import com.example.nucleofornari.presentation.screen.responsavel.ReunioesSolicitasScreen
+import com.example.nucleofornari.presentation.screen.responsavel.agenda.AgendaScreen
+import com.example.nucleofornari.presentation.screen.responsavel.publicacoes.PublicacoesScreen
+import com.example.nucleofornari.presentation.screen.responsavel.reunioes.ReunioesScreen
+import com.example.nucleofornari.presentation.screen.responsavel.reunioes_solicitadas.ReunioesSolicitasScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

@@ -1,12 +1,8 @@
 package com.example.nucleofornari.presentation.common.component.calendar
 
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nucleofornari.data.model.SessaoUsuario
-import com.example.nucleofornari.data.model.evento.EventoCriacaoReqDto
-import com.example.nucleofornari.data.model.evento.EventoRespostaDto
-import com.example.nucleofornari.data.remote.service.EventoApiService
+import com.example.nucleofornari.data.remote.EventoApiService
 import com.example.nucleofornari.util.ErrorUtils
 import com.example.nucleofornari.util.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,22 +15,22 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class CalendarViewModel(
-    private val sessaoUsuario: SessaoUsuario,
+    private val sessaoUsuario: com.example.nucleofornari.domain.model.SessaoUsuario,
     private val api: EventoApiService
 ) : ViewModel() {
 
-    private val _createEventoState = MutableStateFlow<UiState<EventoRespostaDto?>>(UiState.Empty)
-    val createEventoState: StateFlow<UiState<EventoRespostaDto?>> = _createEventoState
+    private val _createEventoState = MutableStateFlow<UiState<com.example.nucleofornari.domain.model.evento.EventoRespostaDto?>>(UiState.Empty)
+    val createEventoState: StateFlow<UiState<com.example.nucleofornari.domain.model.evento.EventoRespostaDto?>> = _createEventoState
 
-    private val _listEventosState = MutableStateFlow<UiState<Map<LocalDate, List<EventoRespostaDto>>>>(UiState.Empty)
-    val listEventosState: StateFlow<UiState<Map<LocalDate, List<EventoRespostaDto>>>> = _listEventosState
+    private val _listEventosState = MutableStateFlow<UiState<Map<LocalDate, List<com.example.nucleofornari.domain.model.evento.EventoRespostaDto>>>>(UiState.Empty)
+    val listEventosState: StateFlow<UiState<Map<LocalDate, List<com.example.nucleofornari.domain.model.evento.EventoRespostaDto>>>> = _listEventosState
 
     fun criarEvento(titulo: String, descricao: String, data: LocalDateTime, tipo: String) {
         viewModelScope.launch {
             _createEventoState.value = UiState.Loading
             try {
                 val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
-                val req = EventoCriacaoReqDto(
+                val req = com.example.nucleofornari.domain.model.evento.EventoCriacaoReqDto(
                     titulo = titulo,
                     descricao = descricao,
                     data = data.format(formatter),

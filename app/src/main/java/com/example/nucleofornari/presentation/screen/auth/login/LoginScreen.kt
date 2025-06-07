@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.nucleofornari.R
-import com.example.nucleofornari.data.model.usuario.UsuarioTokenDto
+import com.example.nucleofornari.domain.model.usuario.UsuarioTokenDto
 import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
 import com.example.nucleofornari.presentation.common.component.BlueButton
 import com.example.nucleofornari.presentation.common.component.Header
@@ -104,7 +104,7 @@ fun LoginScreen(
                 }
 
                 is UiState.Success -> {
-                    val user = (uiState as UiState.Success<UsuarioTokenDto>).data
+                    val user = (uiState as UiState.Success<com.example.nucleofornari.domain.model.usuario.UsuarioTokenDto>).data
 
                     LaunchedEffect(user.userId) {
                         if (user.funcao == "PROFESSOR") {

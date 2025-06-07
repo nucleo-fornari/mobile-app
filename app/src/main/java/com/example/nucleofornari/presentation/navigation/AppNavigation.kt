@@ -24,17 +24,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.nucleofornari.presentation.common.component.calendar.CalendarViewModel
-import com.example.nucleofornari.presentation.screen.professor.AbrirChamadoScreen
-import com.example.nucleofornari.presentation.screen.professor.CategoriasScreen
-import com.example.nucleofornari.presentation.screen.professor.ChamadoEnviadoScreen
-import com.example.nucleofornari.presentation.screen.professor.ChamadoProfessorScreen
-import com.example.nucleofornari.presentation.screen.professor.InicioProfessorScreen
-import com.example.nucleofornari.presentation.screen.professor.RelatorioProfessorScreen
+import com.example.nucleofornari.presentation.screen.professor.chamados.AbrirChamadoScreen
+import com.example.nucleofornari.presentation.screen.professor.categorias.CategoriasScreen
+import com.example.nucleofornari.presentation.screen.professor.chamados.ChamadoEnviadoScreen
+import com.example.nucleofornari.presentation.screen.professor.chamados.ChamadoProfessorScreen
+import com.example.nucleofornari.presentation.screen.professor.inicio.InicioProfessorScreen
+import com.example.nucleofornari.presentation.screen.professor.relatorio.RelatorioProfessorScreen
 import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
-import com.example.nucleofornari.presentation.screen.professor.CategoriasViewModel
-import com.example.nucleofornari.presentation.screen.professor.ChamadosViewModel
-import com.example.nucleofornari.presentation.screen.professor.InicioProfessorViewModel
-import com.example.nucleofornari.presentation.screen.professor.RelatorioProfessorViewModel
+import com.example.nucleofornari.presentation.screen.professor.categorias.CategoriasViewModel
+import com.example.nucleofornari.presentation.screen.professor.chamados.ChamadosViewModel
+import com.example.nucleofornari.presentation.screen.professor.inicio.InicioProfessorViewModel
+import com.example.nucleofornari.presentation.screen.professor.relatorio.RelatorioProfessorViewModel
 import com.example.nucleofornari.presentation.screen.responsavel.MotivosScreen
 import org.koin.androidx.compose.koinViewModel
 

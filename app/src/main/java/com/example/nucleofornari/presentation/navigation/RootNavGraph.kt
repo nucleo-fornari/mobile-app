@@ -5,15 +5,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.nucleofornari.presentation.screen.auth.CodigoScreen
-import com.example.nucleofornari.presentation.screen.auth.EsqueceuSenhaScreen
+import com.example.nucleofornari.presentation.screen.auth.redefinicao_senha.CodigoScreen
+import com.example.nucleofornari.presentation.screen.auth.redefinicao_senha.EsqueceuSenhaScreen
 import com.example.nucleofornari.presentation.screen.auth.InicioLoginScreen
 import com.example.nucleofornari.presentation.screen.auth.login.LoginScreen
-import com.example.nucleofornari.presentation.screen.auth.RedefinirConfirmScreen
-import com.example.nucleofornari.presentation.screen.auth.RedefinirSenhaScreen
+import com.example.nucleofornari.presentation.screen.auth.redefinicao_senha.RedefinirConfirmScreen
+import com.example.nucleofornari.presentation.screen.auth.redefinicao_senha.RedefinirSenhaScreen
 import com.example.nucleofornari.presentation.screen.auth.SemContaScreen
 import com.example.nucleofornari.presentation.screen.auth.login.LoginViewModel
-import com.example.nucleofornari.presentation.screen.auth.login.RecuperacaoSenhaViewModel
+import com.example.nucleofornari.presentation.screen.auth.redefinicao_senha.RecuperacaoSenhaViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
