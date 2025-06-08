@@ -17,6 +17,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -32,9 +33,15 @@ import com.example.nucleofornari.domain.model.usuario.UsuarioTokenDto
 import com.example.nucleofornari.presentation.common.theme.AzulPrincipal
 import com.example.nucleofornari.presentation.common.component.BlueButton
 import com.example.nucleofornari.presentation.common.component.Header
+import com.example.nucleofornari.presentation.common.component.NucleoCheckbox
 import com.example.nucleofornari.presentation.common.component.NucleoTextField
 import com.example.nucleofornari.presentation.common.component.PasswordInputField
 import com.example.nucleofornari.util.UiState
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.TextButton
+import com.example.nucleofornari.presentation.common.component.PoliticaLGPDText
 
 @Composable
 fun LoginScreen(
@@ -64,7 +71,9 @@ fun LoginScreen(
             )
 
             Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(horizontal = 64.dp)
             ) {
                 Text(text = "Entre com sua conta", color = AzulPrincipal, fontWeight = FontWeight.Bold, fontSize = 30.sp)
 
@@ -80,8 +89,14 @@ fun LoginScreen(
                 )
 
                 Text(text = "Esqueceu a senha?", color = AzulPrincipal, modifier = Modifier.clickable { navController.navigate("esqueceu_senha") })
+
+NucleoCheckbox(checkboxText = "Li e aceito os termos da política de privacidade.")
+                // Ação quando o checkbox for clicado
+                // Aqui você pode implementar a lógica para aceitar os termos
+                // Ação quando o checkbox for clicado
+                // Aqui você pode implementar a lógica para aceitar os termos
             }
-            Spacer(Modifier.height(54.dp))
+            Spacer(Modifier.height(48.dp))
 
             BlueButton("Continuar", AzulPrincipal, onClick = {
                 viewModel.login(email, senha)
@@ -104,7 +119,7 @@ fun LoginScreen(
                 }
 
                 is UiState.Success -> {
-                    val user = (uiState as UiState.Success<com.example.nucleofornari.domain.model.usuario.UsuarioTokenDto>).data
+                    val user = (uiState as UiState.Success<UsuarioTokenDto>).data
 
                     LaunchedEffect(user.userId) {
                         if (user.funcao == "PROFESSOR") {
@@ -123,6 +138,36 @@ fun LoginScreen(
                 else -> {}
             }
         }
+    }
+}
+
+@Composable
+fun PoliticaLGPDModal(
+    showDialog: Boolean,
+    onDismiss: () -> Unit
+) {
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = {
+                Text(
+                    text = "Política de Privacidade e Proteção de Dados Pessoais - Núcleo Fornari",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
+            },
+            text = {
+                // Scrollable content
+                Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                    PoliticaLGPDText()
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = onDismiss) {
+                    Text("Fechar")
+                }
+            }
+        )
     }
 }
 
