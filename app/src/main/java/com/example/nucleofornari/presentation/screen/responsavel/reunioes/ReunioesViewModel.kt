@@ -27,7 +27,7 @@ class ReunioesViewModel(
 
     companion object {
         private const val CACHE_KEY = "afiliados_cache"
-        private const val CACHE_VALIDITY = 60 * 60 * 1000L
+        private const val CACHE_VALIDITY = 1 * 60 * 1000L
     }
 
     var alunoSelecionado by mutableStateOf<com.example.nucleofornari.domain.model.aluno.AlunoResponseDto?>(null)

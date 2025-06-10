@@ -31,7 +31,7 @@ class AgendaViewModel(
 
     companion object {
         private const val CACHE_KEY = "afiliados_cache"
-        private const val CACHE_VALIDITY = 60 * 60 * 1000L
+        private const val CACHE_VALIDITY = 1 * 60 * 1000L
     }
 
     fun selecionarAluno(aluno: com.example.nucleofornari.domain.model.aluno.AlunoResponseDto) {
@@ -74,13 +74,14 @@ class AgendaViewModel(
                     )
                 }
 
-                // Selecionar o primeiro afiliado automaticamente
-                if (afiliadosMapeados.isNotEmpty()) {
+                if(afiliadosMapeados.isNullOrEmpty()){
+                    _uiStateAfiliados.value= UiState.Empty
+                }else{
                     alunoSelecionado = afiliadosMapeados.first()
+                    _uiStateAfiliados.value = UiState.Success(afiliadosMapeados)
+                    CacheUtils.salvar(appContext, CACHE_KEY, afiliadosMapeados)
                 }
 
-                _uiStateAfiliados.value = UiState.Success(afiliadosMapeados)
-                CacheUtils.salvar(appContext, CACHE_KEY, afiliadosMapeados)
             } catch (e: IOException) {
                 _uiStateAfiliados.value = UiState.Error("Erro de conexão. Verifique sua internet.")
             } catch (e: Exception) {

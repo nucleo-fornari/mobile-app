@@ -47,7 +47,7 @@ interface EventoApiService {
 
 object EventoApi {
 
-    private val BASE_URL = "http://nucleofornari.serveminecraft.net/api/"
+    private val BASE_URL = "https://nucleofornari.serveminecraft.net/api/"
 
     fun getApi(token: String): EventoApiService {
 

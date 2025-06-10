@@ -1,6 +1,7 @@
 package com.example.nucleofornari.data.remote
 
 import com.example.nucleofornari.data.network.TokenInterceptor
+import com.example.nucleofornari.domain.model.chamado.ChamadoDto
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
@@ -24,13 +25,13 @@ interface UsuarioApiService {
     suspend fun login(@Body usuarioLoginDto: com.example.nucleofornari.domain.model.usuario.UsuarioLoginDto): com.example.nucleofornari.domain.model.usuario.UsuarioTokenDto
 
     @POST("chamados")
-    suspend fun createChamado(@Body chamadoDto: com.example.nucleofornari.domain.model.chamado.ChamadoDto, @Query("idUsuario") id: Int): com.example.nucleofornari.domain.model.chamado.ChamadoDto
+    suspend fun createChamado(@Body chamadoDto: ChamadoDto, @Query("idUsuario") id: Int): ChamadoDto
 
     @GET("tipos-chamado")
     suspend fun findTiposChamado(): List<com.example.nucleofornari.domain.model.chamado.TipoChamadoDto>
 
     @GET("chamados")
-    suspend fun listChamados(@Query("idUser") id: Int): List<com.example.nucleofornari.domain.model.chamado.ChamadoDto>
+    suspend fun listChamados(@Query("idUser") id: Int): Response<List<ChamadoDto>>
 
     @GET("avaliacao/pdf/{id}")
     suspend fun getAvaliacaoPdf(@Path("id") id: Int): Response<ResponseBody>
@@ -45,7 +46,7 @@ interface UsuarioApiService {
     suspend fun createAgendamento(@Body agendamentoDto: com.example.nucleofornari.domain.model.agendamento.AgendamentoDto): com.example.nucleofornari.domain.model.agendamento.AgendamentoDto
 
     @GET("agendamento")
-    suspend fun getAgendamentosPorUsuario(@Query("usuarioId") usuarioId: Int): List<com.example.nucleofornari.domain.model.agendamento.AgendamentoDto>
+    suspend fun getAgendamentosPorUsuario(@Query("usuarioId") usuarioId: Int): Response<List<com.example.nucleofornari.domain.model.agendamento.AgendamentoDto>>
 
     @GET("usuarios/professores")
     fun getProfessoresSemSala(): List<com.example.nucleofornari.domain.model.usuario.UsuarioResponseDto>
@@ -86,7 +87,7 @@ interface UsuarioApiService {
 
 object UsuarioApi {
 
-    private val BASE_URL = "http://nucleofornari.serveminecraft.net/api/"
+    private val BASE_URL = "https://nucleofornari.serveminecraft.net/api/"
 
     fun getApi(token: String): UsuarioApiService {
 

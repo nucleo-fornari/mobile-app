@@ -29,7 +29,7 @@ class ReunioesSolicitadasViewModel(
 
     companion object {
         private const val CACHE_KEY = "reunioes_solicitadas_cache"
-        private const val CACHE_VALIDITY = 5 * 60 * 1000L
+        private const val CACHE_VALIDITY = 1 * 60 * 1000L
     }
 
     private fun getReunioes() {
@@ -42,9 +42,19 @@ class ReunioesSolicitadasViewModel(
                 return@launch
             }
             try {
-                val reunioes = api.getAgendamentosPorUsuario(sessaoUsuario.userId)
-                uiStateReunioes = UiState.Success(reunioes)
-                CacheUtils.salvar(appContext, CACHE_KEY, reunioes)
+                val response = api.getAgendamentosPorUsuario(sessaoUsuario.userId)
+                if(response.isSuccessful){
+                    val reunioes = response.body()
+                    if(reunioes.isNullOrEmpty()){
+                        uiStateReunioes = UiState.Empty
+                    }else{
+                        uiStateReunioes = UiState.Success(reunioes)
+                        CacheUtils.salvar(appContext, CACHE_KEY, reunioes)
+                    }
+                }else if (response.code() == 204) {
+                    uiStateReunioes = UiState.Empty
+                }
+
             } catch (e: IOException) {
                 uiStateReunioes = UiState.Error("Erro de conexão. Verifique sua internet.")
             } catch (e: HttpException) {

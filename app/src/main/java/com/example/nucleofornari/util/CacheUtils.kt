@@ -5,8 +5,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 object CacheUtils {
-    private const val PREF_NAME = "cache_prefs"
-    private val gson = Gson()
+    const val PREF_NAME = "cache_prefs"
+    val gson = Gson()
 
     fun <T> salvar(context: Context, chave: String, dado: T) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -17,7 +17,7 @@ object CacheUtils {
             .apply()
     }
 
-    fun <T> ler(
+    inline fun <reified T> ler(
         context: Context,
         chave: String,
         validadeMillis: Long

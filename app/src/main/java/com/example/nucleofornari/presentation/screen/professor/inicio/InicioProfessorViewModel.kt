@@ -29,7 +29,7 @@ class InicioProfessorViewModel (
 
     companion object {
         private const val CACHE_KEY = "alunos_cache"
-        private const val CACHE_VALIDITY = 5 * 60 * 1000L // 5 minutos
+        private const val CACHE_VALIDITY = 1 * 60 * 1000L
     }
 
     private fun getAlunos() {

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -139,11 +140,8 @@ fun AgendaScreen(navController: NavHostController, viewModel: AgendaViewModel = 
                             alunoSelecionado?.let {
                                 LazyColumn(
                                     modifier = Modifier
-                                        .fillMaxSize()
-                                        .padding(innerPadding)
-                                        .padding(bottom = 24.dp),
-                                    verticalArrangement = Arrangement.spacedBy(24.dp),
-                                    horizontalAlignment = Alignment.CenterHorizontally
+                                        .fillMaxHeight(),
+                                    verticalArrangement = Arrangement.spacedBy(24.dp)
                                 ) {
                                     items(it.recados) { recado ->
                                         CardNucleoLarge(

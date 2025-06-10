@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nucleofornari.data.remote.UsuarioApiService
+import com.example.nucleofornari.domain.model.chamado.ChamadoDto
 import com.example.nucleofornari.util.CacheUtils
 import com.example.nucleofornari.util.ErrorUtils
 import com.example.nucleofornari.util.UiState
@@ -30,7 +31,7 @@ class ChamadosViewModel (
 
     companion object {
         private const val CACHE_KEY = "chamados_cache"
-        private const val CACHE_VALIDITY = 5 * 60 * 1000L
+        private const val CACHE_VALIDITY = 1 * 60 * 1000L
     }
 
     init {
@@ -68,36 +69,45 @@ class ChamadosViewModel (
 
     fun listChamadosById() {
         viewModelScope.launch {
-
-            val cached: List<com.example.nucleofornari.domain.model.chamado.ChamadoDto>? = CacheUtils.ler(appContext, CACHE_KEY, CACHE_VALIDITY)
+            val cached: List<ChamadoDto>? = CacheUtils.ler(appContext, CACHE_KEY, CACHE_VALIDITY)
             if (cached != null) {
                 uiStateChamados = UiState.Success(cached)
                 return@launch
             }
 
             try {
-                val chamados = api.listChamados(sessaoUsuario.userId)
-                uiStateChamados = UiState.Success(chamados)
+                val response = api.listChamados(sessaoUsuario.userId)
 
-                CacheUtils.salvar(appContext, CACHE_KEY, chamados)
+                if (response.isSuccessful) {
+                    val chamados = response.body()
+                    if (chamados.isNullOrEmpty()) {
+                        uiStateChamados = UiState.Empty
+
+                    } else {
+                        uiStateChamados = UiState.Success(chamados)
+                        CacheUtils.salvar(appContext, CACHE_KEY, chamados)
+                    }
+                } else if (response.code() == 204) {
+                    uiStateChamados = UiState.Empty
+                } else {
+                    val errorBody = response.errorBody()
+                    val message = if (errorBody != null)
+                        ErrorUtils.parseErrorMessage(errorBody)
+                    else
+                        "Erro desconhecido do servidor"
+
+                    uiStateChamados = UiState.Error(message)
+                }
+
             } catch (e: IOException) {
                 uiStateChamados = UiState.Error("Erro de conexão. Verifique sua internet.")
             } catch (e: Exception) {
-                val errorMessage = when (e) {
-                    is HttpException -> {
-                        val errorBody = e.response()?.errorBody()
-                        if (errorBody != null)
-                            ErrorUtils.parseErrorMessage(errorBody)
-                        else
-                            "Erro desconhecido do servidor"
-                    }
-                    else -> "Erro inesperado: ${e.message}"
-                }
-
-                uiStateChamados = UiState.Error(errorMessage)
+                uiStateChamados = UiState.Error("Erro inesperado: ${e.message}")
             }
+
         }
     }
+
 
     fun resetCreateChamadoUiState() {
         _createChamadoState.value = UiState.Empty

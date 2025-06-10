@@ -30,7 +30,7 @@ class PublicacoesViewModel(
 
     companion object {
         private const val CACHE_KEY = "eventos_cache"
-        private const val CACHE_VALIDITY = 5 * 60 * 1000L
+        private const val CACHE_VALIDITY = 1 * 60 * 1000L
     }
 
     private fun getPublicacoes() {
@@ -51,13 +51,16 @@ class PublicacoesViewModel(
                 val eventos = mutableListOf<com.example.nucleofornari.domain.model.evento.EventoDto>()
                 salasUnicas.forEach { salaId ->
                     val eventosDaSala = api.getEventosPorSala(salaId)
-                    eventos.addAll(eventosDaSala)
+                    if(eventosDaSala.isNullOrEmpty()){
+                        uiStateEventos = UiState.Empty
+                    }else{
+                        eventos.addAll(eventosDaSala)
+                        val eventosUnicos = eventos.distinctBy { it.id }
+
+                        uiStateEventos = Success(eventosUnicos)
+                        CacheUtils.salvar(appContext, CACHE_KEY, eventosUnicos)
+                    }
                 }
-
-                val eventosUnicos = eventos.distinctBy { it.id }
-
-                uiStateEventos = Success(eventosUnicos)
-                CacheUtils.salvar(appContext, CACHE_KEY, eventosUnicos)
             } catch (e: IOException) {
                 uiStateEventos = UiState.Error("Erro de conexão. Verifique sua internet.")
             } catch (e: HttpException) {

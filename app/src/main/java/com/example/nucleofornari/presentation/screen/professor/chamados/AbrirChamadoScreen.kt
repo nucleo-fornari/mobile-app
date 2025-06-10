@@ -1,6 +1,7 @@
 package com.example.nucleofornari.presentation.screen.professor.chamados
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import com.example.nucleofornari.util.UiState
 
 @Composable
@@ -108,12 +110,22 @@ fun AbrirChamadoScreen(
                 NucleoSwitch(criancaAtipica.value) { criancaAtipica.value = it }
             }
 
+            val context = LocalContext.current
             BlueButton("Concluir", Color.White, {
-                val ch = com.example.nucleofornari.domain.model.chamado.ChamadoDto()
-                ch.tipo = tipoChamado
-                ch.criancaAtipica = criancaAtipica.value
-                ch.descricao = descricao.value
-                viewModel.createChamado(ch)
+                if(!descricao.value.isNullOrBlank()){
+                    val ch = com.example.nucleofornari.domain.model.chamado.ChamadoDto()
+                    ch.tipo = tipoChamado
+                    ch.criancaAtipica = criancaAtipica.value
+                    ch.descricao = descricao.value
+                    viewModel.createChamado(ch)
+                }else{
+                    Toast.makeText(
+                        context,
+                        "Preencha todos os campos obrigatórios.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
             })
 
             when (uiState) {

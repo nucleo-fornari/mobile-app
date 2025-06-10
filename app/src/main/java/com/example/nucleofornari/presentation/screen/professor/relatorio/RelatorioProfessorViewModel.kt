@@ -14,6 +14,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nucleofornari.data.remote.UsuarioApiService
+import com.example.nucleofornari.domain.model.aluno.AlunoResponseDto
 import com.example.nucleofornari.util.CacheUtils
 import com.example.nucleofornari.util.ErrorUtils
 import com.example.nucleofornari.util.UiState
@@ -43,13 +44,18 @@ class RelatorioProfessorViewModel (
 
     companion object {
         private const val CACHE_KEY = "relatorios_cache"
-        private const val CACHE_VALIDITY = 5 * 60 * 1000L
+        private const val CACHE_VALIDITY = 1 * 60 * 1000L
     }
 
     private fun getAlunosComRelatorio() {
         viewModelScope.launch {
 
-            val cached: List<com.example.nucleofornari.domain.model.aluno.AlunoResponseDto>? = CacheUtils.ler(appContext, CACHE_KEY, CACHE_VALIDITY)
+            val cached: List<AlunoResponseDto>? = try {
+                CacheUtils.ler<List<AlunoResponseDto>>(appContext, CACHE_KEY, CACHE_VALIDITY)
+            } catch (e: Exception) {
+                CacheUtils.remover(appContext, CACHE_KEY)
+                null
+            }
 
             if (cached != null) {
                 uiStateAlunosComRelatorio = UiState.Success(cached)
@@ -62,8 +68,15 @@ class RelatorioProfessorViewModel (
                     salaId != null -> {
                         val sala = api.getSalaPorId(salaId)
                         val alunosComAvaliacoes = sala.alunos.filter { it.avaliacoes.isNotEmpty() }
-                        uiStateAlunosComRelatorio = UiState.Success(alunosComAvaliacoes)
-                        CacheUtils.salvar(appContext, CACHE_KEY, alunosComAvaliacoes)
+
+
+                        if(alunosComAvaliacoes.isNullOrEmpty()){
+                            uiStateAlunosComRelatorio = UiState.Empty
+                        }else{
+                            uiStateAlunosComRelatorio = UiState.Success(alunosComAvaliacoes)
+                            CacheUtils.salvar(appContext, CACHE_KEY, alunosComAvaliacoes)
+                        }
+
                     }
                     else -> {
                         uiStateAlunosComRelatorio = UiState.Error("ID da sala não encontrado para o professor logado.")
@@ -101,6 +114,9 @@ class RelatorioProfessorViewModel (
                     }
                 } else {
                     Log.e("Download", "Erro na resposta: ${response.code()} - ${response.message()}")
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, "Essa avaliação não existe.", Toast.LENGTH_LONG).show()
+                    }
                 }
             } catch (e: IOException) {
                 Log.d("TAG", "entrei no catch")
